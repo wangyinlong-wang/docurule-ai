@@ -39,6 +39,7 @@
 - GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.4.0>
 - GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
+- 新增 good-first 贡献入口：[#19 文档化 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19)；当前公开列表共 5 个可认领的 good-first issue。
 - 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。PR 尚未满足 extension/MIME 配对测试且仍与当前 `main`（v0.4.0）冲突；已请求贡献者更新，未批准或合并不完整改动。
 
 不要把 fork 或 PR 换算成“社区采用”。它们只用于决定下一步：优先帮助真实贡献者完成合入，并继续测试在线 Demo 到 GitHub 的转化。
