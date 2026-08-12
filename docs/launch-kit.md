@@ -24,6 +24,7 @@
 - [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
 - [x] **动态 Demo 已生成：** `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒；README 已引用本地素材。
 - [x] 已从公开页面核验 README Hero 文案与 GIF；raw GIF 返回 HTTP 200、2,426,839 bytes，内容对应 `v0.2.0`。
+- [x] GitHub Social Preview 已上传 1280×640 成图；公开仓库 HTML 的 `og:image` 已指向 `repository-images.githubusercontent.com`。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
 - [ ] 作者能在首帖后的 4–6 小时保持在线，并在首日及时回复技术问题。
@@ -55,7 +56,8 @@
 | API | 创建案件、Demo、读取、修正字段、人工决定、JSON 导出；`/docs` 提供 OpenAPI UI | 以 README 中 endpoint 表为准 |
 | 前端/后端 | React + TypeScript；FastAPI | 当前小型单应用架构 |
 | 采购三单匹配 | 已在公开 `v0.2.0` 实现并自动化验证 | 可写“available in v0.2.0”，并使用实测数字 |
-| 动态 GIF | `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒 | 公开发布前仍需无登录检查 README 加载 |
+| 动态 GIF | `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒 | 已从公开 raw URL 核验 HTTP 200 与实际字节数 |
+| Social Preview | `docs/assets/social-preview.png`，1280×640 | 已上传 GitHub；公开 `og:image` 已切换到 repository image |
 | 真实准确率 | 未建立可泛化 benchmark | 不给百分比，不与 OCR/IDP 产品做准确率排名 |
 | 隐私/安全 | 默认本地保存；可配本机 Ollama | 不写“100% private/secure”“数据绝不离开机器”；远程 provider 是明确例外 |
 | 目标行业 | 可用于探索财务、保险、KYC、法务、供应链等 packet workflow | 当前只验证了合成 Demo，不能说已在这些行业落地 |
@@ -446,7 +448,7 @@ https://github.com/wangyinlong-wang/docurule-ai
 Try it and report the first setup snag.
 ```
 
-附上约 16 秒、2.3 MB 的采购 Hero GIF；发布前先用无登录窗口确认公开 README 可播放。CTA：**run the Docker demo and report a reproducible setup issue**。
+附上已公开核验的约 16 秒、2.3 MB 采购 Hero GIF。CTA：**run the Docker demo and report a reproducible setup issue**。
 
 ### 6.2 X（中文）
 
