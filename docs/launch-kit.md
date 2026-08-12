@@ -1,6 +1,6 @@
 # DocuRule 发布与增长执行包
 
-> 状态：执行中。GitHub Release、X 与知乎已有公开内容；HN、Reddit、V2EX、掘金等仍不得自动发布。事实快照与平台规则复核日期：2026-08-12。
+> 状态：执行中。GitHub Release、GitHub Discussion 与知乎已有公开内容；当前 Chrome 会话的 X 仍停在登录页，尚未发布 X 内容；HN、Reddit、V2EX、掘金等仍不得自动发布。事实快照与平台规则复核日期：2026-08-13。
 >
 > 本文只是一套发布前工作稿。平台规则会变化；每次发帖前必须重新打开对应规则页。Hacker News 与 r/LocalLLaMA 对 AI 生成文案有明确限制，因此相关草稿只能帮助作者梳理事实，不能原样复制发布。
 
@@ -9,22 +9,22 @@
 ### 0.1 当前结论
 
 - 公开仓库：<https://github.com/wangyinlong-wang/docurule-ai>
-- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；当前 Latest Release `v0.3.0` 提供安全、可执行的 schema-v1 YAML recipes。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
+- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全、可执行的 schema-v1 YAML recipes；当前 Latest Release `v0.4.0` 增加可审计 CSV 字段导出。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
 - 当前首发 Hero：合成的采购三单匹配 Demo（采购订单 + 发票 + 收货单），`3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision`。
 - 初始结果固定为 `4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96` 后重新校验为 `6 / 6 passed`。内置 Demo 不调用 AI provider。
 - README 当前动态 GIF 为 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes（约 491 KB）、14.7 秒；`docs/assets/docurule-demo.gif` 是 v0.2 的 16.0 秒旧版演示。医疗理赔 Demo 作为第二场景保留。
 - 无需安装的浏览器演示已公开：<https://wangyinlong-wang.github.io/docurule-ai/>。它只使用合成数据，在浏览器标签页内运行，不上传文件、不连接后端且刷新即清空。
 - 首发只承诺可验证的功能，不承诺 Star 数、准确率、节省时间或生产可用性。
-- 已发布两条 X 内容、一条 X 更新回复、一篇知乎文章、一条文章更新评论和一条知乎想法；尚未发布 HN、Reddit、V2EX、掘金或 LinkedIn 内容。未发布平台的草稿仍须作者按平台规则复核。
+- 已公开一篇知乎文章及其项目更新；GitHub Discussion #18 已作为 Show and tell 入口。X 当前仍需作者在登录后亲自确认账号状态再发布；尚未发布 HN、Reddit、V2EX、掘金或 LinkedIn 内容。未发布平台的草稿仍须作者按平台规则复核。
 
 ### 0.2 发布前必须逐项确认
 
 - [ ] 作者亲自在干净环境执行 README 的 `docker compose up --build`，并记录操作系统、CPU/内存、总耗时与结果。
 - [ ] 作者点击采购 Demo，核对初始结果为 `3 documents / 8 normalized fields / 6 rules / 4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96`，核对 `6 / 6 passed`，再完成批准或拒绝与 JSON 导出。
-- [x] GitHub 上的 `v0.3.0` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero 与浏览器演示入口。
+- [x] GitHub 上的 `v0.4.0` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero、v0.4 CSV 导出与浏览器演示入口。
 - [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
 - [x] **当前动态 Demo 已生成：** `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒；README 已引用该素材。
-- [x] 已从公开页面核验 README Hero、Latest Release `v0.3.0` 与无需登录的 GitHub Pages 演示。
+- [x] 已从公开页面核验 README Hero、Latest Release `v0.4.0` 与无需登录的 GitHub Pages 演示。
 - [x] GitHub Social Preview 已上传 1280×640 成图；公开仓库 HTML 的 `og:image` 已指向 `repository-images.githubusercontent.com`。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
@@ -33,14 +33,13 @@
 
 ### 0.3 已公开内容与信号快照
 
-截至 2026-08-12 18:51 CST：
+截至 2026-08-13（Asia/Shanghai）：
 
-- X 首发：<https://x.com/wangylHerman/status/2087468300632473930>
-- X 在线演示：<https://x.com/wangylHerman/status/2087489383343497356>
-- X 首发帖下的演示更新：<https://x.com/wangylHerman/status/2087489918054383619>
-- 知乎长文：<https://zhuanlan.zhihu.com/p/2070923244492813107>，已追加 v0.3/在线演示评论
-- 知乎在线演示想法：<https://www.zhihu.com/pin/2070943994847270658>
-- 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。PR 尚未满足 extension/MIME 配对测试且与当前 main 冲突；已请求贡献者更新到 v0.3 基线，未批准或合并不完整改动。
+- X：当前 Chrome 会话显示登录入口，尚无已核验的公开帖；不要把草稿或失败提交写成已发布。
+- GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.4.0>
+- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>
+- 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
+- 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。PR 尚未满足 extension/MIME 配对测试且仍与当前 `main`（v0.4.0）冲突；已请求贡献者更新，未批准或合并不完整改动。
 
 不要把 fork 或 PR 换算成“社区采用”。它们只用于决定下一步：优先帮助真实贡献者完成合入，并继续测试在线 Demo 到 GitHub 的转化。
 
@@ -55,7 +54,7 @@
 | 核心差异 | 处理一组相关文档；字段带证据；确定性校验优先；人工做最终决定 | README 的 Why / How it works |
 | 许可证 | MIT | `LICENSE` 与 GitHub 仓库元数据 |
 | 成熟度 | Early, working MVP | 不写 production-ready、enterprise-ready 或 battle-tested |
-| 当前功能版本 | `v0.3.0` | `v0.2.0` 首发采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全可执行 YAML recipe runtime |
+| 当前功能版本 | `v0.4.0` | `v0.2.0` 首发采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全可执行 YAML recipe runtime；`v0.4.0` 增加可审计 CSV 字段导出 |
 | Hero Demo | 合成采购资料：采购订单 + 供应商发票 + 收货单；不需要模型或 API Key | 所有机构、编号、数量和金额均为虚构；Demo 强制 rules-only |
 | Hero 实测摘要 | 3 份文档、8 个 normalized fields、6 条规则、初始 4 pass + 2 fail、1 次人工决定 | 把 received quantity `90 → 96` 后为 6/6 passed；API/engine tests 覆盖 |
 | 第二场景 | 合成医疗理赔资料：发票 + 理赔表 | `/api/v1/demo` 保留；不作为首发 Hero |
@@ -67,9 +66,9 @@
 | 当前校验 | 采购 Hero：文档齐全、供应商、PO 号、币种、数量、金额/已收货价值；医疗示例：存在性、姓名和金额等；schema-v1 recipes 支持 3 个 allowlisted 断言 | 不写“支持任意业务规则” |
 | 人工复核 | 字段可编辑；可批准或拒绝；导出 JSON 审计记录 | 不宣称多用户队列、RBAC 或不可篡改审计 |
 | 证据 | 字段包含置信度和 source quote | 坐标高亮与页内预览仍是 roadmap |
-| API | 创建案件、Demo、读取、修正字段、人工决定、JSON 导出、读取与执行 YAML recipe；`/docs` 提供 OpenAPI UI | 以 README 中 endpoint 表为准 |
+| API | 创建案件、Demo、读取、修正字段、人工决定、JSON/CSV 导出、读取与执行 YAML recipe；`/docs` 提供 OpenAPI UI | JSON 是完整审计源；CSV 是一行一个 normalized field 的审阅视图 |
 | 前端/后端 | React + TypeScript；FastAPI | 当前小型单应用架构 |
-| 采购三单匹配 | 从 `v0.2.0` 起提供；`v0.3.0` 起同一份公开 `rules.yml` 可通过 UI/API 执行 | 使用 3 docs、8 fields、6 rules、4/6→6/6 的实测数字 |
+| 采购三单匹配 | 从 `v0.2.0` 起提供；`v0.3.0` 起同一份公开 `rules.yml` 可通过 UI/API 执行；`v0.4.0` 可导出一行一个 normalized field 的 CSV | 使用 3 docs、8 fields、6 rules、4/6→6/6 的实测数字 |
 | 动态 GIF | 当前 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒 | v0.2 的 16 秒 GIF 仍保留但不再是 README Hero |
 | 在线演示 | `https://wangyinlong-wang.github.io/docurule-ai/` | 浏览器内合成 packet；不上传、不持久化，不代表真实文件处理能力 |
 | Social Preview | `docs/assets/social-preview.png`，1280×640 | 已上传 GitHub；公开 `og:image` 已切换到 repository image |
@@ -390,7 +389,7 @@ PDF 转 JSON 只完成了一半：我如何把跨文档核验拆成抽取、规�
 1. **问题不是“读出一个 PDF”**
    - 单文件抽取输出之后，仍要跨文件比对姓名、编号、日期和金额。
    - 审核人员需要知道值从哪里来，以及谁改过、为什么批准。
-   - 用当前 `v0.3.0` recipe Hero GIF/截图开场：3 份文档、8 个 normalized fields、6 条规则、2 个初始异常，并展示 `rules.yml` 的同源执行。
+   - 用当前 `v0.4.0` recipe Hero GIF/截图开场：3 份文档、8 个 normalized fields、6 条规则、2 个初始异常，并展示 `rules.yml` 的同源执行与 CSV 导出。
 2. **为什么不把所有检查都写进 prompt**
    - 模型适合从复杂输入提取候选字段。
    - 相等、存在性、金额比较等应可读、可测、可重复。
@@ -402,7 +401,7 @@ PDF 转 JSON 只完成了一半：我如何把跨文档核验拆成抽取、规�
    - React/TypeScript + FastAPI + SQLite + 本地存储。
    - 单容器 Docker Compose 降低首次试跑成本。
    - 当前结构不是性能或生产架构结论。
-5. **10 秒复现**
+5. **快速复现**
    - 原样放第 1.2 节三条命令。
    - 写清内置 Demo 无需模型；真实图片需要兼容视觉模型。
    - 配置远程 provider 时补充数据边界。
@@ -598,7 +597,7 @@ README 自身可以保留自然的 Star 请求；社区正文以试跑和反馈�
 | “完整 OCR” | 当前文本 PDF 用 pypdf，图像依赖视觉模型 | “text-layer PDF extraction; vision provider for images” |
 | “可审计/不可篡改审计” | 有 JSON trail，不等于合规或 tamper-proof | “exportable JSON decision/audit record” |
 | “模型永不幻觉” | 不可保证 | “provider errors do not silently invent fields; rules-only fallback is exposed” |
-| “所有版本都支持采购三单匹配” | Hero 从 `v0.2.0` 开始；可执行 recipe runtime 从 `v0.3.0` 开始 | 分别写“Hero available since v0.2.0”和“executable recipes since v0.3.0” |
+| “所有版本都支持采购三单匹配” | Hero 从 `v0.2.0` 开始；可执行 recipe runtime 从 `v0.3.0` 开始；CSV 字段导出从 `v0.4.0` 开始 | 分别写各功能的实际版本，不把 CSV 导出倒写成早期能力 |
 | “20 秒动态 Demo” | 当前 README 素材实测为 14.7 秒 | “a 15-second demo GIF”或“约 15 秒动态演示” |
 | “已被真实企业/用户采用” | 没有公开证据 | 不提；以后只引用获授权、可核查的案例 |
 | “节省 80% 时间/成本” | 未做测量 | 描述流程，不量化收益 |
@@ -670,7 +669,7 @@ Quick Start reported success rate = success reports / (success reports + failure
 - [ ] 我明确说自己是作者，没有伪装成第三方推荐。
 - [ ] 标题没有最高级、虚假数字、感叹号堆叠或未经验证的结果。
 - [ ] 正文中的版本、Demo、字段数、规则数与当前公开 Release 一致。
-- [x] Latest Release `v0.3.0` 已公开；采购 Hero 实测数字、14.7 秒 recipe GIF 和在线演示与公开 README 一致。
+- [x] Latest Release `v0.4.0` 已公开；采购 Hero 实测数字、14.7 秒 recipe GIF、CSV 导出和在线演示与公开 README 一致。
 - [ ] 我没有写准确率、生产可用、企业采用、绝对隐私等无证据结论。
 - [ ] AI 参与披露真实，且该平台允许这类代码/文案；HN 文案由作者本人重写。
 - [ ] 链接直接指向 GitHub 原始仓库，无投票链接、隐藏跳转或短链。
