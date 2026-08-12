@@ -40,7 +40,7 @@
 - GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0/v0.5.1/v0.5.2 更新及 CSV 契约 follow-up；v0.5.3 以 Release 为主
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
 - Issues [#3 上传类型校验](https://github.com/wangyinlong-wang/docurule-ai/issues/3)、[#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4)、[#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5)、[#9 模型兼容性报告](https://github.com/wangyinlong-wang/docurule-ai/issues/9) 与 [#19 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19) 已关闭；#19 的 `docs/csv-export.md` 提供 11 列契约，#9 的 `model-compatibility.md` 提供合成实测报告。当前有 1 个未认领的 good-first issue：[#20 合成费用报销 recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)；贡献者仍应先查看标签列表或 Discussions。
-- 外部用户 Sanchar127 已在 [#8 Docker→Ollama 排障](https://github.com/wangyinlong-wang/docurule-ai/issues/8) 留言认领并被分配；维护者已补充文件范围、Docker Desktop/Linux 差异、验收命令和隐私边界，等待其 PR。另有 [model compatibility report](model-compatibility.md) 记录本机 `gemma4:latest` 的有限范围 PARTIAL 结果，不能写成准确率或生产基准。
+- 外部用户 Sanchar127 已完成并合入 [#21 Ollama troubleshooting guide](https://github.com/wangyinlong-wang/docurule-ai/pull/21)，对应 [#8 Docker→Ollama 排障](https://github.com/wangyinlong-wang/docurule-ai/issues/8) 的文档主体已落地；后续维护会继续检查主机防火墙与 Docker 网段边界。另有 [model compatibility report](model-compatibility.md) 记录本机 `gemma4:latest` 的有限范围 PARTIAL 结果，不能写成准确率或生产基准。
 - 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。该 PR 基于旧版 `main`，与 v0.5.1 存在冲突；维护者已留下说明并关闭，功能由 v0.5.1 当前实现覆盖，未强行合入过时改动。
 
 不要把 fork 或 PR 换算成“社区采用”。它们只用于决定下一步：优先帮助真实贡献者完成合入，并继续测试在线 Demo 到 GitHub 的转化。

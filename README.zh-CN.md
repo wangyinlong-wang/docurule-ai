@@ -94,7 +94,7 @@ docker compose up --build
 
 文件与 SQLite 数据默认保存在本地 Docker volume；如果配置远程 OpenAI-compatible provider，文档输入会发送到你指定的远程端点。
 
-如果要记录可复现的本地模型证据，请查看[模型兼容性报告模板与实测记录](docs/model-compatibility.md)。它记录精确模型 digest 和有限范围的 smoke test，不是准确率排行榜。
+Docker 连接 Ollama 遇到问题时，请查看 [Ollama 排障指南](docs/ollama-troubleshooting.md)；如果要记录可复现的本地模型证据，请查看[模型兼容性报告模板与实测记录](docs/model-compatibility.md)。报告记录精确模型 digest 和有限范围的 smoke test，不是准确率排行榜。
 
 ## 当前已经可用
 

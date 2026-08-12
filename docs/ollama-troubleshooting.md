@@ -23,7 +23,7 @@ sudo systemctl status ollama
 ss -ltnp | grep 11434
 ```
 
-On Linux, Ollama must listen on an address reachable from the Docker container. If needed, configure the systemd drop-in:
+On Linux, Ollama must listen on an address reachable from the Docker container. Before changing the bind address, restrict inbound port `11434` to the Docker bridge/host-gateway path in the host firewall, do not port-forward it, and never expose it to the public internet. If you cannot apply that firewall policy, keep the rules-only provider or use a locally bound proxy instead. With that safety boundary in place, configure the systemd drop-in:
 
 ```ini
 [Service]
@@ -59,10 +59,10 @@ DOCURULE_AI_BASE_URL=http://host.docker.internal:11434
 DOCURULE_AI_MODEL=gemma4:latest
 ```
 
-Check the resolved Compose configuration:
+Check that the Compose configuration is valid. Do not paste the full rendered configuration into an issue because it can contain environment-derived values:
 
 ```bash
-docker compose config
+docker compose config --quiet
 ```
 
 ### 4. Test Ollama from the DocuRule container
