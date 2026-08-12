@@ -193,6 +193,8 @@ Copy `.env.example` to `.env` only when overriding defaults.
 | Ollama | `DOCURULE_AI_PROVIDER=ollama` | Private local text/vision extraction |
 | OpenAI-compatible | `DOCURULE_AI_PROVIDER=openai-compatible` | vLLM, LiteLLM, OpenAI-style endpoints |
 
+For a repeatable local-model evidence log, see [the model compatibility report](docs/model-compatibility.md). It records exact model digests and narrow smoke-test results; it is not an accuracy leaderboard.
+
 ```env
 DOCURULE_AI_PROVIDER=openai-compatible
 DOCURULE_AI_BASE_URL=https://your-endpoint.example/v1
