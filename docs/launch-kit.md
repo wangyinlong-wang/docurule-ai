@@ -21,10 +21,10 @@
 
 - [ ] 作者亲自在干净环境执行 README 的 `docker compose up --build`，并记录操作系统、CPU/内存、总耗时与结果。
 - [ ] 作者点击采购 Demo，核对初始结果为 `3 documents / 8 normalized fields / 6 rules / 4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96`，核对 `6 / 6 passed`，再完成批准或拒绝与 JSON 导出。
-- [ ] GitHub 上的 `v0.5.3` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero、v0.4 CSV 导出、v0.5 空字段提示、v0.5.1 上传校验、v0.5.2 贡献入口、v0.5.3 模型报告与浏览器 Star 入口。（待本轮发布后核验）
+- [x] GitHub 上的 `v0.5.3` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero、v0.4 CSV 导出、v0.5 空字段提示、v0.5.1 上传校验、v0.5.2 贡献入口、v0.5.3 模型报告与浏览器 Star 入口。
 - [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
 - [x] **当前动态 Demo 已生成：** `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒；README 已引用该素材。
-- [ ] 已从公开页面核验 README Hero、Latest Release `v0.5.3` 与无需登录的 GitHub Pages 演示。（待本轮发布后核验）
+- [x] 已从公开页面核验 README Hero、Latest Release `v0.5.3` 与无需登录的 GitHub Pages 演示。
 - [x] GitHub Social Preview 已上传 1280×640 成图；公开仓库 HTML 的 `og:image` 已指向 `repository-images.githubusercontent.com`。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
@@ -36,7 +36,7 @@
 截至 2026-08-13（Asia/Shanghai）：
 
 - X：当前 Chrome 会话显示登录入口，尚无已核验的公开帖；不要把草稿或失败提交写成已发布。
-- GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.3>（待本轮发布后核验）
+- GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.3>（已核验公开、非 draft、非 prerelease）
 - GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0/v0.5.1/v0.5.2 更新及 CSV 契约 follow-up；v0.5.3 以 Release 为主
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
 - Issues [#3 上传类型校验](https://github.com/wangyinlong-wang/docurule-ai/issues/3)、[#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4)、[#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5)、[#9 模型兼容性报告](https://github.com/wangyinlong-wang/docurule-ai/issues/9) 与 [#19 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19) 已关闭；#19 的 `docs/csv-export.md` 提供 11 列契约，#9 的 `model-compatibility.md` 提供合成实测报告。当前公开列表有 1 个可认领的 good-first issue（#8）。
@@ -671,7 +671,7 @@ Quick Start reported success rate = success reports / (success reports + failure
 - [ ] 我明确说自己是作者，没有伪装成第三方推荐。
 - [ ] 标题没有最高级、虚假数字、感叹号堆叠或未经验证的结果。
 - [x] 正文中的版本、Demo、字段数、规则数与当前公开 Release 一致。
-- [ ] Latest Release `v0.5.3` 已公开；采购 Hero 实测数字、16.0 秒 recipe GIF、CSV 导出、空字段提示、上传校验、五分钟贡献路径、本地模型报告、Showcase Star CTA 和在线演示与公开 README 一致。（待本轮发布后核验）
+- [x] Latest Release `v0.5.3` 已公开；采购 Hero 实测数字、16.0 秒 recipe GIF、CSV 导出、空字段提示、上传校验、五分钟贡献路径、本地模型报告、Showcase Star CTA 和在线演示与公开 README 一致。
 - [ ] 我没有写准确率、生产可用、企业采用、绝对隐私等无证据结论。
 - [ ] AI 参与披露真实，且该平台允许这类代码/文案；HN 文案由作者本人重写。
 - [ ] 链接直接指向 GitHub 原始仓库，无投票链接、隐藏跳转或短链。
