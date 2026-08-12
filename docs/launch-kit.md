@@ -37,7 +37,7 @@
 
 - X：当前 Chrome 会话显示登录入口，尚无已核验的公开帖；不要把草稿或失败提交写成已发布。
 - GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.0>，已核验为公开的非 draft、非 prerelease Release，目标为 `main` 的 v0.5.0 提交
-- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>
+- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0 空字段提示更新
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
 - Issues [#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4) 与 [#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5) 已关闭（分别在 v0.4.0 与 v0.5.0 实现）；新增 good-first 贡献入口：[#19 文档化 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19)。当前公开列表有 3 个可认领的 good-first issue，另有 PR #6 正在等待贡献者更新。
 - 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。PR 尚未满足 extension/MIME 配对测试且仍与当前 `main`（v0.5.0）冲突；已请求贡献者更新，未批准或合并不完整改动。
