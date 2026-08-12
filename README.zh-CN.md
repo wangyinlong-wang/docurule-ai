@@ -82,13 +82,15 @@ cp -R demo/three-way-match demo/expense-receipt
 
 第一次只想改文档，可以先阅读 [CSV 导出契约](docs/csv-export.md)，再查看当前的 [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) 列表或 [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions)。当前可参考的 Recipe 入口是 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)，开工前请先确认是否已有认领。Docker 到 Ollama 的排障任务已有贡献者负责，请不要重复开工；不确定字段或规则怎么选时，先开 Issue 再写代码。不要上传真实发票、病历、身份信息或其他机密资料。
 
-如需用本地视觉模型处理扫描件和图片：
+**可选、尚未验证的视觉 smoke test：**
 
 ```bash
 ollama serve
 ollama pull gemma4:latest
 docker compose up --build
 ```
+
+目前公开的本地模型证据只覆盖一次短文本抽取；图片 OCR 尚未做基准测试，视觉模型结果可能较慢或不完整。请把确定性的三单 Demo 作为可复现基线，并在解读 provider 结果前阅读[模型兼容性报告](docs/model-compatibility.md)。
 
 文件与 SQLite 数据默认保存在本地 Docker volume；如果配置远程 OpenAI-compatible provider，文档输入会发送到你指定的远程端点。
 

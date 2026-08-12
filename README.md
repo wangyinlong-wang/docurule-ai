@@ -90,13 +90,15 @@ docker compose up --build
 
 Open [http://localhost:8080](http://localhost:8080), then click **Explore the demo**.
 
-The demo works even when Ollama is offline. To process scans and images with local AI:
+The demo works even when Ollama is offline. **Optional, unverified vision smoke test:**
 
 ```bash
 ollama serve
 ollama pull gemma4:latest
 docker compose up --build
 ```
+
+The published local-model evidence covers one short text extraction only; image OCR is not benchmarked, and a vision response may be slow or incomplete. Keep the deterministic three-way demo as the reproducible baseline, then see the [model compatibility report](docs/model-compatibility.md) before interpreting provider results.
 
 Your files and SQLite database live only in the `docurule-data` Docker volume by default. If you configure a remote OpenAI-compatible provider, document inputs are sent to the endpoint you specify.
 
