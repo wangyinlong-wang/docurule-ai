@@ -157,7 +157,7 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Procurement three-way-match checks for document presence, supplier, PO, currency, quantity, and received value
 - Executable schema-v1 YAML recipes with a safe, allowlisted rule runtime
 - Public three-way-match recipe with synthetic inputs, `rules.yml`, and a CI-checked golden result
-- Medical-claim sample with cross-document presence, name, and amount validations
+- Medical-claim sample with cross-document presence, name, service-date, and amount validations
 - Editable extracted values and human approve/reject decisions
 - Persistent local cases and exportable JSON audit records
 - Responsive web workspace and interactive OpenAPI docs at `/docs`

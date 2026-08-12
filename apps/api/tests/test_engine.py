@@ -2,7 +2,13 @@ from pathlib import Path
 
 from docurule.config import Settings
 from docurule.engine import ProcessingEngine
-from docurule.models import CaseRecord, CaseStatus, DocumentRecord, ValidationStatus
+from docurule.models import (
+    CaseRecord,
+    CaseStatus,
+    DocumentRecord,
+    ExtractedField,
+    ValidationStatus,
+)
 from docurule.provider import AIProvider
 from docurule.recipes import load_recipe, load_recipe_documents
 from docurule.store import CaseStore
@@ -56,6 +62,12 @@ def test_processes_and_cross_validates_a_document_packet(tmp_path: Path):
         validation for validation in result.validations if validation.title == "Claim amount matches invoice"
     )
     assert amount_check.status == ValidationStatus.PASSED
+    service_date_check = next(
+        validation
+        for validation in result.validations
+        if validation.title == "Service dates match across documents"
+    )
+    assert service_date_check.status == ValidationStatus.PASSED
 
 
 def test_detects_conflicting_names_and_amounts(tmp_path: Path):
@@ -80,6 +92,73 @@ def test_detects_conflicting_names_and_amounts(tmp_path: Path):
     failed = {check.title for check in result.validations if check.status == ValidationStatus.FAILED}
     assert "Names match across documents" in failed
     assert "Claim amount matches invoice" in failed
+
+
+def service_date_case(*values: str | None) -> CaseRecord:
+    documents = []
+    for index, value in enumerate(values, start=1):
+        fields = (
+            [
+                ExtractedField(
+                    key="service_date",
+                    label="Service date",
+                    value=value,
+                    source_document_id=f"document-{index}",
+                )
+            ]
+            if value is not None
+            else []
+        )
+        documents.append(
+            DocumentRecord(
+                id=f"document-{index}",
+                file_name=f"document-{index}.txt",
+                media_type="text/plain",
+                kind="medical_record",
+                fields=fields,
+            )
+        )
+    return CaseRecord(id="service-date-case", name="Service dates", documents=documents)
+
+
+def test_service_dates_pass_when_two_values_match(tmp_path: Path):
+    engine, _, _ = build_engine(tmp_path)
+
+    result = engine._service_date_result(
+        service_date_case("2026-08-03", "2026-08-03")
+    )
+
+    assert result.status == ValidationStatus.PASSED
+
+
+def test_service_dates_fail_with_document_provenance(tmp_path: Path):
+    engine, _, _ = build_engine(tmp_path)
+
+    result = engine._service_date_result(
+        service_date_case("2026-08-03", "2026-08-04")
+    )
+
+    assert result.status == ValidationStatus.FAILED
+    assert "document-1.txt: 2026-08-03" in result.message
+    assert "document-2.txt: 2026-08-04" in result.message
+
+
+def test_service_dates_warn_when_only_one_value_is_available(tmp_path: Path):
+    engine, _, _ = build_engine(tmp_path)
+
+    result = engine._service_date_result(service_date_case("2026-08-03", None))
+
+    assert result.status == ValidationStatus.WARNING
+    assert "found 1" in result.message
+
+
+def test_service_dates_warn_when_all_values_are_missing(tmp_path: Path):
+    engine, _, _ = build_engine(tmp_path)
+
+    result = engine._service_date_result(service_date_case(None, None))
+
+    assert result.status == ValidationStatus.WARNING
+    assert "found 0" in result.message
 
 
 def test_normalizes_currency_values_returned_by_a_model(tmp_path: Path):
@@ -146,3 +225,4 @@ def test_procurement_three_way_demo_is_deterministic(tmp_path: Path, monkeypatch
     assert {validation.title: validation.status.value for validation in result.validations} == {
         item["title"]: item["status"] for item in expected["initial_validation"]["checks"]
     }
+    assert len(result.validations) == len(expected["initial_validation"]["checks"])
