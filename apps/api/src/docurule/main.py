@@ -25,6 +25,16 @@ store = CaseStore(settings.data_dir / "docurule.sqlite3")
 provider = AIProvider(settings)
 engine = ProcessingEngine(store, provider, settings.uploads_dir)
 
+ALLOWED_UPLOAD_MEDIA_TYPES: dict[str, set[str]] = {
+    ".pdf": {"application/pdf"},
+    ".png": {"image/png"},
+    ".jpg": {"image/jpeg", "image/jpg", "image/pjpeg"},
+    ".jpeg": {"image/jpeg", "image/jpg", "image/pjpeg"},
+    ".txt": {"text/plain"},
+    ".md": {"text/markdown", "text/x-markdown", "text/plain"},
+    ".csv": {"text/csv", "application/csv", "application/x-csv", "text/plain"},
+}
+
 app = FastAPI(
     title="DocuRule AI API",
     version=__version__,
@@ -69,21 +79,33 @@ async def create_case(
 ):
     if not files:
         raise HTTPException(400, "Upload at least one document")
+    validated_uploads: list[tuple[UploadFile, str, str]] = []
+    for upload in files:
+        safe_name = Path(upload.filename or "document").name
+        suffix = Path(safe_name).suffix.lower()
+        guessed_type = mimetypes.guess_type(safe_name)[0]
+        raw_type = upload.content_type
+        if not raw_type or raw_type == "application/octet-stream":
+            raw_type = guessed_type
+        media_type = (raw_type or "application/octet-stream").split(";", 1)[0].strip().lower()
+        allowed_types = ALLOWED_UPLOAD_MEDIA_TYPES.get(suffix)
+        if not allowed_types or media_type not in allowed_types:
+            raise HTTPException(415, f"Unsupported file type: {upload.filename}")
+        validated_uploads.append((upload, safe_name, media_type))
+
     case_id = uuid4().hex[:12]
     target_dir = settings.uploads_dir / case_id
     target_dir.mkdir(parents=True, exist_ok=True)
     documents: list[DocumentRecord] = []
     max_bytes = settings.max_upload_mb * 1024 * 1024
 
-    for upload in files:
+    for upload, safe_name, media_type in validated_uploads:
         content = await upload.read(max_bytes + 1)
         if len(content) > max_bytes:
             shutil.rmtree(target_dir, ignore_errors=True)
             raise HTTPException(413, f"{upload.filename} exceeds {settings.max_upload_mb} MB")
         document_id = uuid4().hex[:10]
-        safe_name = Path(upload.filename or "document").name
         suffix = Path(safe_name).suffix.lower()
-        media_type = upload.content_type or mimetypes.guess_type(safe_name)[0] or "application/octet-stream"
         (target_dir / f"{document_id}{suffix}").write_bytes(content)
         documents.append(
             DocumentRecord(

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1 - 2026-08-13
+
+### Added
+
+- Validate supported upload extension/MIME pairs before creating storage directories.
+- Return a clear `415` response for unknown extensions and mismatched metadata, with regression coverage.
+
 ## 0.5.0 - 2026-08-13
 
 ### Added
