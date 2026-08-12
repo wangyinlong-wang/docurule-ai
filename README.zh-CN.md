@@ -67,7 +67,7 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
 
 ### 五分钟贡献一个 Recipe
 
-最容易开始的贡献，是一个完全合成的资料包和一条可解释的跨文档校验。直接复制公开的[三单匹配 fixture](demo/three-way-match/)：
+最容易开始的贡献，是一个完全合成的资料包和一条可解释的跨文档校验。当前 good-first 路径是 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)；如果认领它，请按 Issue 要求创建 `demo/expense-receipt/`。下面的[三单匹配 fixture](demo/three-way-match/)只是 schema 参考，不是另一个采购任务；开工前请先确认 Issue 是否已被认领：
 
 ```bash
 cp -R demo/three-way-match demo/my-recipe

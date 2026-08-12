@@ -116,7 +116,7 @@ The v1 runtime is intentionally constrained: recipes cannot execute Python, shel
 
 ### 🧩 Contribute a recipe in five minutes
 
-The lowest-friction contribution is a synthetic document packet that demonstrates one useful cross-document check. Start from the public [three-way-match fixture](demo/three-way-match/), then:
+The lowest-friction contribution is a synthetic document packet that demonstrates one useful cross-document check. The current good-first path is [Issue #20: synthetic expense-receipt fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); follow its requested `demo/expense-receipt/` file scope if you take it. The public [three-way-match fixture](demo/three-way-match/) below is only a schema reference, not a duplicate procurement task—check the issue assignment before starting:
 
 ```bash
 cp -R demo/three-way-match demo/my-recipe

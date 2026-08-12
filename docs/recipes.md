@@ -24,7 +24,7 @@ When a reviewer or downstream script needs a flat field view, use the [CSV expor
 
 ## Five-minute contribution path
 
-The quickest useful contribution is a small, synthetic packet that makes one deterministic workflow easy to reproduce. Use the public [`demo/three-way-match`](../demo/three-way-match/) directory as the fixture and copy it before editing:
+The quickest useful contribution is a small, synthetic packet that makes one deterministic workflow easy to reproduce. The current good-first path is [Issue #20: synthetic expense-receipt recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); if you take it, follow its requested `demo/expense-receipt/` file scope. The public [`demo/three-way-match`](../demo/three-way-match/) directory below is only a schema reference, not a second procurement task—check the issue assignment before starting.
 
 ```bash
 cp -R demo/three-way-match demo/my-recipe
