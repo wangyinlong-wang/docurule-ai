@@ -10,7 +10,7 @@
   开源、本地优先的文档智能工作台：文档分类、字段提取、跨文档核验、人工复核和审计导出。
 </p>
 
-<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="#五分钟贡献一个-recipe">贡献 Recipe</a> · <a href="docs/product-spec.md">产品规格</a></p>
+<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="#五分钟贡献一个-recipe">贡献 Recipe</a> · <a href="docs/csv-export.md">CSV 导出契约</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
 [![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.2：更安全的上传校验，以及五分钟贡献 Recipe 路径。**
 

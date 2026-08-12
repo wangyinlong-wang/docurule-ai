@@ -16,6 +16,7 @@
   <a href="#-quick-start">Quick start</a> ·
   <a href="#-see-it-work">See it work</a> ·
   <a href="#run-your-own-recipe">YAML recipes</a> ·
+  <a href="docs/csv-export.md">CSV export contract</a> ·
   <a href="docs/product-spec.md">Product spec</a> ·
   <a href="#-contribute-a-recipe-in-five-minutes">Contribute a recipe</a> ·
   <a href="README.zh-CN.md">中文</a>
@@ -224,7 +225,7 @@ Useful endpoints:
 | `PATCH` | `/api/v1/cases/{id}/fields/{key}` | Correct and confirm a field |
 | `POST` | `/api/v1/cases/{id}/review` | Approve or reject |
 | `GET` | `/api/v1/cases/{id}/export` | Export the full audit JSON (default) |
-| `GET` | `/api/v1/cases/{id}/export?format=csv` | Export one normalized case field per CSV row |
+| `GET` | `/api/v1/cases/{id}/export?format=csv` | Export one normalized case field per CSV row ([consumer guide](docs/csv-export.md)) |
 
 Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated API reference.
 

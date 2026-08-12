@@ -20,6 +20,8 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
 
 The response is a normal DocuRule case. Poll `GET /api/v1/cases/{id}` until it reaches `needs_review`, edit a field through the UI or API, and the same recipe rules run again.
 
+When a reviewer or downstream script needs a flat field view, use the [CSV export contract](csv-export.md). It documents the exact columns, UTF-8 BOM, quoting behavior, and a copyable Python consumer; JSON remains the complete audit source.
+
 ## Five-minute contribution path
 
 The quickest useful contribution is a small, synthetic packet that makes one deterministic workflow easy to reproduce. Use the public [`demo/three-way-match`](../demo/three-way-match/) directory as the fixture and copy it before editing:
