@@ -87,7 +87,7 @@ jobs:
           for _ in range(60):
               with urllib.request.urlopen(case_url) as response:
                   case = json.load(response)
-              if case["status"] not in {"queued", "processing"}:
+              if case["status"] in {"ready", "needs_review", "approved", "rejected", "failed"}:
                   break
               time.sleep(0.25)
           else:
