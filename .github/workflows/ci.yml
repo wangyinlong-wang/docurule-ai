@@ -84,8 +84,14 @@ jobs:
 
           assert len(case["documents"]) == 3, case
           case_url = f"http://127.0.0.1:8080/api/v1/cases/{case['id']}"
-          with urllib.request.urlopen(case_url) as response:
-              case = json.load(response)
+          for _ in range(60):
+              with urllib.request.urlopen(case_url) as response:
+                  case = json.load(response)
+              if case["status"] not in {"queued", "processing"}:
+                  break
+              time.sleep(0.25)
+          else:
+              raise SystemExit("Procurement demo did not finish processing")
           assert case["status"] == "needs_review", case
           assert case["metadata"]["engine"] == "deterministic-rules", case
           assert len(case["fields"]) == 8, case
