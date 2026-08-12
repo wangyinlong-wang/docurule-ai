@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 from docurule.main import app
-from docurule.recipes import load_recipe
+from docurule.recipes import _recipe_directory, load_recipe
 
 
 client = TestClient(app)
@@ -104,3 +104,116 @@ def test_procurement_three_way_demo_returns_fixed_exceptions():
         "field_updated",
         "review_decision",
     ]
+
+
+def test_runs_an_uploaded_yaml_recipe_and_revalidates_after_correction():
+    recipe_dir = _recipe_directory("three-way-match")
+    expected = load_recipe("three-way-match")
+    multipart = [
+        (
+            "recipe",
+            ("rules.yml", (recipe_dir / "rules.yml").read_bytes(), "application/x-yaml"),
+        )
+    ]
+    multipart.extend(
+        (
+            "files",
+            (item["file_name"], (recipe_dir / item["file_name"]).read_bytes(), "text/plain"),
+        )
+        for item in expected["documents"]
+    )
+
+    created = client.post(
+        "/api/v1/recipes/run",
+        data={"name": "Uploaded three-way match"},
+        files=multipart,
+    )
+
+    assert created.status_code == 201
+    payload = client.get(f"/api/v1/cases/{created.json()['id']}").json()
+    assert payload["status"] == "needs_review"
+    assert payload["metadata"]["recipe_id"] == "procurement-three-way-match"
+    assert payload["metadata"]["recipe_source"] == "uploaded"
+    assert payload["metadata"]["engine"] == "deterministic-rules"
+    assert {item["title"]: item["status"] for item in payload["validations"]} == {
+        item["title"]: item["status"] for item in expected["initial_validation"]["checks"]
+    }
+
+    corrected = client.patch(
+        f"/api/v1/cases/{payload['id']}/fields/received_quantity",
+        json={"value": expected["review_correction"]["to"], "reviewed": True},
+    )
+    assert corrected.status_code == 200
+    assert [item["status"] for item in corrected.json()["validations"]] == ["passed"] * 6
+
+
+def test_recipe_run_rejects_missing_and_undeclared_documents_before_creating_a_case():
+    recipe_dir = _recipe_directory("three-way-match")
+    before = {item["id"] for item in client.get("/api/v1/cases").json()}
+    response = client.post(
+        "/api/v1/recipes/run",
+        files=[
+            (
+                "recipe",
+                ("rules.yml", (recipe_dir / "rules.yml").read_bytes(), "application/x-yaml"),
+            ),
+            ("files", ("surprise.txt", b"not declared", "text/plain")),
+        ],
+    )
+
+    assert response.status_code == 422
+    assert "not declared" in response.json()["detail"]
+    after = {item["id"] for item in client.get("/api/v1/cases").json()}
+    assert after == before
+
+
+def test_recipe_run_rejects_a_missing_required_document():
+    recipe_dir = _recipe_directory("three-way-match")
+    response = client.post(
+        "/api/v1/recipes/run",
+        files=[
+            (
+                "recipe",
+                ("rules.yml", (recipe_dir / "rules.yml").read_bytes(), "application/x-yaml"),
+            ),
+            (
+                "files",
+                (
+                    "purchase-order-PO-2026-0812.txt",
+                    (recipe_dir / "purchase-order-PO-2026-0812.txt").read_bytes(),
+                    "application/octet-stream",
+                ),
+            ),
+        ],
+    )
+
+    assert response.status_code == 422
+    assert "Missing required recipe documents" in response.json()["detail"]
+
+
+def test_reads_the_bundled_executable_recipe_contract():
+    response = client.get("/api/v1/recipes/three-way-match")
+
+    assert response.status_code == 200
+    assert response.json()["id"] == "procurement-three-way-match"
+    assert len(response.json()["rules"]) == 6
+
+
+def test_recipe_run_accepts_only_utf8_text_documents():
+    recipe_dir = _recipe_directory("three-way-match")
+    response = client.post(
+        "/api/v1/recipes/run",
+        files=[
+            (
+                "recipe",
+                ("rules.yml", (recipe_dir / "rules.yml").read_bytes(), "application/x-yaml"),
+            ),
+            (
+                "files",
+                ("purchase-order-PO-2026-0812.txt", b"\xff\xfe", "text/plain"),
+            ),
+        ],
+    )
+
+    assert response.status_code == 415
+    assert "UTF-8" in response.json()["detail"]

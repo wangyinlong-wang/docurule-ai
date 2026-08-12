@@ -45,6 +45,20 @@ docker compose up --build
 
 三份合成文档、声明式规则契约和 golden JSON 结果全部公开在[三单匹配 recipe](demo/three-way-match/)中。内置 API Demo 与确定性测试读取的也是同一组文件。
 
+### 运行自己的 YAML 规则
+
+在首页点击「Run rules.yml」，选择 schema v1 的 `rules.yml`，再选择清单中声明的文本文件，即可创建一条可复核流程。也可以直接调用 API：
+
+```bash
+curl -F 'recipe=@demo/three-way-match/rules.yml' \
+  -F 'files=@demo/three-way-match/purchase-order-PO-2026-0812.txt;type=text/plain' \
+  -F 'files=@demo/three-way-match/supplier-invoice-INV-1048.txt;type=text/plain' \
+  -F 'files=@demo/three-way-match/delivery-note-DN-7721.txt;type=text/plain' \
+  http://localhost:8080/api/v1/recipes/run
+```
+
+安全边界是明确的：规则不能执行 Python、Shell、模板或网络请求，只能使用允许的文档齐全、跨文档相等和数值大小比较。当前上传 recipe 支持文件名与清单完全一致的 UTF-8 TXT、Markdown 和 CSV。完整格式见[规则编写指南](docs/recipes.md)。
+
 如需用本地视觉模型处理扫描件和图片：
 
 ```bash
@@ -62,6 +76,7 @@ docker compose up --build
 - 模型离线时自动使用确定性规则兜底；
 - 字段置信度和原文引用；
 - 采购订单、发票、收货单的三单匹配：文档齐全、供应商、PO 号、币种、数量和金额校验；
+- 可上传执行的 schema v1 YAML 规则，并在字段人工修正后自动重算；
 - 公开的三单匹配 recipe：合成输入、`rules.yml` 和 CI 精确核对的预期结果；
 - 保留医疗理赔示例的跨文档姓名和金额校验；
 - 字段人工修改、案件批准/拒绝、JSON 审计记录导出；
@@ -75,7 +90,8 @@ docker compose up --build
 ## 开发路线
 
 - [x] 采购订单 + 发票 + 收货单的三单匹配模板；
-- 可执行 YAML 规则模板和可视化解释；
+- [x] 面向确定性文本资料包的可执行 YAML 规则；
+- 更多规则算子、可视化编写和 PDF/图片 recipe；
 - PDF 页内坐标高亮；
 - Docling、PaddleOCR 等解析器适配；
 - PostgreSQL/S3/独立任务 Worker 和多人复核队列。

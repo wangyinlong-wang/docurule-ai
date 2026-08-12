@@ -1,6 +1,6 @@
 # DocuRule AI 产品规格
 
-> 实施状态（2026-08-12）：当前仓库已经实现三文档采购三单匹配 Hero Demo、公开 recipe/golden fixture、双文档医疗理赔 Demo、字段证据、规则重算、人工决定、JSON 审计导出、Docker 与 Ollama。任意 YAML recipe 的运行时导入、乐观锁、独立审计实体和持久化任务运行器仍属于后续目标，不能视为现成功能。当前能力以 README 和自动化测试为准。
+> 实施状态（2026-08-12）：当前仓库已经实现三文档采购三单匹配 Hero Demo、公开 recipe/golden fixture、schema-v1 YAML recipe 安全导入与执行、双文档医疗理赔 Demo、字段证据、规则重算、人工决定、JSON 审计导出、Docker 与 Ollama。当前可执行 recipe 限 UTF-8 TXT/Markdown/CSV 和三个白名单算子；自定义抽取 Schema、PDF/图片 recipe、乐观锁、独立审计实体和持久化任务运行器仍属于后续目标。当前能力以 README 和自动化测试为准。
 
 > 状态：MVP 开发基线
 > 版本：0.1

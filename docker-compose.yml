@@ -2,7 +2,7 @@ services:
   docurule:
     build: .
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       DOCURULE_DATA_DIR: /app/data
       DOCURULE_AI_PROVIDER: ${DOCURULE_AI_PROVIDER:-ollama}

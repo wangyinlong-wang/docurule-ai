@@ -412,6 +412,12 @@ Compose 默认仅含 `app` 服务、持久化 named volume 和 `host.docker.inte
 **原因**：可 code review、容易贡献、无需先开发复杂编辑器。
 **代价**：非技术用户不能在 UI 新建模板；0.2 增加编辑和导入导出。
 
+### ADR-006：上传 recipe 使用白名单 DSL，不使用通用表达式求值
+
+**决定**：schema-v1 recipe 只允许声明文档清单，以及 `includes_all_document_kinds`、`all_equal`、`less_than_or_equal`（含受限 `multiply`）算子；YAML 使用 `safe_load`，再经 Pydantic 严格 Schema 校验。运行时不提供 `eval`、模板、脚本、导入、URL 或插件钩子。
+**原因**：用户上传的规则文件属于不可信输入。白名单 DSL 能在保留可复现、可审计和字段修改后重算的同时，避免把应用变成任意代码执行器。
+**代价**：schema v1 的表达能力有意受限；新增算子必须增加 Schema、解释信息、安全拒绝测试和 golden behavior，不能通过开放式字符串表达式绕过。
+
 ## 16. 实施顺序
 
 1. 建立领域状态、SQLite/Alembic、文件存储和基础 API；

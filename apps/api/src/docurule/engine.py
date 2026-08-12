@@ -15,6 +15,8 @@ from .models import (
     utc_now,
 )
 from .provider import AIProvider
+from .recipes import RecipeDefinition
+from .rule_engine import evaluate_recipe
 from .store import CaseStore
 
 
@@ -68,6 +70,10 @@ class ProcessingEngine:
 
         ai_used = False
         rules_only = case.metadata.get("processing_mode") == "rules-only"
+        recipe = self._recipe_definition(case)
+        declared_kinds = (
+            {document.file: document.kind for document in recipe.documents} if recipe else {}
+        )
         for index, document in enumerate(case.documents):
             try:
                 path = self.uploads_dir / case.id / f"{document.id}{Path(document.file_name).suffix.lower()}"
@@ -76,7 +82,9 @@ class ProcessingEngine:
                 image_path = path if document.media_type.startswith("image/") else None
                 ai_result = None if rules_only else self.provider.extract(text, image_path=image_path)
                 ai_used = ai_used or ai_result is not None
-                document.kind = self._classify(document.file_name, text, ai_result)
+                document.kind = declared_kinds.get(document.file_name) or self._classify(
+                    document.file_name, text, ai_result
+                )
                 document.kind_label = KIND_LABELS[document.kind]
                 document.fields = self._extract_fields(document.id, text, ai_result)
                 document.status = DocumentStatus.PROCESSED
@@ -269,6 +277,9 @@ class ProcessingEngine:
         return list(best.values())
 
     def _validate(self, case: CaseRecord) -> list[ValidationResult]:
+        recipe = self._recipe_definition(case)
+        if recipe:
+            return evaluate_recipe(case, recipe)
         kinds = {document.kind for document in case.documents}
         if kinds & {"purchase_order", "delivery_note"}:
             return self._validate_procurement(case)
@@ -344,6 +355,11 @@ class ProcessingEngine:
             )
         )
         return results
+
+    @staticmethod
+    def _recipe_definition(case: CaseRecord) -> RecipeDefinition | None:
+        payload = case.metadata.get("recipe")
+        return RecipeDefinition.model_validate(payload) if isinstance(payload, dict) else None
 
     def _validate_procurement(self, case: CaseRecord) -> list[ValidationResult]:
         """Run the deterministic three-way match checks used by procurement packets."""

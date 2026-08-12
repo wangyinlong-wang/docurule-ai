@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docurule-ai"
-version = "0.2.1"
+version = "0.3.0"
 description = "Open-source document extraction and validation workspace"
 requires-python = ">=3.11"
 dependencies = [
@@ -15,6 +15,7 @@ dependencies = [
   "pypdf==6.0.0",
   "Pillow==11.3.0",
   "httpx==0.28.1",
+  "PyYAML==6.0.2",
 ]
 
 [project.optional-dependencies]
