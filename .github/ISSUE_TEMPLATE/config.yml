@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/wangyinlong-wang/docurule-ai/discussions
+    about: Ask for help or discuss a use case before proposing a large change.
+  - name: Private security report
+    url: https://github.com/wangyinlong-wang/docurule-ai/security/advisories/new
+    about: Report vulnerabilities without exposing details publicly.

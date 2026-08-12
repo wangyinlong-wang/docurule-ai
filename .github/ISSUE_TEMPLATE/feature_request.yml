@@ -1,0 +1,33 @@
+name: Feature or recipe request
+description: Propose a focused improvement or document-packet recipe
+title: "[Idea]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What document workflow is painful today, and who experiences it?
+    validations:
+      required: true
+  - type: textarea
+    id: packet
+    attributes:
+      label: Document packet and rules
+      description: Which document types and cross-document checks are involved?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should a reviewer or API consumer receive?
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: I will use only synthetic or fully anonymized examples.
+          required: true

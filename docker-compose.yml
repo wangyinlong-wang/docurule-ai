@@ -1,0 +1,24 @@
+services:
+  docurule:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DOCURULE_DATA_DIR: /app/data
+      DOCURULE_AI_PROVIDER: ${DOCURULE_AI_PROVIDER:-ollama}
+      DOCURULE_AI_BASE_URL: ${DOCURULE_AI_BASE_URL:-http://host.docker.internal:11434}
+      DOCURULE_AI_MODEL: ${DOCURULE_AI_MODEL:-gemma4:latest}
+      DOCURULE_AI_API_KEY: ${DOCURULE_AI_API_KEY:-}
+      DOCURULE_CORS_ORIGINS: http://localhost:8080
+    volumes:
+      - docurule-data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  docurule-data:
