@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added UTF-8 CSV export at `/api/v1/cases/{id}/export?format=csv` with one row per normalized case field, while JSON remains the complete audit source.
+- Added CSV export to the hosted showcase and coverage for quoting, provenance, and unknown format errors.
+
 ## 0.3.0 - 2026-08-12
 
 ### Added

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { isShowcaseCaseComplete, resetShowcase, showcaseApi } from "./showcase";
+import { caseToCsv, isShowcaseCaseComplete, resetShowcase, showcaseApi } from "./showcase";
 
 describe("static showcase", () => {
   beforeEach(() => resetShowcase());
@@ -42,5 +42,15 @@ describe("static showcase", () => {
     expect((reviewed.metadata.audit_log as Array<{ action: string }>)[0].action).toBe(
       "review_decision",
     );
+  });
+
+  it("exports one safe CSV row per normalized field", async () => {
+    const item = await showcaseApi.createProcurementDemo();
+    item.fields[0].value = 'ACME, "West"';
+    const csv = caseToCsv(item);
+
+    expect(csv.split("\n")).toHaveLength(10);
+    expect(csv).toContain("field_key,label,value");
+    expect(csv).toContain('supplier_name,Supplier,"ACME, ""West"""');
   });
 });

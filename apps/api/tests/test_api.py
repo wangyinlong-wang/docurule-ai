@@ -1,3 +1,6 @@
+import csv
+import io
+
 from fastapi.testclient import TestClient
 
 from docurule.main import app
@@ -47,6 +50,40 @@ def test_demo_review_flow():
     exported = client.get(f"/api/v1/cases/{case_id}/export")
     assert exported.status_code == 200
     assert exported.json()["decision"] == "approved"
+
+
+def test_csv_export_has_one_row_per_normalized_field_and_safe_utf8_quoting():
+    created = client.post("/api/v1/demo/procurement")
+    assert created.status_code == 201
+    case_id = created.json()["id"]
+
+    corrected = client.patch(
+        f"/api/v1/cases/{case_id}/fields/supplier_name",
+        json={"value": "ACME, Inc.\nWest", "reviewed": True},
+    )
+    assert corrected.status_code == 200
+
+    exported = client.get(f"/api/v1/cases/{case_id}/export", params={"format": "csv"})
+    assert exported.status_code == 200
+    assert exported.headers["content-type"].startswith("text/csv")
+    assert exported.headers["content-disposition"] == f'attachment; filename="docurule-{case_id}.csv"'
+
+    rows = list(csv.DictReader(io.StringIO(exported.content.decode("utf-8-sig"))))
+    assert len(rows) == 8
+    assert len({row["field_key"] for row in rows}) == 8
+    supplier_row = next(row for row in rows if row["field_key"] == "supplier_name")
+    assert supplier_row["value"] == "ACME, Inc.\nWest"
+    assert supplier_row["reviewed"] == "True"
+
+
+def test_export_rejects_unknown_format():
+    created = client.post("/api/v1/demo")
+    assert created.status_code == 201
+
+    response = client.get(
+        f"/api/v1/cases/{created.json()['id']}/export", params={"format": "xml"}
+    )
+    assert response.status_code == 422
 
 
 def test_procurement_three_way_demo_returns_fixed_exceptions():

@@ -83,7 +83,7 @@ docker compose up --build
 - 可上传执行的 schema v1 YAML 规则，并在字段人工修正后自动重算；
 - 公开的三单匹配 recipe：合成输入、`rules.yml` 和 CI 精确核对的预期结果；
 - 保留医疗理赔示例的跨文档姓名和金额校验；
-- 字段人工修改、案件批准/拒绝、JSON 审计记录导出；
+- 字段人工修改、案件批准/拒绝、完整 JSON 审计导出和一行一个字段的 CSV 导出；
 - SQLite 和文件本地持久化；
 - React + FastAPI 的响应式页面；
 - 单容器 Docker Compose 部署；

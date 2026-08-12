@@ -159,7 +159,7 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Public three-way-match recipe with synthetic inputs, `rules.yml`, and a CI-checked golden result
 - Medical-claim sample with cross-document presence, name, service-date, and amount validations
 - Editable extracted values and human approve/reject decisions
-- Persistent local cases and exportable JSON audit records
+- Persistent local cases, exportable JSON audit records, and one-row-per-field CSV views
 - Responsive web workspace and interactive OpenAPI docs at `/docs`
 - One-container Docker Compose deployment
 
@@ -205,7 +205,8 @@ Useful endpoints:
 | `GET` | `/api/v1/cases/{id}` | Read fields, evidence, and results |
 | `PATCH` | `/api/v1/cases/{id}/fields/{key}` | Correct and confirm a field |
 | `POST` | `/api/v1/cases/{id}/review` | Approve or reject |
-| `GET` | `/api/v1/cases/{id}/export` | Export the audit JSON |
+| `GET` | `/api/v1/cases/{id}/export` | Export the full audit JSON (default) |
+| `GET` | `/api/v1/cases/{id}/export?format=csv` | Export one normalized case field per CSV row |
 
 Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated API reference.
 
@@ -213,7 +214,7 @@ Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated 
 
 - [x] Deterministic end-to-end demo and human review workspace
 - [x] Ollama and OpenAI-compatible provider boundary
-- [x] Docker deployment, persistence, tests, and JSON export
+- [x] Docker deployment, persistence, tests, JSON export, and CSV field export
 - [x] Procurement three-way-match recipe (PO + invoice + delivery note)
 - [x] Executable schema-v1 YAML recipes for deterministic text packets
 - [ ] Additional recipe operators, visual authoring, and PDF/image recipe packets

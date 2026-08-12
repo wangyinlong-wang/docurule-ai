@@ -3,6 +3,43 @@ import type { CaseRecord, ExtractedField, ProviderStatus, ValidationResult } fro
 const now = () => new Date().toISOString();
 const clone = <T>(value: T): T => structuredClone(value);
 
+const csvCell = (value: unknown) => {
+  const text = value == null ? "" : String(value);
+  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+
+/** Keep the hosted export contract aligned with the API's one-row-per-field CSV. */
+export const caseToCsv = (item: CaseRecord) => {
+  const columns = [
+    "case_id",
+    "case_name",
+    "case_status",
+    "decision",
+    "field_key",
+    "label",
+    "value",
+    "confidence",
+    "source_document_id",
+    "source_quote",
+    "reviewed",
+  ];
+  const fields = new Map(item.fields.map((field) => [field.key, field]));
+  const rows = [...fields.values()].map((field) => [
+    item.id,
+    item.name,
+    item.status,
+    item.decision ?? "",
+    field.key,
+    field.label,
+    field.value ?? "",
+    field.confidence,
+    field.source_document_id ?? "",
+    field.source_quote ?? "",
+    field.reviewed,
+  ]);
+  return [columns, ...rows].map((row) => row.map(csvCell).join(",")).join("\n") + "\n";
+};
+
 const field = (
   key: string,
   label: string,

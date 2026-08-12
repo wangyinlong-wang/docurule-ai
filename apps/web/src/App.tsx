@@ -1,6 +1,6 @@
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { api, isShowcase } from "./lib/api";
-import { isShowcaseCaseComplete } from "./lib/showcase";
+import { caseToCsv, isShowcaseCaseComplete } from "./lib/showcase";
 import type { CaseRecord, CaseStatus, ExtractedField, ProviderStatus } from "./types";
 
 const statusLabel: Record<CaseStatus, string> = {
@@ -287,6 +287,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
   const flagged = item.validations.filter((result) => result.status !== "passed").length;
   const showcaseComplete = isShowcase && isShowcaseCaseComplete(item);
   const showcaseExport = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(item, null, 2))}`;
+  const showcaseCsvExport = `data:text/csv;charset=utf-8,${encodeURIComponent(`\ufeff${caseToCsv(item)}`)}`;
 
   const saveField = async (field: ExtractedField, rawValue: string) => {
     if (String(field.value ?? "") === rawValue) return;
@@ -317,7 +318,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
     <div className="workspace">
       <div className="workspace-header">
         <div><span className="breadcrumb">REVIEWS / {item.id.toUpperCase()}</span><h1>{item.name}</h1><p>Created {new Date(item.created_at).toLocaleString()}</p></div>
-        <div className="header-controls"><StatusBadge status={item.status} /><a className="outline-button" href={isShowcase ? showcaseExport : `/api/v1/cases/${item.id}/export`} download={isShowcase ? `docurule-${item.id}.json` : undefined}>Export JSON ↓</a></div>
+        <div className="header-controls"><StatusBadge status={item.status} /><a className="outline-button" href={isShowcase ? showcaseExport : `/api/v1/cases/${item.id}/export`} download={isShowcase ? `docurule-${item.id}.json` : undefined}>Export JSON ↓</a><a className="outline-button" href={isShowcase ? showcaseCsvExport : `/api/v1/cases/${item.id}/export?format=csv`} download={isShowcase ? `docurule-${item.id}.csv` : undefined}>Export CSV ↓</a></div>
       </div>
       <div className="metric-row">
         <Metric value={item.documents.length} label="Documents" note={`${item.documents.filter((doc) => doc.status === "processed").length} processed`} />

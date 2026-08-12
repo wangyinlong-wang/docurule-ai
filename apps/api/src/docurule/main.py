@@ -1,3 +1,5 @@
+import csv
+import io
 import json
 import mimetypes
 import shutil
@@ -6,7 +8,7 @@ from uuid import uuid4
 
 from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from . import __version__
@@ -226,12 +228,63 @@ def review_case(case_id: str, review: ReviewRequest):
 
 
 @app.get("/api/v1/cases/{case_id}/export")
-def export_case(case_id: str):
+def export_case(case_id: str, format: str = "json"):
     case = _require_case(case_id)
+    if format == "csv":
+        return _export_case_csv(case)
+    if format != "json":
+        raise HTTPException(422, "Export format must be json or csv")
     payload = json.loads(case.model_dump_json())
     return JSONResponse(
         payload,
         headers={"Content-Disposition": f'attachment; filename="docurule-{case.id}.json"'},
+    )
+
+
+def _export_case_csv(case: CaseRecord) -> Response:
+    """Export one row per normalized case field without losing audit provenance."""
+    columns = [
+        "case_id",
+        "case_name",
+        "case_status",
+        "decision",
+        "field_key",
+        "label",
+        "value",
+        "confidence",
+        "source_document_id",
+        "source_quote",
+        "reviewed",
+    ]
+    # CaseRecord.fields is normally already merged by key. Keep the export contract
+    # defensive so a future provider cannot produce duplicate rows for one field.
+    fields = {field.key: field for field in case.fields}
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(buffer, fieldnames=columns, lineterminator="\n")
+    writer.writeheader()
+    for field in fields.values():
+        writer.writerow(
+            {
+                "case_id": case.id,
+                "case_name": case.name,
+                "case_status": case.status.value,
+                "decision": case.decision or "",
+                "field_key": field.key,
+                "label": field.label,
+                "value": "" if field.value is None else field.value,
+                "confidence": field.confidence,
+                "source_document_id": field.source_document_id or "",
+                "source_quote": field.source_quote or "",
+                "reviewed": field.reviewed,
+            }
+        )
+    # UTF-8 BOM keeps non-ASCII labels readable in spreadsheet applications while
+    # remaining valid UTF-8 for clients that parse the response as text/csv.
+    payload = "\ufeff" + buffer.getvalue()
+    return Response(
+        content=payload,
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="docurule-{case.id}.csv"'},
     )
 
 
