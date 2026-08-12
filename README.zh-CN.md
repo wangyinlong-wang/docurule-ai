@@ -12,7 +12,7 @@
 
 <p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="#五分钟贡献一个-recipe">贡献 Recipe</a> · <a href="docs/csv-export.md">CSV 导出契约</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
-[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.2：更安全的上传校验，以及五分钟贡献 Recipe 路径。**
+[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.3：在线演示 Star 入口，以及本地模型证据报告。**
 
 [![GitHub Stars](https://img.shields.io/github/stars/wangyinlong-wang/docurule-ai?style=flat-square&label=stars&color=f2b84b)](https://github.com/wangyinlong-wang/docurule-ai) 如果这个工作流对你有用，欢迎在 GitHub 上点 Star，方便跟进后续更新。
 

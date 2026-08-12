@@ -107,7 +107,7 @@ documents or external customer data were used.
 ### `gemma4:latest` — 2026-08-13
 
 - Result: **PARTIAL**
-- DocuRule commit/release: `v0.5.2` (local checkout)
+- DocuRule commit/release: `v0.5.3` (local checkout)
 - OS / architecture: macOS Darwin 25.5.0, arm64; Apple M4, 24 GiB RAM
 - RAM / GPU: 24 GiB unified memory; Apple M4 GPU (system-reported)
 - Docker / Compose: Docker Engine `29.5.2`; Docker Compose `v5.1.4`

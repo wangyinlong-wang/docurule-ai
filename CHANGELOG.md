@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.3 - 2026-08-13
+
+### Added
+
+- Added a prominent Star CTA to the browser-only showcase and a live Stars badge to both READMEs.
+- Added a repeatable local-model compatibility report with a synthetic `gemma4:latest` smoke-test result.
+- Linked the model report from the AI provider documentation in English and Chinese.
+
 ## 0.5.2 - 2026-08-13
 
 ### Added

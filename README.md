@@ -30,7 +30,7 @@
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
 </p>
 
-[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.2: safer uploads plus a five-minute recipe contribution path.**
+[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.3: showcase Star CTA plus local-model evidence reports.**
 
 ![DocuRule executable YAML recipe and procurement three-way-match demo](docs/assets/docurule-recipe-demo.gif)
 
