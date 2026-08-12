@@ -197,7 +197,7 @@ function Welcome({ onDemo, onUpload, busy }: { onDemo: () => void; onUpload: () 
           <p>Classify files, extract structured data, run cross-document checks, and keep a human in control—all with your own AI.</p>
           <div className="hero-actions">
             <button className="primary-button" onClick={onUpload}>Review documents <span>→</span></button>
-            <button className="text-button" onClick={onDemo} disabled={busy}>{busy ? "Preparing demo…" : "Explore a 10-second demo"} <span>↗</span></button>
+            <button className="text-button" onClick={onDemo} disabled={busy}>{busy ? "Preparing demo…" : "Explore the demo"} <span>↗</span></button>
           </div>
           <div className="trust-row"><span>✓ No cloud required</span><span>✓ Ollama ready</span><span>✓ Evidence attached</span></div>
         </div>

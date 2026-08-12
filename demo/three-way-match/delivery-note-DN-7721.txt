@@ -1,0 +1,6 @@
+DELIVERY NOTE
+Supplier: Northstar Components Ltd.
+PO Number: PO-2026-0812
+Currency: USD
+Received Quantity: 90
+Unit Price: $25.00

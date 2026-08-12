@@ -9,7 +9,7 @@
 ### 0.1 当前结论
 
 - 公开仓库：<https://github.com/wangyinlong-wang/docurule-ai>
-- 首发目标版本：`v0.2.0`。本地已完成采购 Hero 与素材；**在任何平台发帖前仍须确认该 tag/Release 已公开可见**。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
+- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture。发帖当天统一使用 GitHub 的 Latest Release。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
 - 当前首发 Hero：合成的采购三单匹配 Demo（采购订单 + 发票 + 收货单），`3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision`。
 - 初始结果固定为 `4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96` 后重新校验为 `6 / 6 passed`。内置 Demo 不调用 AI provider。
 - 动态 GIF 为 `docs/assets/docurule-demo.gif`，2,426,839 bytes（约 2.3 MB）、16.0 秒；医疗理赔 Demo 作为第二场景保留。
@@ -20,10 +20,10 @@
 
 - [ ] 作者亲自在干净环境执行 README 的 `docker compose up --build`，并记录操作系统、CPU/内存、总耗时与结果。
 - [ ] 作者点击采购 Demo，核对初始结果为 `3 documents / 8 normalized fields / 6 rules / 4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96`，核对 `6 / 6 passed`，再完成批准或拒绝与 JSON 导出。
-- [ ] GitHub 上的 `v0.2.0` tag 与 Release 已公开可见；README 的默认分支内容、Release 说明和本文事实一致。
-- [x] **采购三单匹配已在本地 `v0.2.0` 发布候选中合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
+- [x] GitHub 上的 `v0.2.0` tag 与 Release 已公开可见；README 的默认分支内容、Release 说明和本文事实一致。
+- [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
 - [x] **动态 Demo 已生成：** `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒；README 已引用本地素材。
-- [ ] 从未登录窗口打开公开 README，确认 GIF 能加载、尺寸/播放正常且演示内容对应 `v0.2.0`。
+- [x] 已从公开页面核验 README Hero 文案与 GIF；raw GIF 返回 HTTP 200、2,426,839 bytes，内容对应 `v0.2.0`。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
 - [ ] 作者能在首帖后的 4–6 小时保持在线，并在首日及时回复技术问题。
@@ -40,7 +40,7 @@
 | 核心差异 | 处理一组相关文档；字段带证据；确定性校验优先；人工做最终决定 | README 的 Why / How it works |
 | 许可证 | MIT | `LICENSE` 与 GitHub 仓库元数据 |
 | 成熟度 | Early, working MVP | 不写 production-ready、enterprise-ready 或 battle-tested |
-| 首发 Release | `v0.2.0` | 本地发布候选已确定；外部发帖前必须确认 GitHub tag/Release 已公开 |
+| 首发功能版本 | `v0.2.0` | 采购 Hero 首次公开；`v0.2.1` 增加公开 recipe/golden fixture；发帖当天使用 GitHub Latest Release |
 | Hero Demo | 合成采购资料：采购订单 + 供应商发票 + 收货单；不需要模型或 API Key | 所有机构、编号、数量和金额均为虚构；Demo 强制 rules-only |
 | Hero 实测摘要 | 3 份文档、8 个 normalized fields、6 条规则、初始 4 pass + 2 fail、1 次人工决定 | 把 received quantity `90 → 96` 后为 6/6 passed；API/engine tests 覆盖 |
 | 第二场景 | 合成医疗理赔资料：发票 + 理赔表 | `/api/v1/demo` 保留；不作为首发 Hero |
@@ -54,7 +54,7 @@
 | 证据 | 字段包含置信度和 source quote | 坐标高亮与页内预览仍是 roadmap |
 | API | 创建案件、Demo、读取、修正字段、人工决定、JSON 导出；`/docs` 提供 OpenAPI UI | 以 README 中 endpoint 表为准 |
 | 前端/后端 | React + TypeScript；FastAPI | 当前小型单应用架构 |
-| 采购三单匹配 | 已在本地 `v0.2.0` 发布候选中实现并自动化验证 | 只有确认 GitHub `v0.2.0` 已公开后才对外写“available in v0.2.0” |
+| 采购三单匹配 | 已在公开 `v0.2.0` 实现并自动化验证 | 可写“available in v0.2.0”，并使用实测数字 |
 | 动态 GIF | `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒 | 公开发布前仍需无登录检查 README 加载 |
 | 真实准确率 | 未建立可泛化 benchmark | 不给百分比，不与 OCR/IDP 产品做准确率排名 |
 | 隐私/安全 | 默认本地保存；可配本机 Ollama | 不写“100% private/secure”“数据绝不离开机器”；远程 provider 是明确例外 |
@@ -78,7 +78,7 @@ cd docurule-ai
 docker compose up --build
 ```
 
-打开 <http://localhost:8080>，点击 **Explore a 10-second demo**。这句话只用于当前 README 对应的内置合成 Demo。
+打开 <http://localhost:8080>，点击 **Explore the demo**。这句话只用于当前 README 对应的内置合成 Demo；16 秒是 README GIF 时长，不是性能承诺。
 
 ### 1.3 统一限制说明
 
@@ -350,7 +350,7 @@ docker compose up --build
 如果愿意试跑，直接在帖子或 GitHub Issue 留复现步骤即可，我会逐条处理。
 ```
 
-发帖时可以附上约 16 秒、2.3 MB 的 `docs/assets/docurule-demo.gif`；前提是公开 README 在无登录窗口可正常播放，并且 `v0.2.0` Release 已可见。
+发帖时可以附上已公开核验的约 16 秒、2.3 MB `docs/assets/docurule-demo.gif`。
 
 CTA：**给出系统/Docker 环境与第一个复现卡点。** “开源项目”放分享创造；若后来增加付费产品营销，改投推广节点。
 
@@ -581,7 +581,7 @@ README 自身可以保留自然的 Star 请求；社区正文以试跑和反馈�
 | “完整 OCR” | 当前文本 PDF 用 pypdf，图像依赖视觉模型 | “text-layer PDF extraction; vision provider for images” |
 | “可审计/不可篡改审计” | 有 JSON trail，不等于合规或 tamper-proof | “exportable JSON decision/audit record” |
 | “模型永不幻觉” | 不可保证 | “provider errors do not silently invent fields; rules-only fallback is exposed” |
-| “所有版本都支持采购三单匹配” | 功能属于 `v0.2.0` 发布候选 | 确认 Release 公开后写“available in v0.2.0”，并给实测数字 |
+| “所有版本都支持采购三单匹配” | 功能从 `v0.2.0` 开始提供 | 写“available since v0.2.0”，并给实测数字 |
 | “20 秒动态 Demo” | 当前素材实测为 16.0 秒 | “a 16-second demo GIF”或“约 16 秒动态演示” |
 | “已被真实企业/用户采用” | 没有公开证据 | 不提；以后只引用获授权、可核查的案例 |
 | “节省 80% 时间/成本” | 未做测量 | 描述流程，不量化收益 |
@@ -653,7 +653,7 @@ Quick Start reported success rate = success reports / (success reports + failure
 - [ ] 我明确说自己是作者，没有伪装成第三方推荐。
 - [ ] 标题没有最高级、虚假数字、感叹号堆叠或未经验证的结果。
 - [ ] 正文中的版本、Demo、字段数、规则数与当前公开 Release 一致。
-- [ ] `v0.2.0` 已公开，采购 Hero 实测数字和 16 秒 GIF 与公开 README 一致。
+- [x] `v0.2.0` 已公开，采购 Hero 实测数字和 16 秒 GIF 与公开 README 一致。
 - [ ] 我没有写准确率、生产可用、企业采用、绝对隐私等无证据结论。
 - [ ] AI 参与披露真实，且该平台允许这类代码/文案；HN 文案由作者本人重写。
 - [ ] 链接直接指向 GitHub 原始仓库，无投票链接、隐藏跳转或短链。

@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from docurule.main import app
+from docurule.recipes import load_recipe
 
 
 client = TestClient(app)
@@ -49,6 +50,7 @@ def test_demo_review_flow():
 
 
 def test_procurement_three_way_demo_returns_fixed_exceptions():
+    expected = load_recipe("three-way-match")
     created = client.post("/api/v1/demo/procurement")
     assert created.status_code == 201
     case_id = created.json()["id"]
@@ -57,31 +59,34 @@ def test_procurement_three_way_demo_returns_fixed_exceptions():
     assert payload["status"] == "needs_review"
     assert payload["metadata"]["processing_mode"] == "rules-only"
     assert payload["metadata"]["engine"] == "deterministic-rules"
-    assert {document["kind"] for document in payload["documents"]} == {
-        "purchase_order",
-        "invoice",
-        "delivery_note",
+    expected_documents = {item["file_name"]: item for item in expected["documents"]}
+    assert {document["file_name"] for document in payload["documents"]} == set(expected_documents)
+    for document in payload["documents"]:
+        expected_document = expected_documents[document["file_name"]]
+        assert document["kind"] == expected_document["kind"]
+        actual_fields = {field["key"]: field["value"] for field in document["fields"]}
+        assert actual_fields == expected_document["fields"]
+
+    assert {field["key"]: field["value"] for field in payload["fields"]} == expected[
+        "merged_fields"
+    ]
+    expected_checks = {
+        item["title"]: item["status"] for item in expected["initial_validation"]["checks"]
     }
-    assert {field["key"] for field in payload["fields"]} >= {
-        "supplier_name",
-        "po_number",
-        "currency",
-        "ordered_quantity",
-        "invoiced_quantity",
-        "received_quantity",
-        "unit_price",
-        "invoice_total",
-    }
-    assert len(payload["validations"]) == 6
-    assert sum(item["status"] == "passed" for item in payload["validations"]) == 4
-    assert sum(item["status"] == "failed" for item in payload["validations"]) == 2
+    assert {item["title"]: item["status"] for item in payload["validations"]} == expected_checks
 
     corrected = client.patch(
         f"/api/v1/cases/{case_id}/fields/received_quantity",
-        json={"value": "96", "reviewed": True},
+        json={"value": expected["review_correction"]["to"], "reviewed": True},
     )
     assert corrected.status_code == 200
-    assert sum(item["status"] == "passed" for item in corrected.json()["validations"]) == 6
+    corrected_summary = expected["review_correction"]["expected_summary"]
+    assert sum(item["status"] == "passed" for item in corrected.json()["validations"]) == corrected_summary[
+        "passed"
+    ]
+    assert sum(item["status"] == "failed" for item in corrected.json()["validations"]) == corrected_summary[
+        "failed"
+    ]
 
     reviewed = client.post(
         f"/api/v1/cases/{case_id}/review",

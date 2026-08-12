@@ -4,6 +4,7 @@ from docurule.config import Settings
 from docurule.engine import ProcessingEngine
 from docurule.models import CaseRecord, CaseStatus, DocumentRecord, ValidationStatus
 from docurule.provider import AIProvider
+from docurule.recipes import load_recipe, load_recipe_documents
 from docurule.store import CaseStore
 
 
@@ -107,28 +108,18 @@ def test_normalizes_currency_values_returned_by_a_model(tmp_path: Path):
 def test_procurement_three_way_demo_is_deterministic(tmp_path: Path, monkeypatch):
     engine, store, uploads = build_engine(tmp_path)
     engine.provider.settings.ai_provider = "ollama"
+    expected = load_recipe("three-way-match")
     case_id = "procurement-demo"
     case_dir = uploads / case_id
     case_dir.mkdir()
     samples = [
         (
-            DocumentRecord(id="po", file_name="purchase-order.txt", media_type="text/plain"),
-            "PURCHASE ORDER\nSupplier: Northstar Components Ltd.\n"
-            "PO Number: PO-2026-0812\nCurrency: USD\n"
-            "Ordered Quantity: 100\nUnit Price: $25.00",
-        ),
-        (
-            DocumentRecord(id="inv", file_name="invoice.txt", media_type="text/plain"),
-            "SUPPLIER INVOICE\nSupplier: Northstar Components Ltd.\n"
-            "PO Number: PO-2026-0812\nCurrency: USD\n"
-            "Invoiced Quantity: 96\nUnit Price: $25.00\nInvoice Total: $2,400.00",
-        ),
-        (
-            DocumentRecord(id="dn", file_name="delivery-note.txt", media_type="text/plain"),
-            "DELIVERY NOTE\nSupplier: Northstar Components Ltd.\n"
-            "PO Number: PO-2026-0812\nCurrency: USD\n"
-            "Received Quantity: 90\nUnit Price: $25.00",
-        ),
+            DocumentRecord(
+                id=f"document-{index}", file_name=file_name, media_type="text/plain"
+            ),
+            content,
+        )
+        for index, (file_name, content) in enumerate(load_recipe_documents("three-way-match"))
     ]
     for document, content in samples:
         (case_dir / f"{document.id}.txt").write_text(content, encoding="utf-8")
@@ -148,30 +139,10 @@ def test_procurement_three_way_demo_is_deterministic(tmp_path: Path, monkeypatch
     result = engine.process(case_id)
 
     assert result.metadata["engine"] == "deterministic-rules"
-    assert {document.kind for document in result.documents} == {
-        "purchase_order",
-        "invoice",
-        "delivery_note",
+    assert {document.file_name: document.kind for document in result.documents} == {
+        item["file_name"]: item["kind"] for item in expected["documents"]
     }
-    assert {field.key for field in result.fields} >= {
-        "supplier_name",
-        "po_number",
-        "currency",
-        "ordered_quantity",
-        "invoiced_quantity",
-        "received_quantity",
-        "unit_price",
-        "invoice_total",
-    }
-    assert len(result.validations) == 6
-    statuses = [validation.status for validation in result.validations]
-    assert statuses.count(ValidationStatus.PASSED) == 4
-    assert statuses.count(ValidationStatus.FAILED) == 2
-    assert {
-        validation.title
-        for validation in result.validations
-        if validation.status == ValidationStatus.FAILED
-    } == {
-        "Invoiced quantity does not exceed received quantity",
-        "Invoice total does not exceed received value",
+    assert {field.key: field.value for field in result.fields} == expected["merged_fields"]
+    assert {validation.title: validation.status.value for validation in result.validations} == {
+        item["title"]: item["status"] for item in expected["initial_validation"]["checks"]
     }

@@ -1,0 +1,6 @@
+PURCHASE ORDER
+Supplier: Northstar Components Ltd.
+PO Number: PO-2026-0812
+Currency: USD
+Ordered Quantity: 100
+Unit Price: $25.00

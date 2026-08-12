@@ -142,13 +142,13 @@ exceptions to human review.
 
 ### 6.1 合成输入
 
-当前通过内置 `/api/v1/demo/procurement` 创建三份可公开复现的合成文本单据：
+`demo/three-way-match/` 提供三份可公开复现的合成文本单据，内置 `/api/v1/demo/procurement` 直接读取它们：
 
 - `purchase-order-PO-2026-0812.txt`
 - `supplier-invoice-INV-1048.txt`
 - `delivery-note-DN-7721.txt`
 
-可独立贡献的 recipe 文件夹、`expected-result.json` 和 `rules.yml` 仍保留在 roadmap；当前确定性 API/engine 测试是 golden behavior 的权威来源。
+同目录的 `rules.yml` 描述 6 条规则契约，`expected-result.json` 是 golden behavior；API/engine 测试逐文档、逐字段、逐规则精确核对它。任意 YAML recipe 的运行时导入仍在 roadmap。
 
 示例供应商使用虚构名称 `Northstar Components`。不得使用真实个人、公司、地址、银行账号或医疗资料。
 
@@ -247,7 +247,7 @@ new stars = qualified unique repo visitors × README star conversion
 - 英文：Show HN、r/selfhosted、r/LocalLLaMA、DEV/Hashnode、X/LinkedIn；遵守社区自推广规则，正文先讲三单匹配和本地复现，不只贴链接。
 - 中文：V2EX、掘金、知乎、开发者微信群/社群；标题统一围绕“PDF 转 JSON 之后，如何跨文档核验”。
 - 所有帖子只使用一个主 CTA：`Run the local demo`；结尾再自然请求“有用的话 Star”。
-- 作者当天保持在线，12 小时内回复 issue/discussion；将最高频阻塞在 24 小时内发布 `v0.1.1`。
+- 作者当天保持在线，12 小时内回复 issue/discussion；将最高频阻塞修复后发布 `v0.2.x` 补丁版本。
 
 ### 9.4 Day 3–7：证明可用
 
@@ -255,14 +255,14 @@ new stars = qualified unique repo visitors × README star conversion
 
 - 发布一篇可复现技术文：`Why PDF-to-JSON is only half of document automation`，包含规则 YAML、审计 JSON 和失败案例。
 - 发布 3–5 分钟从零安装视频；分别给 CPU 与 Ollama 模型写清资源要求。
-- 把用户问题整理成 troubleshooting；发 `v0.1.2`，Release notes 点名感谢贡献者。
+- 把用户问题整理成 troubleshooting；按需发布 `v0.2.x` 补丁版本，Release notes 点名感谢贡献者。
 - 只向真正相关的 awesome-list / newsletter 提交；PR 说明类别和可复现 demo，不群发目录站。
 
 ### 9.5 Day 8–14：制造第二个传播理由
 
 **累计目标：400–550 Star；至少 3 位外部贡献者。**
 
-- 发布 `v0.2.0`：选择一个能形成标题的功能，如“可视化字段证据”或“可导入 recipe”，不要把多个半成功能堆在一起。
+- 发布 `v0.3.0`：选择一个能形成标题的功能，如“可执行 recipe”或“可视化字段证据”，不要把多个半成功能堆在一起。
 - 发布 `Build a local document validation workflow with Ollama in 5 minutes`，附完整命令和真实运行时间。
 - 开放 `Recipe challenge`：征集真实但去敏后的校验规则；奖励是贡献者展示和 Release mention，**不以 Star 作为参与条件**。
 - 在首发帖子发布有实质更新的 follow-up，避免无变化顶帖。

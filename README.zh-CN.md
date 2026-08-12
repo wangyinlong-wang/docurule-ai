@@ -16,6 +16,9 @@
 
 **3 份文档 · 8 个归一化字段 · 6 条规则 · 2 个异常 · 1 次人工决定**
 
+> [!WARNING]
+> 当前 MVP 尚无登录认证。请只在可信本机或私有网络运行，不要把 `8080` 端口直接暴露到公网。
+
 ## 它解决什么问题
 
 OCR 或 PDF 转 JSON 只完成了一半工作。真实业务面对的是一组有关联的资料：姓名、日期、编号和金额是否一致？异常值来自哪一页？规则为什么失败？谁修改并批准了结果？
@@ -38,7 +41,9 @@ cd docurule-ai
 docker compose up --build
 ```
 
-访问 [http://localhost:8080](http://localhost:8080)，点击「Explore a 10-second demo」。内置演示会创建采购订单、供应商发票和收货单，固定得到 4 条通过、2 条异常；把 `Received quantity` 从 `90` 改为 `96` 后，六条规则全部通过。它不需要模型、API Key 或真实文档。
+访问 [http://localhost:8080](http://localhost:8080)，点击「Explore the demo」。内置演示会创建采购订单、供应商发票和收货单，固定得到 4 条通过、2 条异常；把 `Received quantity` 从 `90` 改为 `96` 后，六条规则全部通过。它不需要模型、API Key 或真实文档。
+
+三份合成文档、声明式规则契约和 golden JSON 结果全部公开在[三单匹配 recipe](demo/three-way-match/)中。内置 API Demo 与确定性测试读取的也是同一组文件。
 
 如需用本地视觉模型处理扫描件和图片：
 
@@ -48,6 +53,8 @@ ollama pull gemma4:latest
 docker compose up --build
 ```
 
+文件与 SQLite 数据默认保存在本地 Docker volume；如果配置远程 OpenAI-compatible provider，文档输入会发送到你指定的远程端点。
+
 ## 当前已经可用
 
 - PDF、PNG、JPG、Markdown 和文本混合上传；
@@ -55,6 +62,7 @@ docker compose up --build
 - 模型离线时自动使用确定性规则兜底；
 - 字段置信度和原文引用；
 - 采购订单、发票、收货单的三单匹配：文档齐全、供应商、PO 号、币种、数量和金额校验；
+- 公开的三单匹配 recipe：合成输入、`rules.yml` 和 CI 精确核对的预期结果；
 - 保留医疗理赔示例的跨文档姓名和金额校验；
 - 字段人工修改、案件批准/拒绝、JSON 审计记录导出；
 - SQLite 和文件本地持久化；
@@ -67,7 +75,7 @@ docker compose up --build
 ## 开发路线
 
 - [x] 采购订单 + 发票 + 收货单的三单匹配模板；
-- YAML 规则模板和可视化解释；
+- 可执行 YAML 规则模板和可视化解释；
 - PDF 页内坐标高亮；
 - Docling、PaddleOCR 等解析器适配；
 - PostgreSQL/S3/独立任务 Worker 和多人复核队列。

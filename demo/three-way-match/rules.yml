@@ -1,0 +1,92 @@
+schema_version: 1
+id: procurement-three-way-match
+title: Procurement three-way match
+description: Match a purchase order, supplier invoice, and delivery note before payment.
+processing_mode: rules-only
+
+documents:
+  - kind: purchase_order
+    file: purchase-order-PO-2026-0812.txt
+    required: true
+  - kind: invoice
+    file: supplier-invoice-INV-1048.txt
+    required: true
+  - kind: delivery_note
+    file: delivery-note-DN-7721.txt
+    required: true
+
+fields:
+  required:
+    - supplier_name
+    - po_number
+    - currency
+    - ordered_quantity
+    - invoiced_quantity
+    - received_quantity
+    - unit_price
+    - invoice_total
+  numeric:
+    - ordered_quantity
+    - invoiced_quantity
+    - received_quantity
+    - unit_price
+    - invoice_total
+
+rules:
+  - id: three_way_document_set_complete
+    title: Three-way document set complete
+    assertion:
+      includes_all_document_kinds:
+        - purchase_order
+        - invoice
+        - delivery_note
+
+  - id: supplier_matches
+    title: Supplier matches across documents
+    assertion:
+      all_equal:
+        field: supplier_name
+        across:
+          - purchase_order
+          - invoice
+          - delivery_note
+        normalization: trim_casefold_whitespace
+
+  - id: po_number_matches
+    title: PO number matches across documents
+    assertion:
+      all_equal:
+        field: po_number
+        across:
+          - purchase_order
+          - invoice
+          - delivery_note
+        normalization: lowercase_alphanumeric
+
+  - id: currency_matches
+    title: Currency matches across documents
+    assertion:
+      all_equal:
+        field: currency
+        across:
+          - purchase_order
+          - invoice
+          - delivery_note
+        normalization: lowercase_alphanumeric
+
+  - id: invoiced_quantity_within_received_quantity
+    title: Invoiced quantity does not exceed received quantity
+    assertion:
+      less_than_or_equal:
+        left: invoiced_quantity
+        right: received_quantity
+
+  - id: invoice_total_within_received_value
+    title: Invoice total does not exceed received value
+    assertion:
+      less_than_or_equal:
+        left: invoice_total
+        right:
+          multiply:
+            - received_quantity
+            - unit_price
