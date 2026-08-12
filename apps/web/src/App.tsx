@@ -243,6 +243,17 @@ function Welcome({
             ) : (
               <button className="text-button" onClick={onRecipe}>Run rules.yml <span>↗</span></button>
             )}
+            {isShowcase && (
+              <a
+                className="hero-star-button"
+                href="https://github.com/wangyinlong-wang/docurule-ai"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Star DocuRule on GitHub"
+              >
+                ☆ Star on GitHub <span>↗</span>
+              </a>
+            )}
           </div>
           <div className="trust-row"><span>✓ {isShowcase ? "No uploads stored" : "No cloud required"}</span><span>✓ Executable YAML rules</span><span>✓ {isShowcase ? "Safe synthetic packet" : "Ollama ready"}</span></div>
         </div>
