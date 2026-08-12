@@ -14,6 +14,7 @@ from .config import get_settings
 from .engine import ProcessingEngine
 from .models import CaseRecord, CaseStatus, DocumentRecord, FieldUpdate, ReviewRequest, utc_now
 from .provider import AIProvider
+from .recipes import load_recipe_documents
 from .store import CaseStore
 
 settings = get_settings()
@@ -133,39 +134,7 @@ def create_procurement_demo(background_tasks: BackgroundTasks):
     case_id = uuid4().hex[:12]
     target_dir = settings.uploads_dir / case_id
     target_dir.mkdir(parents=True, exist_ok=True)
-    samples = [
-        (
-            "purchase-order-PO-2026-0812.txt",
-            """PURCHASE ORDER
-Supplier: Northstar Components Ltd.
-PO Number: PO-2026-0812
-Currency: USD
-Ordered Quantity: 100
-Unit Price: $25.00
-""",
-        ),
-        (
-            "supplier-invoice-INV-1048.txt",
-            """SUPPLIER INVOICE
-Supplier: Northstar Components Ltd.
-PO Number: PO-2026-0812
-Currency: USD
-Invoiced Quantity: 96
-Unit Price: $25.00
-Invoice Total: $2,400.00
-""",
-        ),
-        (
-            "delivery-note-DN-7721.txt",
-            """DELIVERY NOTE
-Supplier: Northstar Components Ltd.
-PO Number: PO-2026-0812
-Currency: USD
-Received Quantity: 90
-Unit Price: $25.00
-""",
-        ),
-    ]
+    samples = load_recipe_documents("three-way-match")
     documents = []
     for file_name, content in samples:
         document_id = uuid4().hex[:10]

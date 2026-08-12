@@ -48,6 +48,53 @@ jobs:
         with:
           context: .
           push: false
+          load: true
           tags: docurule-ai:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Smoke test production image
+        run: |
+          docker run --detach --name docurule-ci \
+            --publish 8080:8080 \
+            --env DOCURULE_AI_PROVIDER=local \
+            docurule-ai:ci
+          trap 'docker logs docurule-ci; docker stop docurule-ci' EXIT
+          python - <<'PY'
+          import json
+          import time
+          import urllib.request
+
+          for _ in range(60):
+              try:
+                  with urllib.request.urlopen("http://127.0.0.1:8080/api/health") as response:
+                      health = json.load(response)
+                  if health["status"] == "ok":
+                      break
+              except OSError:
+                  time.sleep(0.5)
+          else:
+              raise SystemExit("DocuRule container did not become healthy")
+
+          request = urllib.request.Request(
+              "http://127.0.0.1:8080/api/v1/demo/procurement",
+              method="POST",
+          )
+          with urllib.request.urlopen(request) as response:
+              case = json.load(response)
+
+          assert len(case["documents"]) == 3, case
+          case_url = f"http://127.0.0.1:8080/api/v1/cases/{case['id']}"
+          for _ in range(60):
+              with urllib.request.urlopen(case_url) as response:
+                  case = json.load(response)
+              if case["status"] not in {"queued", "processing"}:
+                  break
+              time.sleep(0.25)
+          else:
+              raise SystemExit("Procurement demo did not finish processing")
+          assert case["status"] == "needs_review", case
+          assert case["metadata"]["engine"] == "deterministic-rules", case
+          assert len(case["fields"]) == 8, case
+          assert [item["status"] for item in case["validations"]].count("passed") == 4, case
+          assert [item["status"] for item in case["validations"]].count("failed") == 2, case
+          PY

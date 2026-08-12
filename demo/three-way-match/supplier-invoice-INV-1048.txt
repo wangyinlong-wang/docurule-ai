@@ -1,0 +1,7 @@
+SUPPLIER INVOICE
+Supplier: Northstar Components Ltd.
+PO Number: PO-2026-0812
+Currency: USD
+Invoiced Quantity: 96
+Unit Price: $25.00
+Invoice Total: $2,400.00

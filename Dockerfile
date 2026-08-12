@@ -13,6 +13,7 @@ WORKDIR /app
 COPY apps/api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY apps/api/src/ ./src/
+COPY demo/ ./demo/
 COPY --from=web-build /build/dist ./static
 RUN useradd --create-home --uid 10001 docurule && mkdir -p /app/data && chown -R docurule:docurule /app
 USER docurule

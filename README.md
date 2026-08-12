@@ -32,6 +32,9 @@
 > [!NOTE]
 > DocuRule is an early, working MVP. The bundled demo is deterministic and needs no API key. Image-only documents need a local vision model or an OpenAI-compatible provider.
 
+> [!WARNING]
+> The current MVP has no authentication. Run it only on a trusted machine or private network; do not expose port `8080` directly to the public internet.
+
 ## Why DocuRule?
 
 OCR and PDF-to-JSON solve only half of document automation. Real workflows receive a **packet** of related files and still need to answer:
@@ -53,7 +56,7 @@ DocuRule starts at that missing layer. It complements parsers such as Docling, P
 
 ## ✨ See it work
 
-Click **Explore a 10-second demo** after startup. DocuRule creates a synthetic procurement packet and runs a complete three-way match:
+Click **Explore the demo** after startup. DocuRule creates a synthetic procurement packet and runs a complete three-way match:
 
 1. Classifies a purchase order, supplier invoice, and delivery note.
 2. Extracts supplier, PO, currency, quantity, unit-price, and total fields with source quotes.
@@ -63,6 +66,8 @@ Click **Explore a 10-second demo** after startup. DocuRule creates a synthetic p
 ![Extracted fields, source evidence and validation results](docs/assets/docurule-review.png)
 
 All identifiers, organizations, quantities, and amounts in the demo are fictional. The sample deliberately skips the AI provider, so its result is fast and reproducible even when Ollama is offline.
+
+The exact synthetic documents, declarative rule contract, and golden JSON result are public in the [three-way-match recipe](demo/three-way-match/). The built-in API demo and deterministic tests read these same files.
 
 ## 🚀 Quick start
 
@@ -74,7 +79,7 @@ cd docurule-ai
 docker compose up --build
 ```
 
-Open [http://localhost:8080](http://localhost:8080), then click **Explore a 10-second demo**.
+Open [http://localhost:8080](http://localhost:8080), then click **Explore the demo**.
 
 The demo works even when Ollama is offline. To process scans and images with local AI:
 
@@ -84,7 +89,7 @@ ollama pull gemma4:latest
 docker compose up --build
 ```
 
-Your files and SQLite database live only in the `docurule-data` Docker volume by default.
+Your files and SQLite database live only in the `docurule-data` Docker volume by default. If you configure a remote OpenAI-compatible provider, document inputs are sent to the endpoint you specify.
 
 ### Run without Docker
 
@@ -130,6 +135,7 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Graceful rules-only fallback when the model is unavailable
 - Packet-level field normalization with confidence and source quotes
 - Procurement three-way-match checks for document presence, supplier, PO, currency, quantity, and received value
+- Public three-way-match recipe with synthetic inputs, `rules.yml`, and a CI-checked golden result
 - Medical-claim sample with cross-document presence, name, and amount validations
 - Editable extracted values and human approve/reject decisions
 - Persistent local cases and exportable JSON audit records
@@ -186,7 +192,7 @@ Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated 
 - [x] Ollama and OpenAI-compatible provider boundary
 - [x] Docker deployment, persistence, tests, and JSON export
 - [x] Procurement three-way-match recipe (PO + invoice + delivery note)
-- [ ] YAML validation recipes and rule-level explanations
+- [ ] Executable YAML validation recipes and rule-level explanations
 - [ ] PDF coordinate highlights and page preview
 - [ ] Docling/PaddleOCR parser adapters
 - [ ] Durable worker, PostgreSQL/S3 ports, and multi-user review queues

@@ -15,6 +15,8 @@ Good first contributions include:
 - an Ollama/OpenAI-compatible model compatibility note;
 - accessibility, documentation, and test improvements.
 
+Browse the current [`good first issue`](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list. Before starting, leave a short comment on the issue and check that it has no assignee, linked pull request, or `in progress` label; this avoids two contributors doing the same work.
+
 ## Local setup
 
 ```bash
@@ -44,6 +46,19 @@ npm run build --prefix apps/web
 ```
 
 Changes to extraction or validation behavior need a deterministic test. New recipe fixtures need an `expected-result.json` and must not depend on a network model in CI.
+
+Use [`demo/three-way-match`](demo/three-way-match/) as the reference recipe layout:
+
+```text
+demo/<recipe-id>/
+├── README.md
+├── synthetic-input-1.txt
+├── synthetic-input-2.txt
+├── rules.yml
+└── expected-result.json
+```
+
+Keep inputs entirely synthetic, make each rule result explainable from the files, and assert the exact golden result in a deterministic test. The current YAML describes the public recipe contract; executing arbitrary YAML recipes is still roadmap work.
 
 ## Pull requests
 
