@@ -371,7 +371,7 @@ function UploadDialog({ onClose, onSubmit, busy }: { onClose: () => void; onSubm
         <label className="name-field">Review name<input value={name} onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)} placeholder="e.g. Claim CLM-2026-0812" /></label>
         <div className="dropzone" onDragOver={(event) => event.preventDefault()} onDrop={drop} onClick={() => inputRef.current?.click()}>
           <span className="upload-symbol">⇧</span><strong>Drop PDF, PNG, JPG or text files</strong><small>or click to browse · up to 20 MB each</small>
-          <input ref={inputRef} type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.txt,.md" onChange={(event) => addFiles(event.target.files)} hidden />
+          <input ref={inputRef} type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.txt,.md,.csv" onChange={(event) => addFiles(event.target.files)} hidden />
         </div>
         {files.length > 0 && <div className="upload-files">{files.map((file, index) => <div key={`${file.name}-${index}`}><span>{file.name}</span><small>{(file.size / 1024).toFixed(1)} KB</small><button type="button" onClick={() => setFiles(files.filter((_, itemIndex) => itemIndex !== index))}>×</button></div>)}</div>}
         <div className="modal-actions"><button type="button" onClick={onClose}>Cancel</button><button className="primary-button" disabled={!files.length || busy}>{busy ? "Uploading…" : `Start review${files.length ? ` (${files.length})` : ""}`} <span>→</span></button></div>

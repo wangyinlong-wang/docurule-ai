@@ -55,6 +55,21 @@ def get_case(case_id: str):
     return _require_case(case_id)
 
 
+ALLOWED_EXTENSIONS: set[str] = {".pdf", ".png", ".jpg", ".jpeg", ".txt", ".md", ".csv"}
+ALLOWED_MEDIA_TYPES: set[str] = {
+    "application/pdf",
+    "image/png",
+    "image/jpeg",
+    "image/pjpeg",
+    "text/plain",
+    "text/markdown",
+    "text/x-markdown",
+    "text/csv",
+    "application/csv",
+    "application/x-csv",
+}
+
+
 @app.post("/api/v1/cases", response_model=CaseRecord, status_code=201)
 async def create_case(
     background_tasks: BackgroundTasks,
@@ -64,6 +79,16 @@ async def create_case(
 ):
     if not files:
         raise HTTPException(400, "Upload at least one document")
+
+    for upload in files:
+        safe_name = Path(upload.filename or "document").name
+        suffix = Path(safe_name).suffix.lower()
+        guessed_type = mimetypes.guess_type(safe_name)[0]
+        raw_type = upload.content_type if (upload.content_type and upload.content_type != "application/octet-stream") else guessed_type
+        media_type = (raw_type or "application/octet-stream").lower()
+        if suffix not in ALLOWED_EXTENSIONS or media_type not in ALLOWED_MEDIA_TYPES:
+            raise HTTPException(415, f"Unsupported file type: {upload.filename}")
+
     case_id = uuid4().hex[:12]
     target_dir = settings.uploads_dir / case_id
     target_dir.mkdir(parents=True, exist_ok=True)
@@ -78,7 +103,9 @@ async def create_case(
         document_id = uuid4().hex[:10]
         safe_name = Path(upload.filename or "document").name
         suffix = Path(safe_name).suffix.lower()
-        media_type = upload.content_type or mimetypes.guess_type(safe_name)[0] or "application/octet-stream"
+        guessed_type = mimetypes.guess_type(safe_name)[0]
+        raw_type = upload.content_type if (upload.content_type and upload.content_type != "application/octet-stream") else guessed_type
+        media_type = (raw_type or "application/octet-stream").lower()
         (target_dir / f"{document_id}{suffix}").write_bytes(content)
         documents.append(
             DocumentRecord(

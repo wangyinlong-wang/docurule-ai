@@ -46,3 +46,28 @@ def test_demo_review_flow():
     exported = client.get(f"/api/v1/cases/{case_id}/export")
     assert exported.status_code == 200
     assert exported.json()["decision"] == "approved"
+
+
+def test_upload_accepted_file():
+    response = client.post(
+        "/api/v1/cases",
+        files=[("files", ("document.pdf", b"%PDF-1.4 test content", "application/pdf"))],
+        data={"name": "Test PDF upload", "process": "false"},
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["name"] == "Test PDF upload"
+    assert len(data["documents"]) == 1
+    assert data["documents"][0]["file_name"] == "document.pdf"
+    assert data["documents"][0]["media_type"] == "application/pdf"
+
+
+def test_upload_rejected_file():
+    response = client.post(
+        "/api/v1/cases",
+        files=[("files", ("payload.exe", b"\x7fELF...", "application/x-executable"))],
+        data={"name": "Test bad upload", "process": "false"},
+    )
+    assert response.status_code == 415
+    assert "Unsupported file type" in response.json()["detail"]
+
