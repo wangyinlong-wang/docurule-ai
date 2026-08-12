@@ -10,9 +10,9 @@
   开源、本地优先的文档智能工作台：文档分类、字段提取、跨文档核验、人工复核和审计导出。
 </p>
 
-<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
+<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="#五分钟贡献一个-recipe">贡献 Recipe</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
-[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.1：安全的上传类型校验，以及可操作的空字段提示。**
+[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.2：更安全的上传校验，以及五分钟贡献 Recipe 路径。**
 
 ![DocuRule 可执行 YAML 规则与采购三单匹配动态演示](docs/assets/docurule-recipe-demo.gif)
 
@@ -62,6 +62,21 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
 ```
 
 安全边界是明确的：规则不能执行 Python、Shell、模板或网络请求，只能使用允许的文档齐全、跨文档相等和数值大小比较。当前上传 recipe 支持文件名与清单完全一致的 UTF-8 TXT、Markdown 和 CSV。完整格式见[规则编写指南](docs/recipes.md)。
+
+### 五分钟贡献一个 Recipe
+
+最容易开始的贡献，是一个完全合成的资料包和一条可解释的跨文档校验。直接复制公开的[三单匹配 fixture](demo/three-way-match/)：
+
+```bash
+cp -R demo/three-way-match demo/my-recipe
+```
+
+1. 所有输入只使用合成或彻底匿名化内容。
+2. 修改 recipe 的 id/title，并按需重命名文件；`rules.yml` 的 `documents` 清单必须与文件名完全一致，规则只使用[规则指南](docs/recipes.md)列出的 schema v1 算子。
+3. 补齐 `README.md` 和 `expected-result.json`，写清预期通过/失败的校验，以及一个复核者可以重现的字段修正。
+4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证，再提交一个范围明确的 PR，附上命令和结果。
+
+第一次只想改文档，可以认领 [Issue #19](https://github.com/wangyinlong-wang/docurule-ai/issues/19)，为 CSV 导出契约补一个消费者示例；不确定字段或规则怎么选时，先从[可认领的 good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue)开始。不要上传真实发票、病历、身份信息或其他机密资料。
 
 如需用本地视觉模型处理扫描件和图片：
 

@@ -17,6 +17,7 @@
   <a href="#-see-it-work">See it work</a> ·
   <a href="#run-your-own-recipe">YAML recipes</a> ·
   <a href="docs/product-spec.md">Product spec</a> ·
+  <a href="#-contribute-a-recipe-in-five-minutes">Contribute a recipe</a> ·
   <a href="README.zh-CN.md">中文</a>
 </p>
 
@@ -27,7 +28,7 @@
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
 </p>
 
-[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.1: safe upload type validation plus actionable empty-field guidance.**
+[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.2: safer uploads plus a five-minute recipe contribution path.**
 
 ![DocuRule executable YAML recipe and procurement three-way-match demo](docs/assets/docurule-recipe-demo.gif)
 
@@ -110,6 +111,21 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
 ```
 
 The v1 runtime is intentionally constrained: recipes cannot execute Python, shell commands, templates, or network calls. It supports required document kinds, normalized equality across documents, and numeric `less_than_or_equal` expressions (including multiplication). Uploaded recipe packets currently accept UTF-8 TXT, Markdown, and CSV files whose names exactly match the manifest. See the [recipe authoring guide](docs/recipes.md).
+
+### 🧩 Contribute a recipe in five minutes
+
+The lowest-friction contribution is a synthetic document packet that demonstrates one useful cross-document check. Start from the public [three-way-match fixture](demo/three-way-match/), then:
+
+```bash
+cp -R demo/three-way-match demo/my-recipe
+```
+
+1. Keep every input synthetic or fully anonymized.
+2. Update the recipe id/title and rename files as needed; `rules.yml` must match its `documents` manifest exactly. Use only the schema-v1 operators documented in [the recipe guide](docs/recipes.md).
+3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
+4. Run the recipe locally through **Run rules.yml** or the API command above, then open a focused pull request with the command and result.
+
+For a first documentation-only contribution, claim [Issue #19](https://github.com/wangyinlong-wang/docurule-ai/issues/19) and add a consumer example for the CSV export contract. If you are unsure which fields or rule belong in a packet, open a [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
 
 ### Run without Docker
 

@@ -17,5 +17,8 @@ lint:
 	cd apps/api && ruff check .
 	cd apps/web && npm run lint
 
+# Start the deterministic procurement demo in the same containerized setup
+# documented in README.md. The old samples/generate_demo_bundle.py entrypoint
+# no longer exists; the canonical fixture now lives in demo/three-way-match/.
 demo:
-	python3 samples/generate_demo_bundle.py
+	docker compose up --build

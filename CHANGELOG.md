@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.2 - 2026-08-13
+
+### Added
+
+- Added a five-minute recipe contribution path in the English/Chinese README and recipe guide.
+- Fixed `make demo` to launch the current Docker Compose demo instead of a removed script.
+
 ## 0.5.1 - 2026-08-13
 
 ### Added
