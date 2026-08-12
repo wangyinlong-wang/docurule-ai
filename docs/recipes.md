@@ -48,7 +48,7 @@ demo/<your-recipe-id>/
 └── synthetic-input-*.txt
 ```
 
-For a first documentation-only contribution, [Issue #19](https://github.com/wangyinlong-wang/docurule-ai/issues/19) asks for a consumer example of the CSV export contract. If the workflow or expected result is unclear, open a [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) first and include the smallest synthetic packet you can share. A maintainer can help confirm the field keys and rule boundary before you spend time on implementation.
+For a first documentation-only contribution, start with the [contributing guide](../CONTRIBUTING.md), then check the current [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions) for an active entry point. If the workflow or expected result is unclear, include the smallest synthetic packet you can share. A maintainer can help confirm the field keys and rule boundary before you spend time on implementation.
 
 ## Minimal schema
 
