@@ -12,9 +12,11 @@
 
 <p align="center"><a href="README.md">English</a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
-![DocuRule 采购三单匹配动态演示](docs/assets/docurule-demo.gif)
+[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.3：上传并执行自己的安全 `rules.yml`。**
 
-**3 份文档 · 8 个归一化字段 · 6 条规则 · 2 个异常 · 1 次人工决定**
+![DocuRule 可执行 YAML 规则与采购三单匹配动态演示](docs/assets/docurule-recipe-demo.gif)
+
+**rules.yml · 3 份文档 · 8 个归一化字段 · 6 条规则 · 2 个异常 · 1 次人工决定**
 
 > [!WARNING]
 > 当前 MVP 尚无登录认证。请只在可信本机或私有网络运行，不要把 `8080` 端口直接暴露到公网。

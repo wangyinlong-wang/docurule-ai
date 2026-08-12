@@ -26,9 +26,11 @@
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
 </p>
 
-![DocuRule procurement three-way-match demo](docs/assets/docurule-demo.gif)
+[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.3: upload and execute your own safe `rules.yml` recipes.**
 
-**3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision**
+![DocuRule executable YAML recipe and procurement three-way-match demo](docs/assets/docurule-recipe-demo.gif)
+
+**rules.yml · 3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision**
 
 > [!NOTE]
 > DocuRule is an early, working MVP. The bundled demo is deterministic and needs no API key. Image-only documents need a local vision model or an OpenAI-compatible provider.
