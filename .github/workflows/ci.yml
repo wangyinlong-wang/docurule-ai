@@ -37,6 +37,10 @@ jobs:
         working-directory: apps/web
       - run: npm run build
         working-directory: apps/web
+      - run: npm run build:showcase
+        working-directory: apps/web
+      - run: npm test -- --run
+        working-directory: apps/web
 
   docker:
     runs-on: ubuntu-latest

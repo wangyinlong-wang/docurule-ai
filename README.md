@@ -12,7 +12,8 @@
 </p>
 
 <p align="center">
-  <a href="#-quick-start"><strong>Quick start</strong></a> ·
+  <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>Live showcase</strong></a> ·
+  <a href="#-quick-start">Quick start</a> ·
   <a href="#-see-it-work">See it work</a> ·
   <a href="#run-your-own-recipe">YAML recipes</a> ·
   <a href="docs/product-spec.md">Product spec</a> ·
@@ -58,6 +59,8 @@ DocuRule starts at that missing layer. It complements parsers such as Docling, P
 | Deployment | Often cloud-first | Docker + local storage + Ollama |
 
 ## ✨ See it work
+
+**[Try the browser-only live showcase →](https://wangyinlong-wang.github.io/docurule-ai/)** It uses the public synthetic packet, makes no uploads, calls no backend, and forgets the review when the tab reloads. Run DocuRule locally to upload files or connect an AI provider.
 
 Click **Explore the demo** after startup. DocuRule creates a synthetic procurement packet and runs a complete three-way match:
 

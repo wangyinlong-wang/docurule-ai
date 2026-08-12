@@ -1,5 +1,5 @@
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { api } from "./lib/api";
+import { api, isShowcase } from "./lib/api";
 import type { CaseRecord, CaseStatus, ExtractedField, ProviderStatus } from "./types";
 
 const statusLabel: Record<CaseStatus, string> = {
@@ -111,6 +111,11 @@ function App() {
     setCases((existing) => [item, ...existing.filter((entry) => entry.id !== item.id)]);
   };
 
+  const startNew = () => {
+    if (isShowcase) void createDemo();
+    else setShowUpload(true);
+  };
+
   return (
     <div className="app-shell">
       <Sidebar
@@ -118,10 +123,10 @@ function App() {
         selectedId={selectedId}
         onSelect={openCase}
         onHome={() => setSelectedId(null)}
-        onNew={() => setShowUpload(true)}
+        onNew={startNew}
       />
       <main className="main-stage">
-        <Topbar provider={provider} onNew={() => setShowUpload(true)} />
+        <Topbar provider={provider} onNew={startNew} />
         {error && (
           <div className="error-banner">
             <span>!</span> {error}
@@ -168,7 +173,7 @@ function Sidebar({
         <span className="brand-mark"><i /><i /><i /></span>
         <span><strong>DocuRule</strong><small>AI workspace</small></span>
       </button>
-      <button className="new-button" onClick={onNew}><span>＋</span> New review</button>
+      <button className="new-button" onClick={onNew}><span>＋</span> {isShowcase ? "Open demo" : "New review"}</button>
       <nav className="primary-nav">
         <button className={!selectedId ? "active" : ""} onClick={onHome}><span>⌂</span> Overview</button>
       </nav>
@@ -189,7 +194,7 @@ function Sidebar({
       </div>
       <div className="sidebar-footer">
         <span className="local-dot" />
-        <span><strong>Private by default</strong><small>Runs on your machine</small></span>
+        <span><strong>{isShowcase ? "Static showcase" : "Private by default"}</strong><small>{isShowcase ? "Synthetic data only" : "Runs on your machine"}</small></span>
       </div>
     </aside>
   );
@@ -198,7 +203,7 @@ function Sidebar({
 function Topbar({ provider, onNew }: { provider: ProviderStatus | null; onNew: () => void }) {
   return (
     <header className="topbar">
-      <div><span className="eyebrow">DOCUMENT INTELLIGENCE</span></div>
+      <div><span className="eyebrow">{isShowcase ? "LIVE SHOWCASE · SYNTHETIC DATA" : "DOCUMENT INTELLIGENCE"}</span></div>
       <div className="topbar-actions">
         <span className={`provider-pill ${provider?.available ? "online" : "fallback"}`}>
           <i /> {provider?.available ? provider.model : "Rules fallback"}
@@ -229,11 +234,15 @@ function Welcome({
           <h1>Turn documents into<br /><em>decisions you can trust.</em></h1>
           <p>Classify files, extract structured data, run cross-document checks, and keep a human in control—all with your own AI.</p>
           <div className="hero-actions">
-            <button className="primary-button" onClick={onUpload}>Review documents <span>→</span></button>
-            <button className="text-button" onClick={onDemo} disabled={busy}>{busy ? "Preparing demo…" : "Explore the demo"} <span>↗</span></button>
-            <button className="text-button" onClick={onRecipe}>Run rules.yml <span>↗</span></button>
+            <button className="primary-button" onClick={isShowcase ? onDemo : onUpload}>{isShowcase ? "Open live demo" : "Review documents"} <span>→</span></button>
+            {!isShowcase && <button className="text-button" onClick={onDemo} disabled={busy}>{busy ? "Preparing demo…" : "Explore the demo"} <span>↗</span></button>}
+            {isShowcase ? (
+              <a className="text-button" href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/demo/three-way-match/rules.yml" target="_blank" rel="noreferrer">View rules.yml <span>↗</span></a>
+            ) : (
+              <button className="text-button" onClick={onRecipe}>Run rules.yml <span>↗</span></button>
+            )}
           </div>
-          <div className="trust-row"><span>✓ No cloud required</span><span>✓ Executable YAML rules</span><span>✓ Ollama ready</span></div>
+          <div className="trust-row"><span>✓ {isShowcase ? "No uploads stored" : "No cloud required"}</span><span>✓ Executable YAML rules</span><span>✓ {isShowcase ? "Safe synthetic packet" : "Ollama ready"}</span></div>
         </div>
         <WorkflowPreview />
       </section>
@@ -275,6 +284,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
   const processing = item.status === "uploaded" || item.status === "processing";
   const passed = item.validations.filter((result) => result.status === "passed").length;
   const flagged = item.validations.filter((result) => result.status !== "passed").length;
+  const showcaseExport = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(item, null, 2))}`;
 
   const saveField = async (field: ExtractedField, rawValue: string) => {
     if (String(field.value ?? "") === rawValue) return;
@@ -305,7 +315,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
     <div className="workspace">
       <div className="workspace-header">
         <div><span className="breadcrumb">REVIEWS / {item.id.toUpperCase()}</span><h1>{item.name}</h1><p>Created {new Date(item.created_at).toLocaleString()}</p></div>
-        <div className="header-controls"><StatusBadge status={item.status} /><a className="outline-button" href={`/api/v1/cases/${item.id}/export`}>Export JSON ↓</a></div>
+        <div className="header-controls"><StatusBadge status={item.status} /><a className="outline-button" href={isShowcase ? showcaseExport : `/api/v1/cases/${item.id}/export`} download={isShowcase ? `docurule-${item.id}.json` : undefined}>Export JSON ↓</a></div>
       </div>
       <div className="metric-row">
         <Metric value={item.documents.length} label="Documents" note={`${item.documents.filter((doc) => doc.status === "processed").length} processed`} />
@@ -318,13 +328,13 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
           <div className="panel-title"><div><span>01</span><h2>Documents</h2></div><small>{item.documents.length} files</small></div>
           <div className="document-list">
             {item.documents.map((document, index) => (
-              <a href={`/api/v1/cases/${item.id}/documents/${document.id}`} target="_blank" key={document.id} className={index === 0 ? "selected" : ""}>
+              <a href={isShowcase ? `https://github.com/wangyinlong-wang/docurule-ai/blob/main/demo/three-way-match/${document.file_name}` : `/api/v1/cases/${item.id}/documents/${document.id}`} target="_blank" rel="noreferrer" key={document.id} className={index === 0 ? "selected" : ""}>
                 <span className={`file-icon ${index % 2 ? "mint" : "coral"}`}>{document.media_type.includes("pdf") ? "PDF" : document.media_type.includes("image") ? "IMG" : "TXT"}</span>
                 <p><strong>{document.file_name}</strong><small>{document.kind_label} · {document.fields.length} fields</small></p><span>↗</span>
               </a>
             ))}
           </div>
-          <div className="privacy-note"><span>⌾</span><p><strong>Documents stay local</strong><small>Files are stored only in your DocuRule data volume.</small></p></div>
+          <div className="privacy-note"><span>⌾</span><p><strong>{isShowcase ? "Synthetic documents only" : "Documents stay local"}</strong><small>{isShowcase ? "This static showcase stores nothing on a server." : "Files are stored only in your DocuRule data volume."}</small></p></div>
         </section>
 
         <section className="panel fields-panel">

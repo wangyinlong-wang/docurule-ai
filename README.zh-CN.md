@@ -10,7 +10,7 @@
   开源、本地优先的文档智能工作台：文档分类、字段提取、跨文档核验、人工复核和审计导出。
 </p>
 
-<p align="center"><a href="README.md">English</a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
+<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
 [![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.3：上传并执行自己的安全 `rules.yml`。**
 
@@ -34,6 +34,8 @@ DocuRule 专注解析后的业务核验层：
 - 默认 Docker 本地运行，支持 Ollama，无云端密钥也能体验 Demo。
 
 ## 快速开始
+
+**[直接打开浏览器在线体验 →](https://wangyinlong-wang.github.io/docurule-ai/)** 在线版只使用公开的合成资料包，不上传文件、不连接后端，刷新页面后复核记录即清空。上传自己的文件或连接 AI Provider 仍需在本地运行 DocuRule。
 
 需要 Docker Desktop 和 Docker Compose：
 
