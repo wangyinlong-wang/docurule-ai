@@ -127,6 +127,72 @@ def create_demo(background_tasks: BackgroundTasks):
     return case
 
 
+@app.post("/api/v1/demo/procurement", response_model=CaseRecord, status_code=201)
+def create_procurement_demo(background_tasks: BackgroundTasks):
+    """Create a deterministic purchase order, invoice, and delivery note demo."""
+    case_id = uuid4().hex[:12]
+    target_dir = settings.uploads_dir / case_id
+    target_dir.mkdir(parents=True, exist_ok=True)
+    samples = [
+        (
+            "purchase-order-PO-2026-0812.txt",
+            """PURCHASE ORDER
+Supplier: Northstar Components Ltd.
+PO Number: PO-2026-0812
+Currency: USD
+Ordered Quantity: 100
+Unit Price: $25.00
+""",
+        ),
+        (
+            "supplier-invoice-INV-1048.txt",
+            """SUPPLIER INVOICE
+Supplier: Northstar Components Ltd.
+PO Number: PO-2026-0812
+Currency: USD
+Invoiced Quantity: 96
+Unit Price: $25.00
+Invoice Total: $2,400.00
+""",
+        ),
+        (
+            "delivery-note-DN-7721.txt",
+            """DELIVERY NOTE
+Supplier: Northstar Components Ltd.
+PO Number: PO-2026-0812
+Currency: USD
+Received Quantity: 90
+Unit Price: $25.00
+""",
+        ),
+    ]
+    documents = []
+    for file_name, content in samples:
+        document_id = uuid4().hex[:10]
+        (target_dir / f"{document_id}.txt").write_text(content, encoding="utf-8")
+        documents.append(
+            DocumentRecord(
+                id=document_id,
+                file_name=file_name,
+                media_type="text/plain",
+                size_bytes=len(content.encode()),
+            )
+        )
+    case = store.save(
+        CaseRecord(
+            id=case_id,
+            name="Procurement three-way match · Demo",
+            documents=documents,
+            metadata={
+                "scenario": "procurement-three-way-match",
+                "processing_mode": "rules-only",
+            },
+        )
+    )
+    background_tasks.add_task(engine.process, case.id)
+    return case
+
+
 @app.post("/api/v1/cases/{case_id}/process", response_model=CaseRecord)
 def process_case(case_id: str, background_tasks: BackgroundTasks):
     case = _require_case(case_id)
