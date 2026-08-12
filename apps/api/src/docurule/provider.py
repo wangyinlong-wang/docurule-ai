@@ -24,6 +24,9 @@ ordered_quantity, invoiced_quantity, received_quantity, unit_price and invoice_t
 class AIProvider:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
+        # The engine uses this narrow signal to explain an empty image review.
+        # It is intentionally request-scoped state; no document content is retained.
+        self.last_extract_ok: bool | None = None
 
     def status(self) -> ProviderStatus:
         if self.settings.ai_provider == "local":
@@ -56,6 +59,7 @@ class AIProvider:
 
     def extract(self, text: str, image_path: Path | None = None) -> dict[str, Any] | None:
         if self.settings.ai_provider == "local":
+            self.last_extract_ok = None
             return None
         user_content = "Extract this document.\n\n" + text[:16000]
         try:
@@ -103,8 +107,11 @@ class AIProvider:
                 )
                 response.raise_for_status()
                 raw = response.json()["choices"][0]["message"]["content"]
-            return json.loads(self._strip_fence(raw))
+            result = json.loads(self._strip_fence(raw))
+            self.last_extract_ok = True
+            return result
         except Exception:
+            self.last_extract_ok = False
             return None
 
     def _headers(self) -> dict[str, str]:

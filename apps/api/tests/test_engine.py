@@ -226,3 +226,29 @@ def test_procurement_three_way_demo_is_deterministic(tmp_path: Path, monkeypatch
         item["title"]: item["status"] for item in expected["initial_validation"]["checks"]
     }
     assert len(result.validations) == len(expected["initial_validation"]["checks"])
+
+
+def test_records_unavailable_provider_for_empty_image_review(tmp_path: Path, monkeypatch):
+    engine, store, uploads = build_engine(tmp_path)
+    engine.provider.settings.ai_provider = "ollama"
+    case_id = "empty-image-case"
+    case_dir = uploads / case_id
+    case_dir.mkdir()
+    document = DocumentRecord(
+        id="image01", file_name="scan.png", media_type="image/png"
+    )
+    # The engine only needs a readable path here; the provider call is stubbed.
+    (case_dir / "image01.png").write_bytes(b"synthetic image bytes")
+    store.save(CaseRecord(id=case_id, name="Empty image", documents=[document]))
+
+    def unavailable_provider(*_args, **_kwargs):
+        engine.provider.last_extract_ok = False
+        return None
+
+    monkeypatch.setattr(engine.provider, "extract", unavailable_provider)
+    result = engine.process(case_id)
+
+    assert result.fields == []
+    assert result.metadata["provider"] == "ollama"
+    assert result.metadata["provider_available"] is False
+    assert result.metadata["engine"] == "rules-fallback"

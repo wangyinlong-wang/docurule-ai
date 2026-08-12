@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 - 2026-08-13
+
+### Added
+
+- Added provider-aware empty-field guidance for image-only reviews, including a link to AI provider setup.
+- Added a distinct text-document empty state so reviewers can keep editing or exporting without being told to install a vision model.
+- Recorded provider availability metadata for explaining a rules fallback without retaining document content.
+
 ## 0.4.0 - 2026-08-13
 
 ### Added

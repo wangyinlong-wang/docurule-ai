@@ -12,7 +12,7 @@
 
 <p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
-[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.4：可审计 CSV 字段导出，以及安全的 `rules.yml` 执行。**
+[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5：可操作的空字段提示，以及可审计 CSV 导出。**
 
 ![DocuRule 可执行 YAML 规则与采购三单匹配动态演示](docs/assets/docurule-recipe-demo.gif)
 
@@ -84,6 +84,7 @@ docker compose up --build
 - 公开的三单匹配 recipe：合成输入、`rules.yml` 和 CI 精确核对的预期结果；
 - 保留医疗理赔示例的跨文档姓名和金额校验；
 - 字段人工修改、案件批准/拒绝、完整 JSON 审计导出和一行一个字段的 CSV 导出；
+- 空字段状态会区分视觉 provider 不可用、图片需要视觉模型和文本未识别字段；
 - SQLite 和文件本地持久化；
 - React + FastAPI 的响应式页面；
 - 单容器 Docker Compose 部署；

@@ -27,7 +27,7 @@
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
 </p>
 
-[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.4: auditable CSV field export plus safe `rules.yml` recipes.**
+[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5: actionable empty-field guidance plus auditable CSV export.**
 
 ![DocuRule executable YAML recipe and procurement three-way-match demo](docs/assets/docurule-recipe-demo.gif)
 
@@ -162,6 +162,7 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Persistent local cases, exportable JSON audit records, and one-row-per-field CSV views
 - Responsive web workspace and interactive OpenAPI docs at `/docs`
 - One-container Docker Compose deployment
+- Provider-aware empty-field guidance that distinguishes unavailable vision providers from text packets with no detected fields
 
 ## AI providers
 
