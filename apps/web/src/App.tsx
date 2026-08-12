@@ -210,7 +210,7 @@ function Topbar({ provider, onNew }: { provider: ProviderStatus | null; onNew: (
         <span className={`provider-pill ${provider?.available ? "online" : "fallback"}`}>
           <i /> {provider?.available ? provider.model : "Rules fallback"}
         </span>
-        <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer" className="github-button" title="Star DocuRule on GitHub">☆ <span>Star on GitHub</span></a>
+        <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer" className="github-button" title="Star DocuRule on GitHub" aria-label="Star DocuRule on GitHub">☆ <span>Star on GitHub</span></a>
         <button className="mobile-new" onClick={onNew}>＋</button>
       </div>
     </header>
