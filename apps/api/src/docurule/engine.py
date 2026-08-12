@@ -311,6 +311,8 @@ class ProcessingEngine:
                 )
             )
 
+        results.append(self._service_date_result(case))
+
         invoice_amount = self._first_value(case, "total_amount")
         claimed_amount = self._first_value(case, "claimed_amount")
         if invoice_amount is not None and claimed_amount is not None:
@@ -357,6 +359,38 @@ class ProcessingEngine:
             )
         )
         return results
+
+    @staticmethod
+    def _service_date_result(case: CaseRecord) -> ValidationResult:
+        values = [
+            (document.file_name, field.value)
+            for document in case.documents
+            for field in document.fields
+            if field.key == "service_date" and field.value not in (None, "")
+        ]
+        normalized = {str(value).strip().lower() for _, value in values}
+
+        if len(values) < 2:
+            status = ValidationStatus.WARNING
+            message = (
+                "At least two service dates are required for comparison; "
+                f"found {len(values)}."
+            )
+        elif len(normalized) == 1:
+            status = ValidationStatus.PASSED
+            message = "All extracted service dates are consistent."
+        else:
+            status = ValidationStatus.FAILED
+            details = ", ".join(f"{file_name}: {value}" for file_name, value in values)
+            message = f"Conflicting service dates: {details}."
+
+        return ValidationResult(
+            id=uuid4().hex[:10],
+            title="Service dates match across documents",
+            status=status,
+            message=message,
+            related_fields=["service_date"],
+        )
 
     @staticmethod
     def _recipe_definition(case: CaseRecord) -> RecipeDefinition | None:
