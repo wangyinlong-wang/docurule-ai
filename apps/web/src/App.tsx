@@ -254,6 +254,16 @@ function Welcome({
                 ☆ Star on GitHub <span>↗</span>
               </a>
             )}
+            {isShowcase && (
+              <a
+                className="text-button hero-contribute-link"
+                href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/docs/recipes.md#five-minute-contribution-path"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Contribute a recipe <span>↗</span>
+              </a>
+            )}
           </div>
           <div className="trust-row"><span>✓ {isShowcase ? "No uploads stored" : "No cloud required"}</span><span>✓ Executable YAML rules</span><span>✓ {isShowcase ? "Safe synthetic packet" : "Ollama ready"}</span></div>
         </div>
@@ -404,6 +414,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
                 <div className="showcase-success-actions">
                   <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer">Star DocuRule on GitHub ☆</a>
                   <a href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/demo/three-way-match/rules.yml" target="_blank" rel="noreferrer">Inspect rules.yml ↗</a>
+                  <a href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/docs/recipes.md#five-minute-contribution-path" target="_blank" rel="noreferrer">Contribute a recipe ↗</a>
                 </div>
               </div>
             </div>

@@ -127,7 +127,7 @@ cp -R demo/three-way-match demo/my-recipe
 3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
 4. Run the recipe locally through **Run rules.yml** or the API command above, then open a focused pull request with the command and result.
 
-For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md) and look for an available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) such as Docker-to-Ollama troubleshooting or model compatibility notes. If you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
+For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md) and look for an available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue), currently focused on Docker-to-Ollama troubleshooting. If you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
 
 ### Run without Docker
 

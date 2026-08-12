@@ -78,7 +78,7 @@ cp -R demo/three-way-match demo/my-recipe
 3. 补齐 `README.md` 和 `expected-result.json`，写清预期通过/失败的校验，以及一个复核者可以重现的字段修正。
 4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证，再提交一个范围明确的 PR，附上命令和结果。
 
-第一次只想改文档，可以先阅读 [CSV 导出契约](docs/csv-export.md)，再从当前可认领的 [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) 开始，例如 Docker 到 Ollama 的排障或模型兼容性记录。不确定字段或规则怎么选时，先开 Issue 再写代码。不要上传真实发票、病历、身份信息或其他机密资料。
+第一次只想改文档，可以先阅读 [CSV 导出契约](docs/csv-export.md)，再从当前可认领的 [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) 开始，目前重点是 Docker 到 Ollama 的排障。不确定字段或规则怎么选时，先开 Issue 再写代码。不要上传真实发票、病历、身份信息或其他机密资料。
 
 如需用本地视觉模型处理扫描件和图片：
 
