@@ -18,12 +18,12 @@
 MVP 技术栈：
 
 - Web：React、Vite、TypeScript；
-- API：Python 3.12、FastAPI、Pydantic v2、SQLAlchemy 2、Alembic；
-- 数据库：SQLite（WAL 模式）；
+- API：Python 3.12、FastAPI、Pydantic v2；
+- 数据库：标准库 `sqlite3`，以领域对象 JSON 作为当前持久化边界；
 - 文件：本地持久化卷；
-- 文档处理：`pypdf` 提取原生文本，`pypdfium2` 渲染 PDF，Pillow 规范化图片；
+- 文档处理：`pypdf` 提取文本层；图片交由已配置的视觉模型处理；
 - AI：统一的 Document AI 端口；默认 Ollama 原生适配器，并提供通用 OpenAI-compatible 多模态适配器；
-- 测试：pytest、Vitest、React Testing Library，浏览器 E2E 可选 Playwright；
+- 测试：pytest 后端单元/API 测试、TypeScript 编译、Vite 生产构建和 Docker 镜像构建；
 - 分发：多阶段 Dockerfile + Docker Compose。
 
 ## 2. 系统上下文

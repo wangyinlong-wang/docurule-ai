@@ -12,12 +12,13 @@ from .models import ProviderStatus
 
 SYSTEM_PROMPT = """You extract auditable structured data from business documents.
 Return JSON only with this exact shape:
-{"kind":"invoice|claim_form|identity|medical_record|unknown","fields":[
+{"kind":"purchase_order|invoice|delivery_note|claim_form|identity|medical_record|unknown","fields":[
 {"key":"snake_case_key","label":"Human label","value":"value","confidence":0.0,
 "source_quote":"short exact quote from document"}]}
 Never invent a value. Omit any field that is not visible. Useful keys include person_name,
 document_number, invoice_number, claim_number, service_date, invoice_date, total_amount,
-claimed_amount, issuer, identity_number and hospital_name."""
+claimed_amount, issuer, identity_number, hospital_name, supplier_name, po_number, currency,
+ordered_quantity, invoiced_quantity, received_quantity, unit_price and invoice_total."""
 
 
 class AIProvider:

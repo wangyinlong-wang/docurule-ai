@@ -115,7 +115,7 @@ exceptions to human review.
 
 [Hero GIF: PO + Invoice + Delivery Note -> 6 checks -> 2 exceptions]
 
-**3 documents · 18 grounded fields · 6 rules · 2 exceptions · 1 review decision**
+**3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision**
 
 `docker compose up --build`
 ```
@@ -142,13 +142,13 @@ exceptions to human review.
 
 ### 6.1 合成输入
 
-仓库内提交可公开复现的 `demo/three-way-match/`：
+当前通过内置 `/api/v1/demo/procurement` 创建三份可公开复现的合成文本单据：
 
-- `purchase-order-PO-1042.pdf`
-- `invoice-INV-882.pdf`
-- `delivery-note-DN-771.pdf`
-- `expected-result.json`
-- `rules.yml`
+- `purchase-order-PO-2026-0812.txt`
+- `supplier-invoice-INV-1048.txt`
+- `delivery-note-DN-7721.txt`
+
+可独立贡献的 recipe 文件夹、`expected-result.json` 和 `rules.yml` 仍保留在 roadmap；当前确定性 API/engine 测试是 golden behavior 的权威来源。
 
 示例供应商使用虚构名称 `Northstar Components`。不得使用真实个人、公司、地址、银行账号或医疗资料。
 
@@ -160,20 +160,19 @@ exceptions to human review.
 | 三份文件供应商一致 | PASS |
 | 发票 PO 号等于采购订单号 | PASS |
 | 币种一致 | PASS |
-| 发票数量 10 不得大于收货数量 9 | **FAIL** |
-| 发票金额 1,200 不得大于已收货价值 1,080 | **FAIL** |
+| 发票数量 96 不得大于收货数量 90 | **FAIL** |
+| 发票金额 2,400 不得大于已收货价值 2,250 | **FAIL** |
 
-### 6.3 20 秒录屏脚本
+### 6.3 16 秒实录流程
 
-- `0–3s`：拖入三份 PDF；画面直接标注 `PO + Invoice + Delivery Note`。
-- `3–7s`：自动分类并出现 18 个字段；快速展示某字段的原页高亮证据。
-- `7–12s`：规则面板显示 `4 passed / 2 exceptions`，两个数量/金额异常展开。
-- `12–17s`：人工选择 `Hold invoice`，填写短理由。
-- `17–20s`：导出审计 JSON；结束帧显示启动命令和 GitHub 仓库名。
+- `0–5s`：首页直接展示 `PO + Invoice + Delivery Note` 与两条预期异常。
+- `5–9s`：进入结果页，显示 3 份文档、8 个字段、`4/6 passed` 和数量/金额异常。
+- `9–13s`：把 `Received quantity` 从 `90` 改为 `96`，规则立即重算为 `6/6 passed`。
+- `13–16s`：批准案件，结束帧保留可导出的审计结果。
 
 Hero demo 的验收不是“录出来了”，而是：新机器仅按 README 操作可复现相同 6 条结果；`expected-result.json` 在 CI 中作为 golden fixture 校验。
 
-医疗理赔、KYC、合同核验可作为后续 recipe，不放在第一支演示中，避免让项目被误解为单行业产品。
+医疗理赔作为第二个合成 Demo 保留；KYC、合同核验可作为后续 recipe。首发动态演示仍只讲采购，避免让项目被误解为单行业产品。
 
 ## 7. GitHub Topics
 
@@ -211,7 +210,7 @@ GitHub 最多允许 20 个 topics。首发后每周查看 GitHub 搜索/流量�
 - Hero 的 6 条规则有自动化测试，输出与 `expected-result.json` 一致。
 - README 英文主文档 + 中文入口；LICENSE、CONTRIBUTING、CODE_OF_CONDUCT、SECURITY、Issue/PR templates 齐全。
 - 至少 5 个边界清楚的 `good first issue`，每个有验收标准和相关文件位置。
-- `v0.1.0` GitHub Release 有变更、限制、截图和升级/反馈入口。
+- `v0.2.0` GitHub Release 有变更、限制、动态演示和升级/反馈入口。
 - 仓库 About、Topics、Social Preview、Discussions 已配置；README 中所有链接在无登录窗口验证。
 - 已知局限公开列出，例如支持格式、CPU/内存、模型大小、首次启动时间和不保证的准确率。
 
@@ -237,14 +236,14 @@ new stars = qualified unique repo visitors × README star conversion
 
 - 找 10–15 位目标开发者做干净环境试跑；逐项记录卡点，不要求 Star。
 - 准备一套素材：20 秒 GIF、90 秒视频、5 张图、英文/中文各 3 个长短版本、架构图、FAQ。
-- 预写 `v0.1.0` Release、Show HN、Reddit、V2EX/掘金/知乎文章；每个平台以其受众改写，避免复制群发。
+- 预写 `v0.2.0` Release、Show HN、Reddit、V2EX/掘金/知乎文章；每个平台以其受众改写，避免复制群发。
 - 建立公开 roadmap 和 5–10 个 issues；邀请首批试用者把真实问题留在 GitHub。
 
 ### 9.3 Day 0–2：集中首发
 
 **目标：100–200 Star，得到 10 个真实安装反馈。**
 
-- 发布 `v0.1.0`，同步开启 Discussions 的 `Show and tell`、`Q&A`、`Ideas`。
+- 发布 `v0.2.0`，同步开启 Discussions 的 `Show and tell`、`Q&A`、`Ideas`。
 - 英文：Show HN、r/selfhosted、r/LocalLLaMA、DEV/Hashnode、X/LinkedIn；遵守社区自推广规则，正文先讲三单匹配和本地复现，不只贴链接。
 - 中文：V2EX、掘金、知乎、开发者微信群/社群；标题统一围绕“PDF 转 JSON 之后，如何跨文档核验”。
 - 所有帖子只使用一个主 CTA：`Run the local demo`；结尾再自然请求“有用的话 Star”。

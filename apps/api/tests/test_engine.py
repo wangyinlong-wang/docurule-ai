@@ -102,3 +102,76 @@ def test_normalizes_currency_values_returned_by_a_model(tmp_path: Path):
     )
 
     assert fields[0].value == 3258.67
+
+
+def test_procurement_three_way_demo_is_deterministic(tmp_path: Path, monkeypatch):
+    engine, store, uploads = build_engine(tmp_path)
+    engine.provider.settings.ai_provider = "ollama"
+    case_id = "procurement-demo"
+    case_dir = uploads / case_id
+    case_dir.mkdir()
+    samples = [
+        (
+            DocumentRecord(id="po", file_name="purchase-order.txt", media_type="text/plain"),
+            "PURCHASE ORDER\nSupplier: Northstar Components Ltd.\n"
+            "PO Number: PO-2026-0812\nCurrency: USD\n"
+            "Ordered Quantity: 100\nUnit Price: $25.00",
+        ),
+        (
+            DocumentRecord(id="inv", file_name="invoice.txt", media_type="text/plain"),
+            "SUPPLIER INVOICE\nSupplier: Northstar Components Ltd.\n"
+            "PO Number: PO-2026-0812\nCurrency: USD\n"
+            "Invoiced Quantity: 96\nUnit Price: $25.00\nInvoice Total: $2,400.00",
+        ),
+        (
+            DocumentRecord(id="dn", file_name="delivery-note.txt", media_type="text/plain"),
+            "DELIVERY NOTE\nSupplier: Northstar Components Ltd.\n"
+            "PO Number: PO-2026-0812\nCurrency: USD\n"
+            "Received Quantity: 90\nUnit Price: $25.00",
+        ),
+    ]
+    for document, content in samples:
+        (case_dir / f"{document.id}.txt").write_text(content, encoding="utf-8")
+    store.save(
+        CaseRecord(
+            id=case_id,
+            name="Three-way match",
+            documents=[document for document, _ in samples],
+            metadata={"processing_mode": "rules-only"},
+        )
+    )
+
+    def fail_if_model_is_called(*_args, **_kwargs):
+        raise AssertionError("The deterministic demo must not call an AI provider")
+
+    monkeypatch.setattr(engine.provider, "extract", fail_if_model_is_called)
+    result = engine.process(case_id)
+
+    assert result.metadata["engine"] == "deterministic-rules"
+    assert {document.kind for document in result.documents} == {
+        "purchase_order",
+        "invoice",
+        "delivery_note",
+    }
+    assert {field.key for field in result.fields} >= {
+        "supplier_name",
+        "po_number",
+        "currency",
+        "ordered_quantity",
+        "invoiced_quantity",
+        "received_quantity",
+        "unit_price",
+        "invoice_total",
+    }
+    assert len(result.validations) == 6
+    statuses = [validation.status for validation in result.validations]
+    assert statuses.count(ValidationStatus.PASSED) == 4
+    assert statuses.count(ValidationStatus.FAILED) == 2
+    assert {
+        validation.title
+        for validation in result.validations
+        if validation.status == ValidationStatus.FAILED
+    } == {
+        "Invoiced quantity does not exceed received quantity",
+        "Invoice total does not exceed received value",
+    }

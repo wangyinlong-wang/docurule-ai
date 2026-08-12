@@ -14,6 +14,8 @@ export const api = {
   getCase: (id: string) => request<CaseRecord>(`/api/v1/cases/${id}`),
   getProvider: () => request<ProviderStatus>("/api/v1/provider"),
   createDemo: () => request<CaseRecord>("/api/v1/demo", { method: "POST" }),
+  createProcurementDemo: () =>
+    request<CaseRecord>("/api/v1/demo/procurement", { method: "POST" }),
   createCase: (name: string, files: File[]) => {
     const body = new FormData();
     body.append("name", name);

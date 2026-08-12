@@ -25,7 +25,9 @@
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
 </p>
 
-![DocuRule local-first document review workspace](docs/assets/docurule-home.png)
+![DocuRule procurement three-way-match demo](docs/assets/docurule-demo.gif)
+
+**3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision**
 
 > [!NOTE]
 > DocuRule is an early, working MVP. The bundled demo is deterministic and needs no API key. Image-only documents need a local vision model or an OpenAI-compatible provider.
@@ -51,18 +53,16 @@ DocuRule starts at that missing layer. It complements parsers such as Docling, P
 
 ## ✨ See it work
 
-Click **Explore a 10-second demo** after startup. DocuRule creates a synthetic medical-claim packet and runs the complete flow:
+Click **Explore a 10-second demo** after startup. DocuRule creates a synthetic procurement packet and runs a complete three-way match:
 
-1. Classifies an invoice and a claim form.
-2. Extracts names, dates, identifiers, issuer, and amounts with source quotes.
-3. Checks document presence, name consistency, amount consistency, and confidence.
-4. Lets a human edit values, approve or reject, then export the audit record as JSON.
+1. Classifies a purchase order, supplier invoice, and delivery note.
+2. Extracts supplier, PO, currency, quantity, unit-price, and total fields with source quotes.
+3. Runs six deterministic checks and surfaces two exceptions: invoiced quantity and amount exceed the goods received.
+4. Lets a reviewer correct received quantity from `90` to `96`, immediately re-runs the rules, and records the final decision.
 
 ![Extracted fields, source evidence and validation results](docs/assets/docurule-review.png)
 
-**2 documents · 9 grounded fields · 5 checks · 1 review decision**
-
-All names, identifiers, organizations, and amounts in the demo are fictional.
+All identifiers, organizations, quantities, and amounts in the demo are fictional. The sample deliberately skips the AI provider, so its result is fast and reproducible even when Ollama is offline.
 
 ## 🚀 Quick start
 
@@ -129,7 +129,8 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Vision extraction through Ollama or an OpenAI-compatible provider
 - Graceful rules-only fallback when the model is unavailable
 - Packet-level field normalization with confidence and source quotes
-- Cross-document presence, name, and amount validations
+- Procurement three-way-match checks for document presence, supplier, PO, currency, quantity, and received value
+- Medical-claim sample with cross-document presence, name, and amount validations
 - Editable extracted values and human approve/reject decisions
 - Persistent local cases and exportable JSON audit records
 - Responsive web workspace and interactive OpenAPI docs at `/docs`
@@ -170,7 +171,8 @@ Useful endpoints:
 | Method | Endpoint | Purpose |
 |---|---|---|
 | `POST` | `/api/v1/cases` | Upload and process a packet |
-| `POST` | `/api/v1/demo` | Create the deterministic sample |
+| `POST` | `/api/v1/demo/procurement` | Create the procurement three-way-match sample |
+| `POST` | `/api/v1/demo` | Create the secondary medical-claim sample |
 | `GET` | `/api/v1/cases/{id}` | Read fields, evidence, and results |
 | `PATCH` | `/api/v1/cases/{id}/fields/{key}` | Correct and confirm a field |
 | `POST` | `/api/v1/cases/{id}/review` | Approve or reject |
@@ -183,7 +185,7 @@ Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated 
 - [x] Deterministic end-to-end demo and human review workspace
 - [x] Ollama and OpenAI-compatible provider boundary
 - [x] Docker deployment, persistence, tests, and JSON export
-- [ ] Procurement three-way-match recipe (PO + invoice + delivery note)
+- [x] Procurement three-way-match recipe (PO + invoice + delivery note)
 - [ ] YAML validation recipes and rule-level explanations
 - [ ] PDF coordinate highlights and page preview
 - [ ] Docling/PaddleOCR parser adapters

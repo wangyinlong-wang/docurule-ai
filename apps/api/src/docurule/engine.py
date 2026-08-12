@@ -19,7 +19,9 @@ from .store import CaseStore
 
 
 KIND_LABELS = {
+    "purchase_order": "Purchase order",
     "invoice": "Invoice / receipt",
+    "delivery_note": "Delivery note",
     "claim_form": "Claim / application form",
     "identity": "Identity document",
     "medical_record": "Medical record",
@@ -27,6 +29,14 @@ KIND_LABELS = {
 }
 
 FIELD_LABELS = {
+    "supplier_name": "Supplier",
+    "po_number": "PO number",
+    "currency": "Currency",
+    "ordered_quantity": "Ordered quantity",
+    "invoiced_quantity": "Invoiced quantity",
+    "received_quantity": "Received quantity",
+    "unit_price": "Unit price",
+    "invoice_total": "Invoice total",
     "person_name": "Person name",
     "document_number": "Document number",
     "invoice_number": "Invoice number",
@@ -57,13 +67,14 @@ class ProcessingEngine:
         self.store.save(case)
 
         ai_used = False
+        rules_only = case.metadata.get("processing_mode") == "rules-only"
         for index, document in enumerate(case.documents):
             try:
                 path = self.uploads_dir / case.id / f"{document.id}{Path(document.file_name).suffix.lower()}"
                 text, page_count = self._read_document(path, document.media_type)
                 document.page_count = page_count
                 image_path = path if document.media_type.startswith("image/") else None
-                ai_result = self.provider.extract(text, image_path=image_path)
+                ai_result = None if rules_only else self.provider.extract(text, image_path=image_path)
                 ai_used = ai_used or ai_result is not None
                 document.kind = self._classify(document.file_name, text, ai_result)
                 document.kind_label = KIND_LABELS[document.kind]
@@ -80,7 +91,13 @@ class ProcessingEngine:
             case.fields = self._merge_fields(case.documents)
             case.validations = self._validate(case)
             case.status = CaseStatus.NEEDS_REVIEW
-            case.metadata["engine"] = "ai+rules" if ai_used else "rules-fallback"
+            case.metadata["engine"] = (
+                "deterministic-rules"
+                if rules_only
+                else "ai+rules"
+                if ai_used
+                else "rules-fallback"
+            )
         except Exception as exc:
             case.status = CaseStatus.FAILED
             case.metadata["processing_error"] = str(exc)
@@ -111,6 +128,11 @@ class ProcessingEngine:
             return ai_result["kind"]
         value = f"{file_name}\n{text}".lower()
         rules = [
+            (
+                "delivery_note",
+                ("delivery note", "goods received note", "receiving report", "收货单", "送货单"),
+            ),
+            ("purchase_order", ("purchase order", "采购订单", "采购单")),
             ("claim_form", ("claim form", "claim number", "申请表", "理赔申请")),
             ("invoice", ("invoice", "receipt", "发票", "收据", "total amount")),
             ("identity", ("identity", "passport", "身份证", "证件号码")),
@@ -149,7 +171,15 @@ class ProcessingEngine:
                 if match:
                     raw = match.group(1).strip().rstrip(".,")
                     value: str | float = raw
-                    if key in {"total_amount", "claimed_amount"}:
+                    if key in {
+                        "total_amount",
+                        "claimed_amount",
+                        "ordered_quantity",
+                        "invoiced_quantity",
+                        "received_quantity",
+                        "unit_price",
+                        "invoice_total",
+                    }:
                         value = float(raw.replace(",", ""))
                     quote_start = max(0, match.start() - 24)
                     quote_end = min(len(text), match.end() + 24)
@@ -168,7 +198,16 @@ class ProcessingEngine:
 
     @staticmethod
     def _coerce_value(key: str, value: object) -> object:
-        if key not in {"total_amount", "claimed_amount"} or value in (None, ""):
+        numeric_keys = {
+            "total_amount",
+            "claimed_amount",
+            "ordered_quantity",
+            "invoiced_quantity",
+            "received_quantity",
+            "unit_price",
+            "invoice_total",
+        }
+        if key not in numeric_keys or value in (None, ""):
             return value
         match = re.search(r"-?\d[\d,]*(?:\.\d+)?", str(value))
         if not match:
@@ -185,6 +224,29 @@ class ProcessingEngine:
     def _regex_definitions() -> list[tuple[str, str, tuple[str, ...]]]:
         boundary = r"[^\n\r]{0,60}"
         return [
+            ("supplier_name", "Supplier", (r"(?:supplier(?:\s*name)?|vendor)\s*[:：]\s*([^\n\r]+)",)),
+            (
+                "po_number",
+                "PO number",
+                (
+                    r"(?:purchase[ \t]*order|p\.?o\.?)"
+                    r"[ \t]*(?:no\.?|number|#)[ \t]*[:：#]?[ \t]*([A-Z0-9-]+)",
+                ),
+            ),
+            ("currency", "Currency", (r"(?:currency|币种)\s*[:：]\s*([A-Z]{3})",)),
+            ("ordered_quantity", "Ordered quantity", (r"(?:ordered\s*(?:quantity|qty)|order\s*qty|订购数量)\s*[:：]?\s*([\d,]+(?:\.\d+)?)",)),
+            ("invoiced_quantity", "Invoiced quantity", (r"(?:invoiced\s*(?:quantity|qty)|invoice\s*qty|开票数量)\s*[:：]?\s*([\d,]+(?:\.\d+)?)",)),
+            ("received_quantity", "Received quantity", (r"(?:received\s*(?:quantity|qty)|receipt\s*qty|收货数量)\s*[:：]?\s*([\d,]+(?:\.\d+)?)",)),
+            (
+                "unit_price",
+                "Unit price",
+                (r"(?:unit\s*price|单价)\s*[:：]?\s*[¥$]?\s*([\d,]+(?:\.\d{1,4})?)",),
+            ),
+            (
+                "invoice_total",
+                "Invoice total",
+                (r"(?:invoice\s*total|发票总额)\s*[:：]?\s*[¥$]?\s*([\d,]+(?:\.\d{1,2})?)",),
+            ),
             ("person_name", "Person name", (r"(?:patient|person|full\s*name|name|姓名)\s*[:：]\s*([^\n\r]+)",)),
             ("invoice_number", "Invoice number", (r"(?:invoice\s*(?:no\.?|number)|发票号码)\s*[:：#]?\s*([A-Z0-9-]+)",)),
             ("claim_number", "Claim number", (r"(?:claim\s*(?:no\.?|number)|理赔号)\s*[:：#]?\s*([A-Z0-9-]+)",)),
@@ -207,8 +269,11 @@ class ProcessingEngine:
         return list(best.values())
 
     def _validate(self, case: CaseRecord) -> list[ValidationResult]:
-        results: list[ValidationResult] = []
         kinds = {document.kind for document in case.documents}
+        if kinds & {"purchase_order", "delivery_note"}:
+            return self._validate_procurement(case)
+
+        results: list[ValidationResult] = []
         for kind, label in (("invoice", "Invoice"), ("claim_form", "Claim form")):
             present = kind in kinds
             results.append(
@@ -279,6 +344,132 @@ class ProcessingEngine:
             )
         )
         return results
+
+    def _validate_procurement(self, case: CaseRecord) -> list[ValidationResult]:
+        """Run the deterministic three-way match checks used by procurement packets."""
+        results: list[ValidationResult] = []
+        kinds = {document.kind for document in case.documents}
+        required_kinds = {"purchase_order", "invoice", "delivery_note"}
+        packet_complete = required_kinds.issubset(kinds)
+        missing_labels = [KIND_LABELS[kind] for kind in required_kinds - kinds]
+        results.append(
+            ValidationResult(
+                id=uuid4().hex[:10],
+                title="Three-way document set complete",
+                status=ValidationStatus.PASSED if packet_complete else ValidationStatus.FAILED,
+                message=(
+                    "Purchase order, invoice, and delivery note are all present."
+                    if packet_complete
+                    else f"Missing: {', '.join(sorted(missing_labels))}."
+                ),
+            )
+        )
+
+        results.append(
+            self._matching_values_result(
+                case,
+                key="supplier_name",
+                title="Supplier matches across documents",
+                success_message="All three documents name the same supplier.",
+                minimum_values=3,
+            )
+        )
+        results.append(
+            self._matching_values_result(
+                case,
+                key="po_number",
+                title="PO number matches across documents",
+                success_message="All three documents reference the same purchase order.",
+                minimum_values=3,
+                compact=True,
+            )
+        )
+        results.append(
+            self._matching_values_result(
+                case,
+                key="currency",
+                title="Currency matches across documents",
+                success_message="All three documents use the same currency.",
+                minimum_values=3,
+                compact=True,
+            )
+        )
+
+        invoiced_quantity = self._as_number(self._first_value(case, "invoiced_quantity"))
+        received_quantity = self._as_number(self._first_value(case, "received_quantity"))
+        quantity_matches = (
+            invoiced_quantity is not None
+            and received_quantity is not None
+            and invoiced_quantity <= received_quantity
+        )
+        results.append(
+            ValidationResult(
+                id=uuid4().hex[:10],
+                title="Invoiced quantity does not exceed received quantity",
+                status=ValidationStatus.PASSED if quantity_matches else ValidationStatus.FAILED,
+                message=(
+                    f"Invoiced {invoiced_quantity:g}; received {received_quantity:g}."
+                    if invoiced_quantity is not None and received_quantity is not None
+                    else "Invoiced or received quantity is missing."
+                ),
+                related_fields=["invoiced_quantity", "received_quantity"],
+            )
+        )
+
+        invoice_total = self._as_number(self._first_value(case, "invoice_total"))
+        unit_price = self._as_number(self._first_value(case, "unit_price"))
+        received_value = (
+            received_quantity * unit_price
+            if received_quantity is not None and unit_price is not None
+            else None
+        )
+        amount_matches = (
+            invoice_total is not None
+            and received_value is not None
+            and invoice_total <= received_value + 0.001
+        )
+        results.append(
+            ValidationResult(
+                id=uuid4().hex[:10],
+                title="Invoice total does not exceed received value",
+                status=ValidationStatus.PASSED if amount_matches else ValidationStatus.FAILED,
+                message=(
+                    f"Invoice total is {invoice_total:,.2f}; received value is {received_value:,.2f}."
+                    if invoice_total is not None and received_value is not None
+                    else "Invoice total, received quantity, or unit price is missing."
+                ),
+                related_fields=["invoice_total", "received_quantity", "unit_price"],
+            )
+        )
+        return results
+
+    def _matching_values_result(
+        self,
+        case: CaseRecord,
+        *,
+        key: str,
+        title: str,
+        success_message: str,
+        minimum_values: int,
+        compact: bool = False,
+    ) -> ValidationResult:
+        values = self._document_values(case, key)
+        normalized = {
+            (re.sub(r"[^a-z0-9]", "", str(value).lower()) if compact else re.sub(r"\s+", " ", str(value).strip().lower()))
+            for value in values
+        }
+        matches = len(values) >= minimum_values and len(normalized) == 1
+        return ValidationResult(
+            id=uuid4().hex[:10],
+            title=title,
+            status=ValidationStatus.PASSED if matches else ValidationStatus.FAILED,
+            message=(
+                success_message
+                if matches
+                else f"Expected matching values from all three documents; found: {', '.join(map(str, values)) or 'none'}."
+            ),
+            related_fields=[key],
+        )
 
     @staticmethod
     def _document_values(case: CaseRecord, key: str) -> list[str | float | int]:

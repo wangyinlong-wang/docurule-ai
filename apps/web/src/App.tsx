@@ -69,7 +69,7 @@ function App() {
     setBusy(true);
     setError("");
     try {
-      openCase(await api.createDemo());
+      openCase(await api.createProcurementDemo());
     } catch (reason) {
       setError((reason as Error).message);
     } finally {
@@ -220,17 +220,18 @@ function WorkflowPreview() {
     <div className="preview-wrap">
       <div className="preview-glow" />
       <div className="preview-card">
-        <div className="preview-top"><span><i /> Claim review</span><small>2 documents</small></div>
+        <div className="preview-top"><span><i /> Procurement three-way match</span><small>3 documents</small></div>
         <div className="preview-files">
-          <div><span className="file-icon coral">PDF</span><p><strong>medical-invoice.pdf</strong><small>Invoice · 98% confidence</small></p><b>✓</b></div>
-          <div><span className="file-icon mint">IMG</span><p><strong>claim-form.png</strong><small>Claim form · 96% confidence</small></p><b>✓</b></div>
+          <div><span className="file-icon coral">PO</span><p><strong>purchase-order-0812.pdf</strong><small>Purchase order · 100 units</small></p><b>✓</b></div>
+          <div><span className="file-icon mint">INV</span><p><strong>supplier-invoice-1048.pdf</strong><small>Invoice · 96 units · $2,400</small></p><b>✓</b></div>
+          <div><span className="file-icon coral">DN</span><p><strong>delivery-note-7721.pdf</strong><small>Delivery note · 90 units received</small></p><b>✓</b></div>
         </div>
-        <div className="preview-rule"><span className="rule-check">✓</span><p><strong>Claim amount matches invoice</strong><small>Both documents show $3,258.67</small></p><span className="passed">PASSED</span></div>
-        <div className="preview-rule warning"><span className="rule-check">!</span><p><strong>Official seal detected</strong><small>Manual confirmation requested</small></p><span className="review">REVIEW</span></div>
-        <div className="preview-bottom"><span>4 / 5 checks passed</span><button>Review decision →</button></div>
+        <div className="preview-rule"><span className="rule-check">✓</span><p><strong>Supplier, PO, and currency match</strong><small>Northstar · PO-2026-0812 · USD</small></p><span className="passed">PASSED</span></div>
+        <div className="preview-rule warning"><span className="rule-check">!</span><p><strong>Invoice exceeds received goods</strong><small>96 invoiced · 90 received · $150 variance</small></p><span className="review">FLAGGED</span></div>
+        <div className="preview-bottom"><span>4 passed · 2 exceptions found</span><button>Review exceptions →</button></div>
       </div>
-      <div className="floating-chip top"><span>✦</span><p><strong>AI extraction</strong><small>12 fields found</small></p></div>
-      <div className="floating-chip bottom"><span>✓</span><p><strong>Evidence linked</strong><small>Every value traceable</small></p></div>
+      <div className="floating-chip top"><span>✦</span><p><strong>Three-way match</strong><small>Completed instantly</small></p></div>
+      <div className="floating-chip bottom"><span>✓</span><p><strong>Audit-ready evidence</strong><small>Every value traceable</small></p></div>
     </div>
   );
 }

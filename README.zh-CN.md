@@ -12,7 +12,9 @@
 
 <p align="center"><a href="README.md">English</a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
-![DocuRule 本地文档核验工作台](docs/assets/docurule-home.png)
+![DocuRule 采购三单匹配动态演示](docs/assets/docurule-demo.gif)
+
+**3 份文档 · 8 个归一化字段 · 6 条规则 · 2 个异常 · 1 次人工决定**
 
 ## 它解决什么问题
 
@@ -36,7 +38,7 @@ cd docurule-ai
 docker compose up --build
 ```
 
-访问 [http://localhost:8080](http://localhost:8080)，点击「Explore a 10-second demo」。内置演示不需要模型、API Key 或真实文档。
+访问 [http://localhost:8080](http://localhost:8080)，点击「Explore a 10-second demo」。内置演示会创建采购订单、供应商发票和收货单，固定得到 4 条通过、2 条异常；把 `Received quantity` 从 `90` 改为 `96` 后，六条规则全部通过。它不需要模型、API Key 或真实文档。
 
 如需用本地视觉模型处理扫描件和图片：
 
@@ -51,7 +53,9 @@ docker compose up --build
 - PDF、PNG、JPG、Markdown 和文本混合上传；
 - 文本 PDF 解析，图片可接 Ollama 或 OpenAI 兼容接口；
 - 模型离线时自动使用确定性规则兜底；
-- 字段置信度、原文引用、跨文档姓名和金额校验；
+- 字段置信度和原文引用；
+- 采购订单、发票、收货单的三单匹配：文档齐全、供应商、PO 号、币种、数量和金额校验；
+- 保留医疗理赔示例的跨文档姓名和金额校验；
 - 字段人工修改、案件批准/拒绝、JSON 审计记录导出；
 - SQLite 和文件本地持久化；
 - React + FastAPI 的响应式页面；
@@ -62,7 +66,7 @@ docker compose up --build
 
 ## 开发路线
 
-- 采购订单 + 发票 + 收货单的三单匹配模板；
+- [x] 采购订单 + 发票 + 收货单的三单匹配模板；
 - YAML 规则模板和可视化解释；
 - PDF 页内坐标高亮；
 - Docling、PaddleOCR 等解析器适配；
