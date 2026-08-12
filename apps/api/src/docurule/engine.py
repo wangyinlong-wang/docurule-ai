@@ -70,6 +70,8 @@ class ProcessingEngine:
 
         ai_used = False
         rules_only = case.metadata.get("processing_mode") == "rules-only"
+        case.metadata["provider"] = self.provider.settings.ai_provider
+        case.metadata["provider_available"] = None if rules_only else True
         recipe = self._recipe_definition(case)
         declared_kinds = (
             {document.file: document.kind for document in recipe.documents} if recipe else {}
@@ -108,6 +110,8 @@ class ProcessingEngine:
                 if ai_used
                 else "rules-fallback"
             )
+            if not rules_only and self.provider.last_extract_ok is not None:
+                case.metadata["provider_available"] = self.provider.last_extract_ok
         except Exception as exc:
             case.status = CaseStatus.FAILED
             case.metadata["processing_error"] = str(exc)

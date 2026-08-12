@@ -6,6 +6,8 @@ The runtime is data-only. It never evaluates Python, JavaScript, shell commands,
 
 ## Run a recipe
 
+> **Hosted showcase boundary:** the [GitHub Pages showcase](https://wangyinlong-wang.github.io/docurule-ai/) only runs its bundled synthetic demo. It does not accept uploads or custom recipes. Use this recipe guide from a local Docker/localhost instance; start with the [local Quick Start](../README.md#-quick-start).
+
 From the web workspace, choose **Run rules.yml**, select the YAML file, and select every required document. File names are part of the contract and must match exactly.
 
 The equivalent API call is:
@@ -18,7 +20,39 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
   http://localhost:8080/api/v1/recipes/run
 ```
 
+The command above is only the public three-way-match sample. For [Issue #20](https://github.com/wangyinlong-wang/docurule-ai/issues/20), replace the recipe path and every `files` path with the exact `demo/expense-receipt/` manifest you create; running the sample command alone does not validate your contribution.
+
 The response is a normal DocuRule case. Poll `GET /api/v1/cases/{id}` until it reaches `needs_review`, edit a field through the UI or API, and the same recipe rules run again.
+
+When a reviewer or downstream script needs a flat field view, use the [CSV export contract](csv-export.md). It documents the exact columns, UTF-8 BOM, quoting behavior, and a copyable Python consumer; JSON remains the complete audit source.
+
+## Five-minute contribution path
+
+The quickest useful contribution is a small, synthetic packet that makes one deterministic workflow easy to reproduce. The current good-first path is [Issue #20: synthetic expense-receipt recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); if you take it, follow its requested `demo/expense-receipt/` file scope. The public [`demo/three-way-match`](../demo/three-way-match/) directory below is only a schema reference, not a second procurement task—check the issue assignment before starting.
+
+```bash
+cp -R demo/three-way-match demo/expense-receipt
+```
+
+Then keep this checklist:
+
+1. Rewrite the copied fixture under `demo/expense-receipt/`: choose a lowercase, hyphenated recipe id, then update `rules.yml` (`id`, title, description, document kinds, and exact file names).
+2. Keep packet documents as UTF-8 `.txt`, `.md`, or `.csv`; do not add real personal, medical, financial, or confidential data.
+3. Use only the three supported assertion families below: document presence, normalized cross-document equality, and numeric `less_than_or_equal` (including the restricted `multiply` expression).
+4. Update the fixture `README.md` and `expected-result.json` with the initial checks, expected pass/fail result, and one reviewer correction that can be reproduced from the packet.
+5. Run your own recipe from the web UI or with the API command above, replacing the public sample paths with every file declared by your recipe. In the pull request, include the exact command, result, and why the packet is useful.
+
+The fixture layout is intentionally small:
+
+```text
+demo/<your-recipe-id>/
+├── README.md
+├── rules.yml
+├── expected-result.json
+└── synthetic-input-*.txt
+```
+
+For a first documentation-only contribution, start with the [contributing guide](../CONTRIBUTING.md), then check the current [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions) for an active entry point. A current example is [Issue #20: synthetic expense-receipt recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); check its assignment before starting. If the workflow or expected result is unclear, include the smallest synthetic packet you can share. A maintainer can help confirm the field keys and rule boundary before you spend time on implementation.
 
 ## Minimal schema
 

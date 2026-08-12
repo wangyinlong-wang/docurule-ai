@@ -16,18 +16,21 @@
   <a href="#-quick-start">Quick start</a> ·
   <a href="#-see-it-work">See it work</a> ·
   <a href="#run-your-own-recipe">YAML recipes</a> ·
+  <a href="docs/csv-export.md">CSV export contract</a> ·
   <a href="docs/product-spec.md">Product spec</a> ·
+  <a href="#-contribute-a-recipe-in-five-minutes">Contribute a recipe</a> ·
   <a href="README.zh-CN.md">中文</a>
 </p>
 
 <p align="center">
   <a href="https://github.com/wangyinlong-wang/docurule-ai/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/wangyinlong-wang/docurule-ai/ci.yml?branch=main&style=flat-square"></a>
+  <a href="https://github.com/wangyinlong-wang/docurule-ai"><img alt="GitHub stars" src="https://img.shields.io/github/stars/wangyinlong-wang/docurule-ai?style=flat-square&label=stars&color=f2b84b"></a>
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-1d4d3f?style=flat-square"></a>
   <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-37705d?style=flat-square"></a>
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
 </p>
 
-[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.4: auditable CSV field export plus safe `rules.yml` recipes.**
+[![Latest release](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.3: showcase Star CTA plus local-model evidence reports.**
 
 ![DocuRule executable YAML recipe and procurement three-way-match demo](docs/assets/docurule-recipe-demo.gif)
 
@@ -109,7 +112,24 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
   http://localhost:8080/api/v1/recipes/run
 ```
 
+That command runs only the public three-way-match sample. For [Issue #20](https://github.com/wangyinlong-wang/docurule-ai/issues/20), replace the recipe and `files` paths with the exact `demo/expense-receipt/` manifest you create; running the sample alone does not validate your contribution.
+
 The v1 runtime is intentionally constrained: recipes cannot execute Python, shell commands, templates, or network calls. It supports required document kinds, normalized equality across documents, and numeric `less_than_or_equal` expressions (including multiplication). Uploaded recipe packets currently accept UTF-8 TXT, Markdown, and CSV files whose names exactly match the manifest. See the [recipe authoring guide](docs/recipes.md).
+
+### 🧩 Contribute a recipe in five minutes
+
+The lowest-friction contribution is a synthetic document packet that demonstrates one useful cross-document check. The current good-first path is [Issue #20: synthetic expense-receipt fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); follow its requested `demo/expense-receipt/` file scope if you take it. The public [three-way-match fixture](demo/three-way-match/) below is only a schema reference, not a duplicate procurement task—check the issue assignment before starting:
+
+```bash
+cp -R demo/three-way-match demo/expense-receipt
+```
+
+1. Keep every input synthetic or fully anonymized.
+2. Rewrite the copied fixture under `demo/expense-receipt/`: update the recipe id/title and rename files as needed; `rules.yml` must match its `documents` manifest exactly. Use only the schema-v1 operators documented in [the recipe guide](docs/recipes.md).
+3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
+4. Run your own recipe locally through **Run rules.yml** or the API command above, replacing the public sample paths with every file declared by your recipe, then open a focused pull request with the command and result.
+
+For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md), then check the available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions). A current recipe entry point is [Issue #20: synthetic expense-receipt fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); check its assignment before starting. The Docker-to-Ollama issue is already assigned, so please do not duplicate that work; if you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
 
 ### Run without Docker
 
@@ -162,6 +182,8 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Persistent local cases, exportable JSON audit records, and one-row-per-field CSV views
 - Responsive web workspace and interactive OpenAPI docs at `/docs`
 - One-container Docker Compose deployment
+- Provider-aware empty-field guidance that distinguishes unavailable vision providers from text packets with no detected fields
+- Upload validation that matches supported extensions to their declared media types before writing files
 
 ## AI providers
 
@@ -173,8 +195,9 @@ Copy `.env.example` to `.env` only when overriding defaults.
 | Ollama | `DOCURULE_AI_PROVIDER=ollama` | Private local text/vision extraction |
 | OpenAI-compatible | `DOCURULE_AI_PROVIDER=openai-compatible` | vLLM, LiteLLM, OpenAI-style endpoints |
 
-For Docker-to-Ollama connectivity issues, see the
-[Ollama troubleshooting guide](docs/ollama-troubleshooting.md).
+
+For a repeatable local-model evidence log, see [the model compatibility report](docs/model-compatibility.md). It records exact model digests and narrow smoke-test results; it is not an accuracy leaderboard.
+
 
 ```env
 DOCURULE_AI_PROVIDER=openai-compatible
@@ -209,7 +232,7 @@ Useful endpoints:
 | `PATCH` | `/api/v1/cases/{id}/fields/{key}` | Correct and confirm a field |
 | `POST` | `/api/v1/cases/{id}/review` | Approve or reject |
 | `GET` | `/api/v1/cases/{id}/export` | Export the full audit JSON (default) |
-| `GET` | `/api/v1/cases/{id}/export?format=csv` | Export one normalized case field per CSV row |
+| `GET` | `/api/v1/cases/{id}/export?format=csv` | Export one normalized case field per CSV row ([consumer guide](docs/csv-export.md)) |
 
 Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated API reference.
 

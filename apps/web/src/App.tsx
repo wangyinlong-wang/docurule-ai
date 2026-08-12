@@ -1,5 +1,6 @@
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { api, isShowcase } from "./lib/api";
+import { getEmptyFieldsState } from "./lib/empty-state";
 import { caseToCsv, isShowcaseCaseComplete } from "./lib/showcase";
 import type { CaseRecord, CaseStatus, ExtractedField, ProviderStatus } from "./types";
 
@@ -209,7 +210,7 @@ function Topbar({ provider, onNew }: { provider: ProviderStatus | null; onNew: (
         <span className={`provider-pill ${provider?.available ? "online" : "fallback"}`}>
           <i /> {provider?.available ? provider.model : "Rules fallback"}
         </span>
-        <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer" className="github-button" title="Star DocuRule on GitHub">☆ <span>Star on GitHub</span></a>
+        <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer" className="github-button" title="Star DocuRule on GitHub" aria-label="Star DocuRule on GitHub">☆ <span>Star on GitHub</span></a>
         <button className="mobile-new" onClick={onNew}>＋</button>
       </div>
     </header>
@@ -241,6 +242,27 @@ function Welcome({
               <a className="text-button" href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/demo/three-way-match/rules.yml" target="_blank" rel="noreferrer">View rules.yml <span>↗</span></a>
             ) : (
               <button className="text-button" onClick={onRecipe}>Run rules.yml <span>↗</span></button>
+            )}
+            {isShowcase && (
+              <a
+                className="hero-star-button"
+                href="https://github.com/wangyinlong-wang/docurule-ai"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Star DocuRule on GitHub"
+              >
+                ☆ Star on GitHub <span>↗</span>
+              </a>
+            )}
+            {isShowcase && (
+              <a
+                className="text-button hero-contribute-link"
+                href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/docs/recipes.md#five-minute-contribution-path"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Contribute a recipe <span>↗</span>
+              </a>
             )}
           </div>
           <div className="trust-row"><span>✓ {isShowcase ? "No uploads stored" : "No cloud required"}</span><span>✓ Executable YAML rules</span><span>✓ {isShowcase ? "Safe synthetic packet" : "Ollama ready"}</span></div>
@@ -286,6 +308,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
   const passed = item.validations.filter((result) => result.status === "passed").length;
   const flagged = item.validations.filter((result) => result.status !== "passed").length;
   const showcaseComplete = isShowcase && isShowcaseCaseComplete(item);
+  const emptyFieldsState = item.fields.length === 0 ? getEmptyFieldsState(item) : null;
   const showcaseExport = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(item, null, 2))}`;
   const showcaseCsvExport = `data:text/csv;charset=utf-8,${encodeURIComponent(`\ufeff${caseToCsv(item)}`)}`;
 
@@ -343,7 +366,17 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
         <section className="panel fields-panel">
           <div className="panel-title"><div><span>02</span><h2>Extracted fields</h2></div><small>Click a value to edit</small></div>
           <div className="field-table">
-            {item.fields.length === 0 && <div className="empty-fields">No structured fields were found. Connect a vision model for image-only documents.</div>}
+            {emptyFieldsState && (
+              <div className={`empty-fields ${emptyFieldsState.kind}`} role="status">
+                <strong>{emptyFieldsState.title}</strong>
+                <p>{emptyFieldsState.message}</p>
+                {emptyFieldsState.providerHref && (
+                  <a href={emptyFieldsState.providerHref} target="_blank" rel="noreferrer">
+                    Read AI provider setup ↗
+                  </a>
+                )}
+              </div>
+            )}
             {item.fields.map((field) => {
               const source = item.documents.find((document) => document.id === field.source_document_id);
               return (
@@ -381,6 +414,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
                 <div className="showcase-success-actions">
                   <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer">Star DocuRule on GitHub ☆</a>
                   <a href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/demo/three-way-match/rules.yml" target="_blank" rel="noreferrer">Inspect rules.yml ↗</a>
+                  <a href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/docs/recipes.md#five-minute-contribution-path" target="_blank" rel="noreferrer">Contribute a recipe ↗</a>
                 </div>
               </div>
             </div>

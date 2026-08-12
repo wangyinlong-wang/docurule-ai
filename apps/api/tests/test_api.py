@@ -16,6 +16,39 @@ def test_health():
     assert response.json()["status"] == "ok"
 
 
+def test_upload_accepts_matching_extension_and_media_type():
+    response = client.post(
+        "/api/v1/cases",
+        files=[("files", ("document.pdf", b"%PDF-1.4 synthetic", "application/pdf"))],
+        data={"name": "Accepted upload", "process": "false"},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["documents"][0]["media_type"] == "application/pdf"
+
+
+def test_upload_rejects_unknown_extension_before_storage():
+    response = client.post(
+        "/api/v1/cases",
+        files=[("files", ("payload.exe", b"synthetic", "application/x-executable"))],
+        data={"name": "Rejected upload", "process": "false"},
+    )
+
+    assert response.status_code == 415
+    assert "Unsupported file type" in response.json()["detail"]
+
+
+def test_upload_rejects_extension_media_type_mismatch():
+    response = client.post(
+        "/api/v1/cases",
+        files=[("files", ("disguised.jpg", b"synthetic", "application/pdf"))],
+        data={"name": "Mismatched upload", "process": "false"},
+    )
+
+    assert response.status_code == 415
+    assert "Unsupported file type" in response.json()["detail"]
+
+
 def test_demo_review_flow():
     created = client.post("/api/v1/demo")
     assert created.status_code == 201

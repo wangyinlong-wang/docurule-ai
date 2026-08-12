@@ -9,7 +9,7 @@
 ### 0.1 当前结论
 
 - 公开仓库：<https://github.com/wangyinlong-wang/docurule-ai>
-- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全、可执行的 schema-v1 YAML recipes；当前 Latest Release `v0.4.0` 增加可审计 CSV 字段导出。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
+- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全、可执行的 schema-v1 YAML recipes；`v0.4.0` 增加可审计 CSV 字段导出；`v0.5.0` 增加 provider-aware 空字段提示；`v0.5.1` 增加上传扩展名/MIME 配对校验；`v0.5.2` 增加五分钟 Recipe 贡献路径并修复 `make demo`；当前 Latest Release `v0.5.3` 增加 Showcase Star CTA 与本地模型证据报告。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
 - 当前首发 Hero：合成的采购三单匹配 Demo（采购订单 + 发票 + 收货单），`3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision`。
 - 初始结果固定为 `4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96` 后重新校验为 `6 / 6 passed`。内置 Demo 不调用 AI provider。
 - README 当前动态 GIF 为 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes（约 491 KB）、14.7 秒；`docs/assets/docurule-demo.gif` 是 v0.2 的 16.0 秒旧版演示。医疗理赔 Demo 作为第二场景保留。
@@ -21,11 +21,11 @@
 
 - [ ] 作者亲自在干净环境执行 README 的 `docker compose up --build`，并记录操作系统、CPU/内存、总耗时与结果。
 - [ ] 作者点击采购 Demo，核对初始结果为 `3 documents / 8 normalized fields / 6 rules / 4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96`，核对 `6 / 6 passed`，再完成批准或拒绝与 JSON 导出。
-- [x] GitHub 上的 `v0.4.0` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero、v0.4 CSV 导出与浏览器演示入口。
+- [x] GitHub 上的 `v0.5.3` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero、v0.4 CSV 导出、v0.5 空字段提示、v0.5.1 上传校验、v0.5.2 贡献入口、v0.5.3 模型报告与浏览器 Star 入口。
 - [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
 - [x] **当前动态 Demo 已生成：** `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒；README 已引用该素材。
-- [x] 已从公开页面核验 README Hero、Latest Release `v0.4.0` 与无需登录的 GitHub Pages 演示。
-- [x] GitHub Social Preview 已上传 1280×640 成图；公开仓库 HTML 的 `og:image` 已指向 `repository-images.githubusercontent.com`。
+- [x] 已从公开页面核验 README Hero、Latest Release `v0.5.3` 与无需登录的 GitHub Pages 演示。
+- [x] GitHub repository social preview 已配置 1280×640 成图；公开 GitHub Pages Showcase 的 `og:image` 指向仓库 `main` 分支中的 `docs/assets/social-preview.png`，与 canonical 三单 Demo 一致。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
 - [ ] 作者能在首帖后的 4–6 小时保持在线，并在首日及时回复技术问题。
@@ -36,10 +36,12 @@
 截至 2026-08-13（Asia/Shanghai）：
 
 - X：当前 Chrome 会话显示登录入口，尚无已核验的公开帖；不要把草稿或失败提交写成已发布。
-- GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.4.0>
-- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>
+- GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.3>（已核验公开、非 draft、非 prerelease）
+- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0/v0.5.1/v0.5.2 更新及 CSV 契约 follow-up；v0.5.3 以 Release 为主
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
-- 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。PR 尚未满足 extension/MIME 配对测试且仍与当前 `main`（v0.4.0）冲突；已请求贡献者更新，未批准或合并不完整改动。
+- Issues [#3 上传类型校验](https://github.com/wangyinlong-wang/docurule-ai/issues/3)、[#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4)、[#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5)、[#9 模型兼容性报告](https://github.com/wangyinlong-wang/docurule-ai/issues/9) 与 [#19 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19) 已关闭；#19 的 `docs/csv-export.md` 提供 11 列契约，#9 的 `model-compatibility.md` 提供合成实测报告。当前有 1 个未认领的 good-first issue：[#20 合成费用报销 recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)；贡献者仍应先查看标签列表或 Discussions。
+- 外部用户 Sanchar127 已在 [#8 Docker→Ollama 排障](https://github.com/wangyinlong-wang/docurule-ai/issues/8) 留言认领并被分配；维护者已补充文件范围、Docker Desktop/Linux 差异、验收命令和隐私边界，等待其 PR。另有 [model compatibility report](model-compatibility.md) 记录本机 `gemma4:latest` 的有限范围 PARTIAL 结果，不能写成准确率或生产基准。
+- 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。该 PR 基于旧版 `main`，与 v0.5.1 存在冲突；维护者已留下说明并关闭，功能由 v0.5.1 当前实现覆盖，未强行合入过时改动。
 
 不要把 fork 或 PR 换算成“社区采用”。它们只用于决定下一步：优先帮助真实贡献者完成合入，并继续测试在线 Demo 到 GitHub 的转化。
 
@@ -54,7 +56,7 @@
 | 核心差异 | 处理一组相关文档；字段带证据；确定性校验优先；人工做最终决定 | README 的 Why / How it works |
 | 许可证 | MIT | `LICENSE` 与 GitHub 仓库元数据 |
 | 成熟度 | Early, working MVP | 不写 production-ready、enterprise-ready 或 battle-tested |
-| 当前功能版本 | `v0.4.0` | `v0.2.0` 首发采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全可执行 YAML recipe runtime；`v0.4.0` 增加可审计 CSV 字段导出 |
+| 当前功能版本 | `v0.5.3` | `v0.2.0` 首发采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全可执行 YAML recipe runtime；`v0.4.0` 增加可审计 CSV 字段导出；`v0.5.0` 增加 provider-aware 空字段提示；`v0.5.1` 增加上传扩展名/MIME 配对校验；`v0.5.2` 增加五分钟 Recipe 贡献路径并修复 `make demo`；`v0.5.3` 增加 Showcase Star CTA 与本地模型证据报告 |
 | Hero Demo | 合成采购资料：采购订单 + 供应商发票 + 收货单；不需要模型或 API Key | 所有机构、编号、数量和金额均为虚构；Demo 强制 rules-only |
 | Hero 实测摘要 | 3 份文档、8 个 normalized fields、6 条规则、初始 4 pass + 2 fail、1 次人工决定 | 把 received quantity `90 → 96` 后为 6/6 passed；API/engine tests 覆盖 |
 | 第二场景 | 合成医疗理赔资料：发票 + 理赔表 | `/api/v1/demo` 保留；不作为首发 Hero |
@@ -68,10 +70,10 @@
 | 证据 | 字段包含置信度和 source quote | 坐标高亮与页内预览仍是 roadmap |
 | API | 创建案件、Demo、读取、修正字段、人工决定、JSON/CSV 导出、读取与执行 YAML recipe；`/docs` 提供 OpenAPI UI | JSON 是完整审计源；CSV 是一行一个 normalized field 的审阅视图 |
 | 前端/后端 | React + TypeScript；FastAPI | 当前小型单应用架构 |
-| 采购三单匹配 | 从 `v0.2.0` 起提供；`v0.3.0` 起同一份公开 `rules.yml` 可通过 UI/API 执行；`v0.4.0` 可导出一行一个 normalized field 的 CSV | 使用 3 docs、8 fields、6 rules、4/6→6/6 的实测数字 |
+| 采购三单匹配 | 从 `v0.2.0` 起提供；`v0.3.0` 起同一份公开 `rules.yml` 可通过 UI/API 执行；`v0.4.0` 可导出一行一个 normalized field 的 CSV；`v0.5.0` 对空字段状态给出 provider-aware 指引；`v0.5.1` 在普通上传入口校验扩展名/MIME 配对 | 使用 3 docs、8 fields、6 rules、4/6→6/6 的实测数字 |
 | 动态 GIF | 当前 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒 | v0.2 的 16 秒 GIF 仍保留但不再是 README Hero |
 | 在线演示 | `https://wangyinlong-wang.github.io/docurule-ai/` | 浏览器内合成 packet；不上传、不持久化，不代表真实文件处理能力 |
-| Social Preview | `docs/assets/social-preview.png`，1280×640 | 已上传 GitHub；公开 `og:image` 已切换到 repository image |
+| Social Preview | `docs/assets/social-preview.png`，1280×640 | GitHub repository social preview 与 Pages Showcase `og:image` 均使用这张 canonical 三单素材 |
 | 真实准确率 | 未建立可泛化 benchmark | 不给百分比，不与 OCR/IDP 产品做准确率排名 |
 | 隐私/安全 | 默认本地保存；可配本机 Ollama | 不写“100% private/secure”“数据绝不离开机器”；远程 provider 是明确例外 |
 | 目标行业 | 可用于探索财务、保险、KYC、法务、供应链等 packet workflow | 当前只验证了合成 Demo，不能说已在这些行业落地 |
@@ -389,7 +391,7 @@ PDF 转 JSON 只完成了一半：我如何把跨文档核验拆成抽取、规�
 1. **问题不是“读出一个 PDF”**
    - 单文件抽取输出之后，仍要跨文件比对姓名、编号、日期和金额。
    - 审核人员需要知道值从哪里来，以及谁改过、为什么批准。
-   - 用当前 `v0.4.0` recipe Hero GIF/截图开场：3 份文档、8 个 normalized fields、6 条规则、2 个初始异常，并展示 `rules.yml` 的同源执行与 CSV 导出。
+   - 用当前 `v0.5.3` recipe Hero GIF/截图开场：3 份文档、8 个 normalized fields、6 条规则、2 个初始异常，并展示 `rules.yml` 的同源执行、CSV 导出、空字段提示、上传类型边界、五分钟贡献路径与 Showcase Star CTA。
 2. **为什么不把所有检查都写进 prompt**
    - 模型适合从复杂输入提取候选字段。
    - 相等、存在性、金额比较等应可读、可测、可重复。
@@ -597,7 +599,7 @@ README 自身可以保留自然的 Star 请求；社区正文以试跑和反馈�
 | “完整 OCR” | 当前文本 PDF 用 pypdf，图像依赖视觉模型 | “text-layer PDF extraction; vision provider for images” |
 | “可审计/不可篡改审计” | 有 JSON trail，不等于合规或 tamper-proof | “exportable JSON decision/audit record” |
 | “模型永不幻觉” | 不可保证 | “provider errors do not silently invent fields; rules-only fallback is exposed” |
-| “所有版本都支持采购三单匹配” | Hero 从 `v0.2.0` 开始；可执行 recipe runtime 从 `v0.3.0` 开始；CSV 字段导出从 `v0.4.0` 开始 | 分别写各功能的实际版本，不把 CSV 导出倒写成早期能力 |
+| “所有版本都支持采购三单匹配” | Hero 从 `v0.2.0` 开始；可执行 recipe runtime 从 `v0.3.0` 开始；CSV 字段导出从 `v0.4.0` 开始；空字段提示从 `v0.5.0` 开始；上传扩展名/MIME 配对校验从 `v0.5.1` 开始 | 分别写各功能的实际版本，不把后续能力倒写成早期功能 |
 | “20 秒动态 Demo” | 当前 README 素材实测为 14.7 秒 | “a 15-second demo GIF”或“约 15 秒动态演示” |
 | “已被真实企业/用户采用” | 没有公开证据 | 不提；以后只引用获授权、可核查的案例 |
 | “节省 80% 时间/成本” | 未做测量 | 描述流程，不量化收益 |
@@ -668,8 +670,8 @@ Quick Start reported success rate = success reports / (success reports + failure
 
 - [ ] 我明确说自己是作者，没有伪装成第三方推荐。
 - [ ] 标题没有最高级、虚假数字、感叹号堆叠或未经验证的结果。
-- [ ] 正文中的版本、Demo、字段数、规则数与当前公开 Release 一致。
-- [x] Latest Release `v0.4.0` 已公开；采购 Hero 实测数字、14.7 秒 recipe GIF、CSV 导出和在线演示与公开 README 一致。
+- [x] 正文中的版本、Demo、字段数、规则数与当前公开 Release 一致。
+- [x] Latest Release `v0.5.3` 已公开；采购 Hero 实测数字、16.0 秒 recipe GIF、CSV 导出、空字段提示、上传校验、五分钟贡献路径、本地模型报告、Showcase Star CTA 和在线演示与公开 README 一致。
 - [ ] 我没有写准确率、生产可用、企业采用、绝对隐私等无证据结论。
 - [ ] AI 参与披露真实，且该平台允许这类代码/文案；HN 文案由作者本人重写。
 - [ ] 链接直接指向 GitHub 原始仓库，无投票链接、隐藏跳转或短链。

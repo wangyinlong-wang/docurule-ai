@@ -10,9 +10,11 @@
   开源、本地优先的文档智能工作台：文档分类、字段提取、跨文档核验、人工复核和审计导出。
 </p>
 
-<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="docs/product-spec.md">产品规格</a></p>
+<p align="center"><a href="README.md">English</a> · <a href="https://wangyinlong-wang.github.io/docurule-ai/"><strong>在线体验</strong></a> · <a href="#快速开始">快速开始</a> · <a href="#五分钟贡献一个-recipe">贡献 Recipe</a> · <a href="docs/csv-export.md">CSV 导出契约</a> · <a href="docs/product-spec.md">产品规格</a></p>
 
-[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.4：可审计 CSV 字段导出，以及安全的 `rules.yml` 执行。**
+[![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.3：在线演示 Star 入口，以及本地模型证据报告。**
+
+[![GitHub Stars](https://img.shields.io/github/stars/wangyinlong-wang/docurule-ai?style=flat-square&label=stars&color=f2b84b)](https://github.com/wangyinlong-wang/docurule-ai) 如果这个工作流对你有用，欢迎在 GitHub 上点 Star，方便跟进后续更新。
 
 ![DocuRule 可执行 YAML 规则与采购三单匹配动态演示](docs/assets/docurule-recipe-demo.gif)
 
@@ -61,7 +63,24 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
   http://localhost:8080/api/v1/recipes/run
 ```
 
+上面的命令只运行公开的三单匹配样例。对于 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)，请把 recipe 和所有 `files` 路径替换为你创建的 `demo/expense-receipt/` 清单；只运行样例命令不能证明你的贡献有效。
+
 安全边界是明确的：规则不能执行 Python、Shell、模板或网络请求，只能使用允许的文档齐全、跨文档相等和数值大小比较。当前上传 recipe 支持文件名与清单完全一致的 UTF-8 TXT、Markdown 和 CSV。完整格式见[规则编写指南](docs/recipes.md)。
+
+### 五分钟贡献一个 Recipe
+
+最容易开始的贡献，是一个完全合成的资料包和一条可解释的跨文档校验。当前 good-first 路径是 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)；如果认领它，请按 Issue 要求创建 `demo/expense-receipt/`。下面的[三单匹配 fixture](demo/three-way-match/)只是 schema 参考，不是另一个采购任务；开工前请先确认 Issue 是否已被认领：
+
+```bash
+cp -R demo/three-way-match demo/expense-receipt
+```
+
+1. 所有输入只使用合成或彻底匿名化内容。
+2. 在 `demo/expense-receipt/` 中重写复制出来的 fixture：修改 recipe 的 id/title，并按需重命名文件；`rules.yml` 的 `documents` 清单必须与文件名完全一致，规则只使用[规则指南](docs/recipes.md)列出的 schema v1 算子。
+3. 补齐 `README.md` 和 `expected-result.json`，写清预期通过/失败的校验，以及一个复核者可以重现的字段修正。
+4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证你自己的 recipe，并把公开样例路径替换为清单中声明的全部文件，再提交一个范围明确的 PR，附上命令和结果。
+
+第一次只想改文档，可以先阅读 [CSV 导出契约](docs/csv-export.md)，再查看当前的 [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) 列表或 [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions)。当前可参考的 Recipe 入口是 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)，开工前请先确认是否已有认领。Docker 到 Ollama 的排障任务已有贡献者负责，请不要重复开工；不确定字段或规则怎么选时，先开 Issue 再写代码。不要上传真实发票、病历、身份信息或其他机密资料。
 
 如需用本地视觉模型处理扫描件和图片：
 
@@ -72,6 +91,8 @@ docker compose up --build
 ```
 
 文件与 SQLite 数据默认保存在本地 Docker volume；如果配置远程 OpenAI-compatible provider，文档输入会发送到你指定的远程端点。
+
+如果要记录可复现的本地模型证据，请查看[模型兼容性报告模板与实测记录](docs/model-compatibility.md)。它记录精确模型 digest 和有限范围的 smoke test，不是准确率排行榜。
 
 ## 当前已经可用
 
@@ -84,6 +105,8 @@ docker compose up --build
 - 公开的三单匹配 recipe：合成输入、`rules.yml` 和 CI 精确核对的预期结果；
 - 保留医疗理赔示例的跨文档姓名和金额校验；
 - 字段人工修改、案件批准/拒绝、完整 JSON 审计导出和一行一个字段的 CSV 导出；
+- 空字段状态会区分视觉 provider 不可用、图片需要视觉模型和文本未识别字段；
+- 文件会在写入前校验扩展名与声明的 MIME 类型是否匹配；
 - SQLite 和文件本地持久化；
 - React + FastAPI 的响应式页面；
 - 单容器 Docker Compose 部署；

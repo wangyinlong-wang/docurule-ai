@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.5.3 - 2026-08-13
+
+### Added
+
+- Added a prominent Star CTA to the browser-only showcase and a live Stars badge to both READMEs.
+- Added a repeatable local-model compatibility report with a synthetic `gemma4:latest` smoke-test result.
+- Linked the model report from the AI provider documentation in English and Chinese.
+
+## 0.5.2 - 2026-08-13
+
+### Added
+
+- Added a five-minute recipe contribution path in the English/Chinese README and recipe guide.
+- Fixed `make demo` to launch the current Docker Compose demo instead of a removed script.
+
+## 0.5.1 - 2026-08-13
+
+### Added
+
+- Validate supported upload extension/MIME pairs before creating storage directories.
+- Return a clear `415` response for unknown extensions and mismatched metadata, with regression coverage.
+
+## 0.5.0 - 2026-08-13
+
+### Added
+
+- Added provider-aware empty-field guidance for image-only reviews, including a link to AI provider setup.
+- Added a distinct text-document empty state so reviewers can keep editing or exporting without being told to install a vision model.
+- Recorded provider availability metadata for explaining a rules fallback without retaining document content.
+
 ## 0.4.0 - 2026-08-13
 
 ### Added
