@@ -1,4 +1,7 @@
 import type { CaseRecord, ProviderStatus } from "../types";
+import { showcaseApi } from "./showcase";
+
+export const isShowcase = import.meta.env.MODE === "showcase";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, init);
@@ -9,7 +12,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-export const api = {
+const liveApi = {
   listCases: () => request<CaseRecord[]>("/api/v1/cases"),
   getCase: (id: string) => request<CaseRecord>(`/api/v1/cases/${id}`),
   getProvider: () => request<ProviderStatus>("/api/v1/provider"),
@@ -43,3 +46,5 @@ export const api = {
       body: JSON.stringify({ decision, note: "Reviewed in DocuRule workspace" }),
     }),
 };
+
+export const api = isShowcase ? showcaseApi : liveApi;
