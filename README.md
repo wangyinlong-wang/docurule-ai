@@ -24,6 +24,7 @@
 
 <p align="center">
   <a href="https://github.com/wangyinlong-wang/docurule-ai/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/wangyinlong-wang/docurule-ai/ci.yml?branch=main&style=flat-square"></a>
+  <a href="https://github.com/wangyinlong-wang/docurule-ai"><img alt="GitHub stars" src="https://img.shields.io/github/stars/wangyinlong-wang/docurule-ai?style=flat-square&label=stars&color=f2b84b"></a>
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-1d4d3f?style=flat-square"></a>
   <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-37705d?style=flat-square"></a>
   <a href="https://ollama.com/"><img alt="Ollama ready" src="https://img.shields.io/badge/Ollama-ready-cbe9d9?style=flat-square&labelColor=1b3d33&color=cbe9d9"></a>
@@ -126,7 +127,7 @@ cp -R demo/three-way-match demo/my-recipe
 3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
 4. Run the recipe locally through **Run rules.yml** or the API command above, then open a focused pull request with the command and result.
 
-For a first documentation-only contribution, claim [Issue #19](https://github.com/wangyinlong-wang/docurule-ai/issues/19) and add a consumer example for the CSV export contract. If you are unsure which fields or rule belong in a packet, open a [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
+For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md) and look for an available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) such as Docker-to-Ollama troubleshooting or model compatibility notes. If you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
 
 ### Run without Docker
 

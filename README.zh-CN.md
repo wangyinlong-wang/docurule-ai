@@ -14,6 +14,8 @@
 
 [![最新版本](https://img.shields.io/github/v/release/wangyinlong-wang/docurule-ai?style=flat-square&label=latest&color=376b59)](https://github.com/wangyinlong-wang/docurule-ai/releases/latest) **v0.5.2：更安全的上传校验，以及五分钟贡献 Recipe 路径。**
 
+[![GitHub Stars](https://img.shields.io/github/stars/wangyinlong-wang/docurule-ai?style=flat-square&label=stars&color=f2b84b)](https://github.com/wangyinlong-wang/docurule-ai) 如果这个工作流对你有用，欢迎在 GitHub 上点 Star，方便跟进后续更新。
+
 ![DocuRule 可执行 YAML 规则与采购三单匹配动态演示](docs/assets/docurule-recipe-demo.gif)
 
 **rules.yml · 3 份文档 · 8 个归一化字段 · 6 条规则 · 2 个异常 · 1 次人工决定**
@@ -76,7 +78,7 @@ cp -R demo/three-way-match demo/my-recipe
 3. 补齐 `README.md` 和 `expected-result.json`，写清预期通过/失败的校验，以及一个复核者可以重现的字段修正。
 4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证，再提交一个范围明确的 PR，附上命令和结果。
 
-第一次只想改文档，可以认领 [Issue #19](https://github.com/wangyinlong-wang/docurule-ai/issues/19)，为 CSV 导出契约补一个消费者示例；不确定字段或规则怎么选时，先从[可认领的 good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue)开始。不要上传真实发票、病历、身份信息或其他机密资料。
+第一次只想改文档，可以先阅读 [CSV 导出契约](docs/csv-export.md)，再从当前可认领的 [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) 开始，例如 Docker 到 Ollama 的排障或模型兼容性记录。不确定字段或规则怎么选时，先开 Issue 再写代码。不要上传真实发票、病历、身份信息或其他机密资料。
 
 如需用本地视觉模型处理扫描件和图片：
 
