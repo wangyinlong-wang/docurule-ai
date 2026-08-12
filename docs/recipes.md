@@ -48,7 +48,7 @@ demo/<your-recipe-id>/
 └── synthetic-input-*.txt
 ```
 
-For a first documentation-only contribution, start with the [contributing guide](../CONTRIBUTING.md), then check the current [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions) for an active entry point. If the workflow or expected result is unclear, include the smallest synthetic packet you can share. A maintainer can help confirm the field keys and rule boundary before you spend time on implementation.
+For a first documentation-only contribution, start with the [contributing guide](../CONTRIBUTING.md), then check the current [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions) for an active entry point. A current example is [Issue #20: synthetic expense-receipt recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); check its assignment before starting. If the workflow or expected result is unclear, include the smallest synthetic packet you can share. A maintainer can help confirm the field keys and rule boundary before you spend time on implementation.
 
 ## Minimal schema
 

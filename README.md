@@ -127,7 +127,7 @@ cp -R demo/three-way-match demo/my-recipe
 3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
 4. Run the recipe locally through **Run rules.yml** or the API command above, then open a focused pull request with the command and result.
 
-For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md), then check the available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions). The Docker-to-Ollama issue is currently assigned, so please do not duplicate that work; if you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
+For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md), then check the available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions). A current recipe entry point is [Issue #20: synthetic expense-receipt fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); check its assignment before starting. The Docker-to-Ollama issue is already assigned, so please do not duplicate that work; if you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
 
 ### Run without Docker
 
