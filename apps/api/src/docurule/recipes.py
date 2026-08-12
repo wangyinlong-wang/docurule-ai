@@ -188,7 +188,7 @@ def parse_recipe_yaml(content: bytes) -> RecipeDefinition:
         payload = yaml.load(text, Loader=UniqueKeySafeLoader)
     except RecipeError:
         raise
-    except yaml.YAMLError as exc:
+    except (yaml.YAMLError, TypeError, ValueError, RecursionError) as exc:
         raise RecipeError("Recipe file contains invalid YAML") from exc
     if not isinstance(payload, dict):
         raise RecipeError("Recipe YAML must contain an object at the top level")

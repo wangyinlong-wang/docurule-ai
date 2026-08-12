@@ -1,6 +1,11 @@
 import pytest
 
+from docurule.config import Settings
+from docurule.engine import ProcessingEngine
+from docurule.models import CaseRecord, DocumentRecord, ValidationStatus
+from docurule.provider import AIProvider
 from docurule.recipes import RecipeError, load_recipe_definition, parse_recipe_yaml
+from docurule.store import CaseStore
 
 
 def test_bundled_recipe_matches_the_executable_contract():
@@ -93,3 +98,55 @@ rules:
 def test_rejects_unsafe_or_unsupported_recipe_yaml(yaml_text: str, message: str):
     with pytest.raises(RecipeError, match=message):
         parse_recipe_yaml(yaml_text.encode())
+
+
+def test_executes_a_recipe_with_custom_document_kinds(tmp_path):
+    recipe = parse_recipe_yaml(
+        b"""schema_version: 1
+id: custom-packet
+title: Custom packet
+documents:
+  - {kind: vendor_quote, file: quote.txt}
+rules:
+  - id: packet_present
+    title: Quote is present
+    assertion: {includes_all_document_kinds: [vendor_quote]}
+"""
+    )
+    uploads = tmp_path / "uploads"
+    case_dir = uploads / "custom-case"
+    case_dir.mkdir(parents=True)
+    (case_dir / "quote.txt").write_text("Supplier: Northstar", encoding="utf-8")
+    store = CaseStore(tmp_path / "test.sqlite3")
+    store.save(
+        CaseRecord(
+            id="custom-case",
+            name="Custom",
+            documents=[
+                DocumentRecord(
+                    id="quote", file_name="quote.txt", media_type="text/plain"
+                )
+            ],
+            metadata={
+                "processing_mode": "rules-only",
+                "recipe": recipe.model_dump(mode="json"),
+            },
+        )
+    )
+    engine = ProcessingEngine(
+        store,
+        AIProvider(Settings(data_dir=tmp_path, ai_provider="local")),
+        uploads,
+    )
+
+    result = engine.process("custom-case")
+
+    assert result.documents[0].status == "processed"
+    assert result.documents[0].kind == "vendor_quote"
+    assert result.documents[0].kind_label == "Vendor Quote"
+    assert result.validations[0].status == ValidationStatus.PASSED
+
+
+def test_rejects_unhashable_yaml_mapping_keys():
+    with pytest.raises(RecipeError, match="invalid YAML"):
+        parse_recipe_yaml(b"? [nested, key]\n: value\n")

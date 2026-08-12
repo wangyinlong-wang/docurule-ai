@@ -85,7 +85,9 @@ class ProcessingEngine:
                 document.kind = declared_kinds.get(document.file_name) or self._classify(
                     document.file_name, text, ai_result
                 )
-                document.kind_label = KIND_LABELS[document.kind]
+                document.kind_label = KIND_LABELS.get(
+                    document.kind, document.kind.replace("_", " ").title()
+                )
                 document.fields = self._extract_fields(document.id, text, ai_result)
                 document.status = DocumentStatus.PROCESSED
             except Exception as exc:
