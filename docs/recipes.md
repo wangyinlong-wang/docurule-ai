@@ -6,6 +6,8 @@ The runtime is data-only. It never evaluates Python, JavaScript, shell commands,
 
 ## Run a recipe
 
+> **Hosted showcase boundary:** the [GitHub Pages showcase](https://wangyinlong-wang.github.io/docurule-ai/) only runs its bundled synthetic demo. It does not accept uploads or custom recipes. Use this recipe guide from a local Docker/localhost instance; start with the [local Quick Start](../README.md#-quick-start).
+
 From the web workspace, choose **Run rules.yml**, select the YAML file, and select every required document. File names are part of the contract and must match exactly.
 
 The equivalent API call is:
