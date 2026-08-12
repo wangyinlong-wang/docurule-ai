@@ -46,7 +46,7 @@ export interface CaseRecord {
   documents: DocumentRecord[];
   fields: ExtractedField[];
   validations: ValidationResult[];
-  metadata: Record<string, string>;
+  metadata: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }

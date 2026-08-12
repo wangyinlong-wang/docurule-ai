@@ -14,6 +14,7 @@
 <p align="center">
   <a href="#-quick-start"><strong>Quick start</strong></a> ·
   <a href="#-see-it-work">See it work</a> ·
+  <a href="#run-your-own-recipe">YAML recipes</a> ·
   <a href="docs/product-spec.md">Product spec</a> ·
   <a href="README.zh-CN.md">中文</a>
 </p>
@@ -91,6 +92,20 @@ docker compose up --build
 
 Your files and SQLite database live only in the `docurule-data` Docker volume by default. If you configure a remote OpenAI-compatible provider, document inputs are sent to the endpoint you specify.
 
+### Run your own recipe
+
+Click **Run rules.yml** in the workspace, select a schema-v1 recipe, and add the text documents declared by that recipe. You can also run the public sample through the API:
+
+```bash
+curl -F 'recipe=@demo/three-way-match/rules.yml' \
+  -F 'files=@demo/three-way-match/purchase-order-PO-2026-0812.txt;type=text/plain' \
+  -F 'files=@demo/three-way-match/supplier-invoice-INV-1048.txt;type=text/plain' \
+  -F 'files=@demo/three-way-match/delivery-note-DN-7721.txt;type=text/plain' \
+  http://localhost:8080/api/v1/recipes/run
+```
+
+The v1 runtime is intentionally constrained: recipes cannot execute Python, shell commands, templates, or network calls. It supports required document kinds, normalized equality across documents, and numeric `less_than_or_equal` expressions (including multiplication). Uploaded recipe packets currently accept UTF-8 TXT, Markdown, and CSV files whose names exactly match the manifest. See the [recipe authoring guide](docs/recipes.md).
+
 ### Run without Docker
 
 ```bash
@@ -135,6 +150,7 @@ The current MVP keeps its architecture deliberately small: React + TypeScript, F
 - Graceful rules-only fallback when the model is unavailable
 - Packet-level field normalization with confidence and source quotes
 - Procurement three-way-match checks for document presence, supplier, PO, currency, quantity, and received value
+- Executable schema-v1 YAML recipes with a safe, allowlisted rule runtime
 - Public three-way-match recipe with synthetic inputs, `rules.yml`, and a CI-checked golden result
 - Medical-claim sample with cross-document presence, name, and amount validations
 - Editable extracted values and human approve/reject decisions
@@ -177,6 +193,8 @@ Useful endpoints:
 | Method | Endpoint | Purpose |
 |---|---|---|
 | `POST` | `/api/v1/cases` | Upload and process a packet |
+| `POST` | `/api/v1/recipes/run` | Run an uploaded YAML recipe against matching text files |
+| `GET` | `/api/v1/recipes/three-way-match` | Read the bundled executable recipe contract |
 | `POST` | `/api/v1/demo/procurement` | Create the procurement three-way-match sample |
 | `POST` | `/api/v1/demo` | Create the secondary medical-claim sample |
 | `GET` | `/api/v1/cases/{id}` | Read fields, evidence, and results |
@@ -192,7 +210,8 @@ Open [http://localhost:8080/docs](http://localhost:8080/docs) for the generated 
 - [x] Ollama and OpenAI-compatible provider boundary
 - [x] Docker deployment, persistence, tests, and JSON export
 - [x] Procurement three-way-match recipe (PO + invoice + delivery note)
-- [ ] Executable YAML validation recipes and rule-level explanations
+- [x] Executable schema-v1 YAML recipes for deterministic text packets
+- [ ] Additional recipe operators, visual authoring, and PDF/image recipe packets
 - [ ] PDF coordinate highlights and page preview
 - [ ] Docling/PaddleOCR parser adapters
 - [ ] Durable worker, PostgreSQL/S3 ports, and multi-user review queues

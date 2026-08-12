@@ -5,3 +5,4 @@ pydantic-settings==2.10.1
 pypdf==6.0.0
 Pillow==11.3.0
 httpx==0.28.1
+PyYAML==6.0.2

@@ -23,6 +23,13 @@ export const api = {
     files.forEach((file) => body.append("files", file));
     return request<CaseRecord>("/api/v1/cases", { method: "POST", body });
   },
+  runRecipe: (name: string, recipe: File, files: File[]) => {
+    const body = new FormData();
+    if (name) body.append("name", name);
+    body.append("recipe", recipe);
+    files.forEach((file) => body.append("files", file));
+    return request<CaseRecord>("/api/v1/recipes/run", { method: "POST", body });
+  },
   updateField: (caseId: string, key: string, value: string | number | null) =>
     request<CaseRecord>(`/api/v1/cases/${caseId}/fields/${key}`, {
       method: "PATCH",

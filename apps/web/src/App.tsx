@@ -17,6 +17,7 @@ function App() {
   const [current, setCurrent] = useState<CaseRecord | null>(null);
   const [provider, setProvider] = useState<ProviderStatus | null>(null);
   const [showUpload, setShowUpload] = useState(false);
+  const [showRecipe, setShowRecipe] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -91,6 +92,20 @@ function App() {
     }
   };
 
+  const runRecipe = async (name: string, recipe: File, files: File[]) => {
+    setBusy(true);
+    setError("");
+    try {
+      const item = await api.runRecipe(name, recipe, files);
+      setShowRecipe(false);
+      openCase(item);
+    } catch (reason) {
+      setError((reason as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const updateCurrent = (item: CaseRecord) => {
     setCurrent(item);
     setCases((existing) => [item, ...existing.filter((entry) => entry.id !== item.id)]);
@@ -116,11 +131,19 @@ function App() {
         {current ? (
           <CaseWorkspace item={current} onChange={updateCurrent} />
         ) : (
-          <Welcome onDemo={createDemo} onUpload={() => setShowUpload(true)} busy={busy} />
+          <Welcome
+            onDemo={createDemo}
+            onUpload={() => setShowUpload(true)}
+            onRecipe={() => setShowRecipe(true)}
+            busy={busy}
+          />
         )}
       </main>
       {showUpload && (
         <UploadDialog onClose={() => setShowUpload(false)} onSubmit={upload} busy={busy} />
+      )}
+      {showRecipe && (
+        <RecipeDialog onClose={() => setShowRecipe(false)} onSubmit={runRecipe} busy={busy} />
       )}
     </div>
   );
@@ -187,7 +210,17 @@ function Topbar({ provider, onNew }: { provider: ProviderStatus | null; onNew: (
   );
 }
 
-function Welcome({ onDemo, onUpload, busy }: { onDemo: () => void; onUpload: () => void; busy: boolean }) {
+function Welcome({
+  onDemo,
+  onUpload,
+  onRecipe,
+  busy,
+}: {
+  onDemo: () => void;
+  onUpload: () => void;
+  onRecipe: () => void;
+  busy: boolean;
+}) {
   return (
     <div className="welcome">
       <section className="hero">
@@ -198,8 +231,9 @@ function Welcome({ onDemo, onUpload, busy }: { onDemo: () => void; onUpload: () 
           <div className="hero-actions">
             <button className="primary-button" onClick={onUpload}>Review documents <span>→</span></button>
             <button className="text-button" onClick={onDemo} disabled={busy}>{busy ? "Preparing demo…" : "Explore the demo"} <span>↗</span></button>
+            <button className="text-button" onClick={onRecipe}>Run rules.yml <span>↗</span></button>
           </div>
-          <div className="trust-row"><span>✓ No cloud required</span><span>✓ Ollama ready</span><span>✓ Evidence attached</span></div>
+          <div className="trust-row"><span>✓ No cloud required</span><span>✓ Executable YAML rules</span><span>✓ Ollama ready</span></div>
         </div>
         <WorkflowPreview />
       </section>
@@ -277,7 +311,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
         <Metric value={item.documents.length} label="Documents" note={`${item.documents.filter((doc) => doc.status === "processed").length} processed`} />
         <Metric value={item.fields.length} label="Fields extracted" note={`${item.fields.filter((field) => field.confidence >= .9).length} high confidence`} />
         <Metric value={passed} label="Checks passed" note={`${flagged} need attention`} />
-        <Metric value={`${Math.round((item.fields.reduce((sum, field) => sum + field.confidence, 0) / Math.max(item.fields.length, 1)) * 100)}%`} label="Avg. confidence" note={item.metadata.engine || "processing engine"} />
+        <Metric value={`${Math.round((item.fields.reduce((sum, field) => sum + field.confidence, 0) / Math.max(item.fields.length, 1)) * 100)}%`} label="Avg. confidence" note={String(item.metadata.engine || "processing engine")} />
       </div>
       <div className="review-grid">
         <section className="panel documents-panel">
@@ -376,6 +410,58 @@ function UploadDialog({ onClose, onSubmit, busy }: { onClose: () => void; onSubm
         </div>
         {files.length > 0 && <div className="upload-files">{files.map((file, index) => <div key={`${file.name}-${index}`}><span>{file.name}</span><small>{(file.size / 1024).toFixed(1)} KB</small><button type="button" onClick={() => setFiles(files.filter((_, itemIndex) => itemIndex !== index))}>×</button></div>)}</div>}
         <div className="modal-actions"><button type="button" onClick={onClose}>Cancel</button><button className="primary-button" disabled={!files.length || busy}>{busy ? "Uploading…" : `Start review${files.length ? ` (${files.length})` : ""}`} <span>→</span></button></div>
+      </form>
+    </div>
+  );
+}
+
+function RecipeDialog({
+  onClose,
+  onSubmit,
+  busy,
+}: {
+  onClose: () => void;
+  onSubmit: (name: string, recipe: File, files: File[]) => void;
+  busy: boolean;
+}) {
+  const [recipe, setRecipe] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [name, setName] = useState("");
+  const recipeInputRef = useRef<HTMLInputElement>(null);
+  const filesInputRef = useRef<HTMLInputElement>(null);
+  const addFiles = (incoming: FileList | null) =>
+    incoming && setFiles((existing) => [...existing, ...Array.from(incoming)]);
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    if (recipe && files.length) onSubmit(name, recipe, files);
+  };
+  const drop = (event: DragEvent) => {
+    event.preventDefault();
+    addFiles(event.dataTransfer.files);
+  };
+
+  return (
+    <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <form className="upload-dialog recipe-dialog" onSubmit={submit}>
+        <button type="button" className="close-button" onClick={onClose}>×</button>
+        <span className="hero-kicker"><i /> EXECUTABLE RECIPE</span>
+        <h2>Run your own rules.yml</h2>
+        <p>Declare expected document names and deterministic checks, then upload the matching text packet.</p>
+        <label className="name-field">Review name<input value={name} onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)} placeholder="Defaults to the recipe title" /></label>
+        <button className={`recipe-file ${recipe ? "selected" : ""}`} type="button" onClick={() => recipeInputRef.current?.click()}>
+          <span>{recipe ? "✓" : "YML"}</span>
+          <p><strong>{recipe?.name || "Choose rules.yml"}</strong><small>Schema v1 · safe declarative operators only</small></p>
+          <b>{recipe ? "Change" : "Browse"}</b>
+        </button>
+        <input ref={recipeInputRef} type="file" accept=".yml,.yaml" onChange={(event) => setRecipe(event.target.files?.[0] || null)} hidden />
+        <div className="recipe-divider"><span>DOCUMENTS DECLARED BY THE RECIPE</span></div>
+        <div className="dropzone compact" onDragOver={(event) => event.preventDefault()} onDrop={drop} onClick={() => filesInputRef.current?.click()}>
+          <span className="upload-symbol">⇧</span><strong>Drop matching TXT, Markdown, or CSV files</strong><small>File names must exactly match the recipe · UTF-8 only</small>
+          <input ref={filesInputRef} type="file" multiple accept=".txt,.md,.csv" onChange={(event) => addFiles(event.target.files)} hidden />
+        </div>
+        {files.length > 0 && <div className="upload-files">{files.map((file, index) => <div key={`${file.name}-${index}`}><span>{file.name}</span><small>{(file.size / 1024).toFixed(1)} KB</small><button type="button" onClick={() => setFiles(files.filter((_, itemIndex) => itemIndex !== index))}>×</button></div>)}</div>}
+        <p className="recipe-safety">Recipes cannot run Python, shell commands, templates, or network calls. The current runtime supports document presence, cross-document equality, and numeric comparisons.</p>
+        <div className="modal-actions"><button type="button" onClick={onClose}>Cancel</button><button className="primary-button" disabled={!recipe || !files.length || busy}>{busy ? "Running…" : "Run recipe"} <span>→</span></button></div>
       </form>
     </div>
   );

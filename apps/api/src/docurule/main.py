@@ -14,7 +14,8 @@ from .config import get_settings
 from .engine import ProcessingEngine
 from .models import CaseRecord, CaseStatus, DocumentRecord, FieldUpdate, ReviewRequest, utc_now
 from .provider import AIProvider
-from .recipes import load_recipe_documents
+from .recipe_api import build_recipe_router
+from .recipes import load_recipe_definition, load_recipe_documents
 from .store import CaseStore
 
 settings = get_settings()
@@ -34,6 +35,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(build_recipe_router(settings, store, engine))
 
 
 @app.get("/api/health")
@@ -134,6 +136,7 @@ def create_procurement_demo(background_tasks: BackgroundTasks):
     case_id = uuid4().hex[:12]
     target_dir = settings.uploads_dir / case_id
     target_dir.mkdir(parents=True, exist_ok=True)
+    recipe = load_recipe_definition("three-way-match")
     samples = load_recipe_documents("three-way-match")
     documents = []
     for file_name, content in samples:
@@ -155,6 +158,9 @@ def create_procurement_demo(background_tasks: BackgroundTasks):
             metadata={
                 "scenario": "procurement-three-way-match",
                 "processing_mode": "rules-only",
+                "recipe_id": recipe.id,
+                "recipe_source": "bundled",
+                "recipe": recipe.model_dump(mode="json"),
             },
         )
     )

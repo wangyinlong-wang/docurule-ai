@@ -12,8 +12,8 @@ This self-contained, entirely synthetic packet demonstrates a common accounts-pa
 
 ## Expected flow
 
-Upload the three text documents together, or use the built-in **Explore the demo** action. The initial review extracts eight merged fields and returns six checks: four pass and two fail because 96 units were invoiced but only 90 were received, making the USD 2,400.00 invoice greater than the USD 2,250.00 received value.
+Choose **Run rules.yml** and upload this folder's `rules.yml` plus its three text documents, or use the built-in **Explore the demo** action. The initial review extracts eight merged fields and returns six checks: four pass and two fail because 96 units were invoiced but only 90 were received, making the USD 2,400.00 invoice greater than the USD 2,250.00 received value.
 
 In the review workspace, change **Received quantity** from `90` to `96`. Revalidation should return `6/6 passed`, because the received value becomes USD 2,400.00.
 
-The built-in procurement demo runs in `rules-only` mode and does not require Ollama or a cloud model. `rules.yml` documents the reusable recipe contract; the current application keeps the executable rule implementation in its deterministic processing engine.
+The built-in procurement demo and uploaded recipe both run in `rules-only` mode and do not require Ollama or a cloud model. The same safe recipe runtime evaluates `rules.yml` during initial processing and after reviewer corrections. See the [recipe authoring guide](../../docs/recipes.md) for the supported schema and operators.

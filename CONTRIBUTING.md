@@ -58,7 +58,7 @@ demo/<recipe-id>/
 └── expected-result.json
 ```
 
-Keep inputs entirely synthetic, make each rule result explainable from the files, and assert the exact golden result in a deterministic test. The current YAML describes the public recipe contract; executing arbitrary YAML recipes is still roadmap work.
+Keep inputs entirely synthetic, make each rule result explainable from the files, and assert the exact golden result in a deterministic test. Schema-v1 YAML recipes are executable through `/api/v1/recipes/run`; new operators must stay declarative, be explicitly allowlisted and schema-validated, and include unsafe-input rejection tests. See [`docs/recipes.md`](docs/recipes.md).
 
 ## Pull requests
 
