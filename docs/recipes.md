@@ -31,12 +31,12 @@ When a reviewer or downstream script needs a flat field view, use the [CSV expor
 The quickest useful contribution is a small, synthetic packet that makes one deterministic workflow easy to reproduce. The current good-first path is [Issue #20: synthetic expense-receipt recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); if you take it, follow its requested `demo/expense-receipt/` file scope. The public [`demo/three-way-match`](../demo/three-way-match/) directory below is only a schema reference, not a second procurement task—check the issue assignment before starting.
 
 ```bash
-cp -R demo/three-way-match demo/my-recipe
+cp -R demo/three-way-match demo/expense-receipt
 ```
 
 Then keep this checklist:
 
-1. Keep the copied `my-recipe` id or choose another lowercase, hyphenated id, then update `rules.yml` (`id`, title, description, document kinds, and exact file names).
+1. Rewrite the copied fixture under `demo/expense-receipt/`: choose a lowercase, hyphenated recipe id, then update `rules.yml` (`id`, title, description, document kinds, and exact file names).
 2. Keep packet documents as UTF-8 `.txt`, `.md`, or `.csv`; do not add real personal, medical, financial, or confidential data.
 3. Use only the three supported assertion families below: document presence, normalized cross-document equality, and numeric `less_than_or_equal` (including the restricted `multiply` expression).
 4. Update the fixture `README.md` and `expected-result.json` with the initial checks, expected pass/fail result, and one reviewer correction that can be reproduced from the packet.

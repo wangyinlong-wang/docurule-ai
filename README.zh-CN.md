@@ -72,11 +72,11 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
 最容易开始的贡献，是一个完全合成的资料包和一条可解释的跨文档校验。当前 good-first 路径是 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)；如果认领它，请按 Issue 要求创建 `demo/expense-receipt/`。下面的[三单匹配 fixture](demo/three-way-match/)只是 schema 参考，不是另一个采购任务；开工前请先确认 Issue 是否已被认领：
 
 ```bash
-cp -R demo/three-way-match demo/my-recipe
+cp -R demo/three-way-match demo/expense-receipt
 ```
 
 1. 所有输入只使用合成或彻底匿名化内容。
-2. 修改 recipe 的 id/title，并按需重命名文件；`rules.yml` 的 `documents` 清单必须与文件名完全一致，规则只使用[规则指南](docs/recipes.md)列出的 schema v1 算子。
+2. 在 `demo/expense-receipt/` 中重写复制出来的 fixture：修改 recipe 的 id/title，并按需重命名文件；`rules.yml` 的 `documents` 清单必须与文件名完全一致，规则只使用[规则指南](docs/recipes.md)列出的 schema v1 算子。
 3. 补齐 `README.md` 和 `expected-result.json`，写清预期通过/失败的校验，以及一个复核者可以重现的字段修正。
 4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证你自己的 recipe，并把公开样例路径替换为清单中声明的全部文件，再提交一个范围明确的 PR，附上命令和结果。
 

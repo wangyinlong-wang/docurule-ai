@@ -121,11 +121,11 @@ The v1 runtime is intentionally constrained: recipes cannot execute Python, shel
 The lowest-friction contribution is a synthetic document packet that demonstrates one useful cross-document check. The current good-first path is [Issue #20: synthetic expense-receipt fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); follow its requested `demo/expense-receipt/` file scope if you take it. The public [three-way-match fixture](demo/three-way-match/) below is only a schema reference, not a duplicate procurement task—check the issue assignment before starting:
 
 ```bash
-cp -R demo/three-way-match demo/my-recipe
+cp -R demo/three-way-match demo/expense-receipt
 ```
 
 1. Keep every input synthetic or fully anonymized.
-2. Update the recipe id/title and rename files as needed; `rules.yml` must match its `documents` manifest exactly. Use only the schema-v1 operators documented in [the recipe guide](docs/recipes.md).
+2. Rewrite the copied fixture under `demo/expense-receipt/`: update the recipe id/title and rename files as needed; `rules.yml` must match its `documents` manifest exactly. Use only the schema-v1 operators documented in [the recipe guide](docs/recipes.md).
 3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
 4. Run your own recipe locally through **Run rules.yml** or the API command above, replacing the public sample paths with every file declared by your recipe, then open a focused pull request with the command and result.
 
