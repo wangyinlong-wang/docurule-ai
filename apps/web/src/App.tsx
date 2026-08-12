@@ -1,5 +1,6 @@
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { api, isShowcase } from "./lib/api";
+import { isShowcaseCaseComplete } from "./lib/showcase";
 import type { CaseRecord, CaseStatus, ExtractedField, ProviderStatus } from "./types";
 
 const statusLabel: Record<CaseStatus, string> = {
@@ -284,6 +285,7 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
   const processing = item.status === "uploaded" || item.status === "processing";
   const passed = item.validations.filter((result) => result.status === "passed").length;
   const flagged = item.validations.filter((result) => result.status !== "passed").length;
+  const showcaseComplete = isShowcase && isShowcaseCaseComplete(item);
   const showcaseExport = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(item, null, 2))}`;
 
   const saveField = async (field: ExtractedField, rawValue: string) => {
@@ -369,11 +371,24 @@ function CaseWorkspace({ item, onChange }: { item: CaseRecord; onChange: (item: 
               </div>
             ))}
           </div>
+          {showcaseComplete && (
+            <div className="showcase-success" role="status">
+              <span className="showcase-success-mark">✓</span>
+              <div>
+                <strong>All six rules now pass</strong>
+                <p>You corrected the packet and triggered the same deterministic rules used by the local app.</p>
+                <div className="showcase-success-actions">
+                  <a href="https://github.com/wangyinlong-wang/docurule-ai" target="_blank" rel="noreferrer">Star DocuRule on GitHub ☆</a>
+                  <a href="https://github.com/wangyinlong-wang/docurule-ai/blob/main/demo/three-way-match/rules.yml" target="_blank" rel="noreferrer">Inspect rules.yml ↗</a>
+                </div>
+              </div>
+            </div>
+          )}
           <div className={`decision-box ${item.decision || ""}`}>
             {item.decision ? (
               <><span className="decision-seal">{item.decision === "approved" ? "✓" : "×"}</span><div><strong>Review {item.decision}</strong><small>The decision is stored in the exportable audit record.</small></div></>
             ) : (
-              <><div><strong>Human decision required</strong><small>Review evidence and resolve warnings before completing this case.</small></div><div className="decision-actions"><button onClick={() => decide("rejected")}>Reject</button><button className="approve" onClick={() => decide("approved")}>Approve case ✓</button></div></>
+              <><div><strong>Human decision required</strong><small>{flagged ? "Review evidence and resolve warnings before completing this case." : "All checks pass. Review the evidence, then complete this case."}</small></div><div className="decision-actions"><button onClick={() => decide("rejected")}>Reject</button><button className="approve" onClick={() => decide("approved")}>Approve case ✓</button></div></>
             )}
           </div>
         </section>

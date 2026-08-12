@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { resetShowcase, showcaseApi } from "./showcase";
+import { isShowcaseCaseComplete, resetShowcase, showcaseApi } from "./showcase";
 
 describe("static showcase", () => {
   beforeEach(() => resetShowcase());
@@ -17,9 +17,12 @@ describe("static showcase", () => {
 
   it("recomputes the six rules after the reviewer correction", async () => {
     const item = await showcaseApi.createProcurementDemo();
+    expect(isShowcaseCaseComplete(item)).toBe(false);
+
     const corrected = await showcaseApi.updateField(item.id, "received_quantity", 96);
 
     expect(corrected.validations.every((result) => result.status === "passed")).toBe(true);
+    expect(isShowcaseCaseComplete(corrected)).toBe(true);
     expect(corrected.fields.find((field) => field.key === "received_quantity")).toMatchObject({
       value: 96,
       reviewed: true,

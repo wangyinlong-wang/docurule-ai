@@ -1,6 +1,6 @@
-# DocuRule 首发执行包
+# DocuRule 发布与增长执行包
 
-> 状态：待作者确认后使用，**不得自动发布**。事实快照与平台规则复核日期：2026-08-12。
+> 状态：执行中。GitHub Release、X 与知乎已有公开内容；HN、Reddit、V2EX、掘金等仍不得自动发布。事实快照与平台规则复核日期：2026-08-12。
 >
 > 本文只是一套发布前工作稿。平台规则会变化；每次发帖前必须重新打开对应规则页。Hacker News 与 r/LocalLLaMA 对 AI 生成文案有明确限制，因此相关草稿只能帮助作者梳理事实，不能原样复制发布。
 
@@ -9,26 +9,40 @@
 ### 0.1 当前结论
 
 - 公开仓库：<https://github.com/wangyinlong-wang/docurule-ai>
-- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture。发帖当天统一使用 GitHub 的 Latest Release。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
+- 版本线：`v0.2.0` 首次发布采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；当前 Latest Release `v0.3.0` 提供安全、可执行的 schema-v1 YAML recipes。仓库创建于 2026-08-12，属于不足 3 个月的新项目。
 - 当前首发 Hero：合成的采购三单匹配 Demo（采购订单 + 发票 + 收货单），`3 documents · 8 normalized fields · 6 rules · 2 exceptions · 1 review decision`。
 - 初始结果固定为 `4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96` 后重新校验为 `6 / 6 passed`。内置 Demo 不调用 AI provider。
-- 动态 GIF 为 `docs/assets/docurule-demo.gif`，2,426,839 bytes（约 2.3 MB）、16.0 秒；医疗理赔 Demo 作为第二场景保留。
+- README 当前动态 GIF 为 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes（约 491 KB）、14.7 秒；`docs/assets/docurule-demo.gif` 是 v0.2 的 16.0 秒旧版演示。医疗理赔 Demo 作为第二场景保留。
+- 无需安装的浏览器演示已公开：<https://wangyinlong-wang.github.io/docurule-ai/>。它只使用合成数据，在浏览器标签页内运行，不上传文件、不连接后端且刷新即清空。
 - 首发只承诺可验证的功能，不承诺 Star 数、准确率、节省时间或生产可用性。
-- **尚未在任何外部平台实际发帖。** 本文全部内容仍是待作者确认的发布素材。
+- 已发布两条 X 内容、一条 X 更新回复、一篇知乎文章、一条文章更新评论和一条知乎想法；尚未发布 HN、Reddit、V2EX、掘金或 LinkedIn 内容。未发布平台的草稿仍须作者按平台规则复核。
 
 ### 0.2 发布前必须逐项确认
 
 - [ ] 作者亲自在干净环境执行 README 的 `docker compose up --build`，并记录操作系统、CPU/内存、总耗时与结果。
 - [ ] 作者点击采购 Demo，核对初始结果为 `3 documents / 8 normalized fields / 6 rules / 4 passed / 2 failed`；把 `Received quantity` 从 `90` 改为 `96`，核对 `6 / 6 passed`，再完成批准或拒绝与 JSON 导出。
-- [x] GitHub 上的 `v0.2.0` tag 与 Release 已公开可见；README 的默认分支内容、Release 说明和本文事实一致。
+- [x] GitHub 上的 `v0.3.0` tag 与 Latest Release 已公开可见；README 默认分支已提供 v0.3 recipe Hero 与浏览器演示入口。
 - [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
-- [x] **动态 Demo 已生成：** `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒；README 已引用本地素材。
-- [x] 已从公开页面核验 README Hero 文案与 GIF；raw GIF 返回 HTTP 200、2,426,839 bytes，内容对应 `v0.2.0`。
+- [x] **当前动态 Demo 已生成：** `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒；README 已引用该素材。
+- [x] 已从公开页面核验 README Hero、Latest Release `v0.3.0` 与无需登录的 GitHub Pages 演示。
 - [x] GitHub Social Preview 已上传 1280×640 成图；公开仓库 HTML 的 `og:image` 已指向 `repository-images.githubusercontent.com`。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
 - [ ] 作者能在首帖后的 4–6 小时保持在线，并在首日及时回复技术问题。
 - [ ] 不向朋友、群聊或其他平台索要 HN/Reddit 点赞；不购买、不交换、不抽奖换 Star。
+
+### 0.3 已公开内容与信号快照
+
+截至 2026-08-12 18:51 CST：
+
+- X 首发：<https://x.com/wangylHerman/status/2087468300632473930>
+- X 在线演示：<https://x.com/wangylHerman/status/2087489383343497356>
+- X 首发帖下的演示更新：<https://x.com/wangylHerman/status/2087489918054383619>
+- 知乎长文：<https://zhuanlan.zhihu.com/p/2070923244492813107>，已追加 v0.3/在线演示评论
+- 知乎在线演示想法：<https://www.zhihu.com/pin/2070943994847270658>
+- 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。PR 尚未满足 extension/MIME 配对测试且与当前 main 冲突；已请求贡献者更新到 v0.3 基线，未批准或合并不完整改动。
+
+不要把 fork 或 PR 换算成“社区采用”。它们只用于决定下一步：优先帮助真实贡献者完成合入，并继续测试在线 Demo 到 GitHub 的转化。
 
 ## 1. 统一产品事实表（single source of truth）
 
@@ -41,7 +55,7 @@
 | 核心差异 | 处理一组相关文档；字段带证据；确定性校验优先；人工做最终决定 | README 的 Why / How it works |
 | 许可证 | MIT | `LICENSE` 与 GitHub 仓库元数据 |
 | 成熟度 | Early, working MVP | 不写 production-ready、enterprise-ready 或 battle-tested |
-| 首发功能版本 | `v0.2.0` | 采购 Hero 首次公开；`v0.2.1` 增加公开 recipe/golden fixture；发帖当天使用 GitHub Latest Release |
+| 当前功能版本 | `v0.3.0` | `v0.2.0` 首发采购 Hero；`v0.2.1` 增加公开 recipe/golden fixture；`v0.3.0` 增加安全可执行 YAML recipe runtime |
 | Hero Demo | 合成采购资料：采购订单 + 供应商发票 + 收货单；不需要模型或 API Key | 所有机构、编号、数量和金额均为虚构；Demo 强制 rules-only |
 | Hero 实测摘要 | 3 份文档、8 个 normalized fields、6 条规则、初始 4 pass + 2 fail、1 次人工决定 | 把 received quantity `90 → 96` 后为 6/6 passed；API/engine tests 覆盖 |
 | 第二场景 | 合成医疗理赔资料：发票 + 理赔表 | `/api/v1/demo` 保留；不作为首发 Hero |
@@ -50,13 +64,14 @@
 | AI provider | Ollama 原生 API；OpenAI-compatible chat-completion API | “OpenAI-compatible”不等于验证了每个供应商/模型 |
 | 无模型路径 | 内置 Demo 可离线运行；provider 不可用时有 rules-only fallback | 不等于所有真实图片都能无模型解析 |
 | 数据与部署 | Docker Compose 单容器；SQLite、本地文件存储、Docker volume | 若配置远程 provider，文档内容会按配置发给远程端点 |
-| 当前校验 | 采购 Hero：文档齐全、供应商、PO 号、币种、数量、金额/已收货价值；医疗示例：存在性、姓名和金额等 | 不写“支持任意业务规则” |
+| 当前校验 | 采购 Hero：文档齐全、供应商、PO 号、币种、数量、金额/已收货价值；医疗示例：存在性、姓名和金额等；schema-v1 recipes 支持 3 个 allowlisted 断言 | 不写“支持任意业务规则” |
 | 人工复核 | 字段可编辑；可批准或拒绝；导出 JSON 审计记录 | 不宣称多用户队列、RBAC 或不可篡改审计 |
 | 证据 | 字段包含置信度和 source quote | 坐标高亮与页内预览仍是 roadmap |
-| API | 创建案件、Demo、读取、修正字段、人工决定、JSON 导出；`/docs` 提供 OpenAPI UI | 以 README 中 endpoint 表为准 |
+| API | 创建案件、Demo、读取、修正字段、人工决定、JSON 导出、读取与执行 YAML recipe；`/docs` 提供 OpenAPI UI | 以 README 中 endpoint 表为准 |
 | 前端/后端 | React + TypeScript；FastAPI | 当前小型单应用架构 |
-| 采购三单匹配 | 已在公开 `v0.2.0` 实现并自动化验证 | 可写“available in v0.2.0”，并使用实测数字 |
-| 动态 GIF | `docs/assets/docurule-demo.gif`，2,426,839 bytes、16.0 秒 | 已从公开 raw URL 核验 HTTP 200 与实际字节数 |
+| 采购三单匹配 | 从 `v0.2.0` 起提供；`v0.3.0` 起同一份公开 `rules.yml` 可通过 UI/API 执行 | 使用 3 docs、8 fields、6 rules、4/6→6/6 的实测数字 |
+| 动态 GIF | 当前 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒 | v0.2 的 16 秒 GIF 仍保留但不再是 README Hero |
+| 在线演示 | `https://wangyinlong-wang.github.io/docurule-ai/` | 浏览器内合成 packet；不上传、不持久化，不代表真实文件处理能力 |
 | Social Preview | `docs/assets/social-preview.png`，1280×640 | 已上传 GitHub；公开 `og:image` 已切换到 repository image |
 | 真实准确率 | 未建立可泛化 benchmark | 不给百分比，不与 OCR/IDP 产品做准确率排名 |
 | 隐私/安全 | 默认本地保存；可配本机 Ollama | 不写“100% private/secure”“数据绝不离开机器”；远程 provider 是明确例外 |
@@ -80,11 +95,11 @@ cd docurule-ai
 docker compose up --build
 ```
 
-打开 <http://localhost:8080>，点击 **Explore the demo**。这句话只用于当前 README 对应的内置合成 Demo；16 秒是 README GIF 时长，不是性能承诺。
+打开 <http://localhost:8080>，点击 **Explore the demo**。这句话只用于当前 README 对应的内置合成 Demo；14.7 秒是 README GIF 时长，不是性能承诺。只想先理解流程时，可直接打开无需安装的浏览器演示：<https://wangyinlong-wang.github.io/docurule-ai/>。
 
 ### 1.3 统一限制说明
 
-> DocuRule is an early MVP. The bundled synthetic demo is deterministic, but real image-only documents need a compatible vision model. Text-layer PDFs use pypdf; complex OCR/layout support, coordinate highlights, recipe-defined rules, and multi-user review queues are roadmap items.
+> DocuRule is an early MVP. The bundled synthetic demo is deterministic, but real image-only documents need a compatible vision model. Text-layer PDFs use pypdf. Custom extraction schemas, PDF/image recipe packets, additional rule operators, coordinate highlights, and multi-user review queues remain roadmap items.
 
 ### 1.4 不能混淆的两个“本地”
 
@@ -210,7 +225,7 @@ docker compose up --build
 
 Then open http://localhost:8080 and run the built-in demo.
 
-This is not an OCR benchmark or a production-ready workflow system. Text-layer PDFs currently use pypdf; richer OCR/layout adapters, page-coordinate highlights, recipe-defined rules and multi-user queues are still on the roadmap.
+This is not an OCR benchmark or a production-ready workflow system. Text-layer PDFs currently use pypdf. Schema-v1 YAML recipes are executable today; custom extraction schemas, PDF/image recipe packets, richer OCR/layout adapters, page-coordinate highlights, additional operators and multi-user queues are still on the roadmap.
 
 I would especially value feedback on the boundary between deterministic rules and model-assisted extraction, and on the smallest useful recipe format for real document packets. I will be here to answer implementation questions.
 ```
@@ -243,7 +258,7 @@ The current early MVP includes:
 - editable fields, approve/reject decisions and JSON audit export;
 - a synthetic, deterministic built-in demo that needs no API key.
 
-It is intentionally not presented as production-ready. Complex OCR/layout parsing, coordinate highlights, configurable recipe rules and multi-user queues are roadmap items.
+It is intentionally not presented as production-ready. Schema-v1 YAML recipes support three allowlisted assertion types today; complex OCR/layout parsing, custom extraction schemas, PDF/image recipe packets, coordinate highlights, additional operators and multi-user queues are roadmap items.
 
 **Deployment:**
 
@@ -352,7 +367,7 @@ docker compose up --build
 如果愿意试跑，直接在帖子或 GitHub Issue 留复现步骤即可，我会逐条处理。
 ```
 
-发帖时可以附上已公开核验的约 16 秒、2.3 MB `docs/assets/docurule-demo.gif`。
+发帖时优先附上当前 README 使用的约 14.7 秒、491 KB `docs/assets/docurule-recipe-demo.gif`；旧版 16 秒、2.3 MB GIF 只在需要讲 v0.2 历史时使用。
 
 CTA：**给出系统/Docker 环境与第一个复现卡点。** “开源项目”放分享创造；若后来增加付费产品营销，改投推广节点。
 
@@ -375,7 +390,7 @@ PDF 转 JSON 只完成了一半：我如何把跨文档核验拆成抽取、规�
 1. **问题不是“读出一个 PDF”**
    - 单文件抽取输出之后，仍要跨文件比对姓名、编号、日期和金额。
    - 审核人员需要知道值从哪里来，以及谁改过、为什么批准。
-   - 用 `v0.2.0` 采购三单匹配的真实 GIF/截图开场：3 份文档、8 个 normalized fields、6 条规则、2 个初始异常。
+   - 用当前 `v0.3.0` recipe Hero GIF/截图开场：3 份文档、8 个 normalized fields、6 条规则、2 个初始异常，并展示 `rules.yml` 的同源执行。
 2. **为什么不把所有检查都写进 prompt**
    - 模型适合从复杂输入提取候选字段。
    - 相等、存在性、金额比较等应可读、可测、可重复。
@@ -448,7 +463,7 @@ https://github.com/wangyinlong-wang/docurule-ai
 Try it and report the first setup snag.
 ```
 
-附上已公开核验的约 16 秒、2.3 MB 采购 Hero GIF。CTA：**run the Docker demo and report a reproducible setup issue**。
+附上当前约 14.7 秒、491 KB 的 recipe Hero GIF。CTA：**先试在线合成演示；需要真实文件处理再运行 Docker，并报告可复现的 setup issue**。
 
 ### 6.2 X（中文）
 
@@ -472,7 +487,7 @@ The project starts where many extraction tools stop. It takes a related packet o
 
 The current synthetic procurement demo matches a purchase order, invoice and delivery note: eight normalized fields, six rules, and two initial exceptions. Correcting received quantity from 90 to 96 re-runs the rules from 4/6 to 6/6. It runs in Docker without an API key. For real image-only documents, DocuRule can use Ollama or an OpenAI-compatible vision endpoint. It is MIT licensed and intentionally small today: React, FastAPI, SQLite and local file storage.
 
-It is not production-ready and I am not publishing a generalized accuracy claim. Rich OCR/layout adapters, coordinate highlights, configurable recipes and multi-user queues remain on the roadmap.
+It is not production-ready and I am not publishing a generalized accuracy claim. Schema-v1 YAML recipes are executable today; rich OCR/layout adapters, custom extraction schemas, PDF/image recipe packets, coordinate highlights, additional operators and multi-user queues remain on the roadmap.
 
 Repository and quick start: https://github.com/wangyinlong-wang/docurule-ai
 
@@ -583,8 +598,8 @@ README 自身可以保留自然的 Star 请求；社区正文以试跑和反馈�
 | “完整 OCR” | 当前文本 PDF 用 pypdf，图像依赖视觉模型 | “text-layer PDF extraction; vision provider for images” |
 | “可审计/不可篡改审计” | 有 JSON trail，不等于合规或 tamper-proof | “exportable JSON decision/audit record” |
 | “模型永不幻觉” | 不可保证 | “provider errors do not silently invent fields; rules-only fallback is exposed” |
-| “所有版本都支持采购三单匹配” | 功能从 `v0.2.0` 开始提供 | 写“available since v0.2.0”，并给实测数字 |
-| “20 秒动态 Demo” | 当前素材实测为 16.0 秒 | “a 16-second demo GIF”或“约 16 秒动态演示” |
+| “所有版本都支持采购三单匹配” | Hero 从 `v0.2.0` 开始；可执行 recipe runtime 从 `v0.3.0` 开始 | 分别写“Hero available since v0.2.0”和“executable recipes since v0.3.0” |
+| “20 秒动态 Demo” | 当前 README 素材实测为 14.7 秒 | “a 15-second demo GIF”或“约 15 秒动态演示” |
 | “已被真实企业/用户采用” | 没有公开证据 | 不提；以后只引用获授权、可核查的案例 |
 | “节省 80% 时间/成本” | 未做测量 | 描述流程，不量化收益 |
 | “支持 OpenAI / Gemini / Qwen 等所有模型” | 只验证协议边界，不代表具体模型 | “Ollama and OpenAI-compatible provider interfaces” |
@@ -655,7 +670,7 @@ Quick Start reported success rate = success reports / (success reports + failure
 - [ ] 我明确说自己是作者，没有伪装成第三方推荐。
 - [ ] 标题没有最高级、虚假数字、感叹号堆叠或未经验证的结果。
 - [ ] 正文中的版本、Demo、字段数、规则数与当前公开 Release 一致。
-- [x] `v0.2.0` 已公开，采购 Hero 实测数字和 16 秒 GIF 与公开 README 一致。
+- [x] Latest Release `v0.3.0` 已公开；采购 Hero 实测数字、14.7 秒 recipe GIF 和在线演示与公开 README 一致。
 - [ ] 我没有写准确率、生产可用、企业采用、绝对隐私等无证据结论。
 - [ ] AI 参与披露真实，且该平台允许这类代码/文案；HN 文案由作者本人重写。
 - [ ] 链接直接指向 GitHub 原始仓库，无投票链接、隐藏跳转或短链。

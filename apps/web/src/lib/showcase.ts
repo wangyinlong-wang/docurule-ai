@@ -229,6 +229,9 @@ export const showcaseApi = {
   },
 };
 
+export const isShowcaseCaseComplete = (item: CaseRecord) =>
+  item.validations.length > 0 && item.validations.every((result) => result.status === "passed");
+
 export const resetShowcase = () => {
   storedCase = null;
 };
