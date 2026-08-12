@@ -25,7 +25,7 @@
 - [x] **采购三单匹配已在公开 `v0.2.0` 合入：** API/engine tests 覆盖三文档、8 个目标 normalized fields、6 条规则、初始 4 pass + 2 fail，以及修正后 6/6。
 - [x] **当前动态 Demo 已生成：** `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒；README 已引用该素材。
 - [x] 已从公开页面核验 README Hero、Latest Release `v0.5.3` 与无需登录的 GitHub Pages 演示。
-- [x] GitHub Social Preview 已上传 1280×640 成图；公开仓库 HTML 的 `og:image` 已指向 `repository-images.githubusercontent.com`。
+- [x] GitHub repository social preview 已配置 1280×640 成图；公开 GitHub Pages Showcase 的 `og:image` 指向仓库 `main` 分支中的 `docs/assets/social-preview.png`，与 canonical 三单 Demo 一致。
 - [ ] 作者确认 AI 在**代码、测试、文档和发帖文案**中的真实参与方式，填写各渠道的 `AI Involvement`/披露占位；不得写成模糊的“少量辅助”来规避社区规则。
 - [ ] 在发帖当天重新检查 Show HN、目标 subreddit、V2EX、掘金、知乎规则；若与本文冲突，以当天规则为准。
 - [ ] 作者能在首帖后的 4–6 小时保持在线，并在首日及时回复技术问题。
@@ -73,7 +73,7 @@
 | 采购三单匹配 | 从 `v0.2.0` 起提供；`v0.3.0` 起同一份公开 `rules.yml` 可通过 UI/API 执行；`v0.4.0` 可导出一行一个 normalized field 的 CSV；`v0.5.0` 对空字段状态给出 provider-aware 指引；`v0.5.1` 在普通上传入口校验扩展名/MIME 配对 | 使用 3 docs、8 fields、6 rules、4/6→6/6 的实测数字 |
 | 动态 GIF | 当前 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes、14.7 秒 | v0.2 的 16 秒 GIF 仍保留但不再是 README Hero |
 | 在线演示 | `https://wangyinlong-wang.github.io/docurule-ai/` | 浏览器内合成 packet；不上传、不持久化，不代表真实文件处理能力 |
-| Social Preview | `docs/assets/social-preview.png`，1280×640 | 已上传 GitHub；公开 `og:image` 已切换到 repository image |
+| Social Preview | `docs/assets/social-preview.png`，1280×640 | GitHub repository social preview 与 Pages Showcase `og:image` 均使用这张 canonical 三单素材 |
 | 真实准确率 | 未建立可泛化 benchmark | 不给百分比，不与 OCR/IDP 产品做准确率排名 |
 | 隐私/安全 | 默认本地保存；可配本机 Ollama | 不写“100% private/secure”“数据绝不离开机器”；远程 provider 是明确例外 |
 | 目标行业 | 可用于探索财务、保险、KYC、法务、供应链等 packet workflow | 当前只验证了合成 Demo，不能说已在这些行业落地 |
