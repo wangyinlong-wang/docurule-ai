@@ -39,7 +39,7 @@
 - GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.1>（已核验公开、非 draft、非 prerelease）
 - GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0 空字段提示更新
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
-- Issues [#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4) 与 [#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5) 已关闭（分别在 v0.4.0 与 v0.5.0 实现）；Issue #3 的上传校验已在 v0.5.1 实现；新增 good-first 贡献入口：[#19 文档化 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19)。当前公开列表有 3 个可认领的 good-first issue。
+- Issues [#3 上传类型校验](https://github.com/wangyinlong-wang/docurule-ai/issues/3)、[#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4) 与 [#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5) 已关闭（分别在 v0.5.1、v0.4.0 与 v0.5.0 实现）；新增 good-first 贡献入口：[#19 文档化 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19)。当前公开列表有 3 个可认领的 good-first issue。
 - 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。该 PR 基于旧版 `main`，与 v0.5.1 存在冲突；维护者已留下说明并关闭，功能由 v0.5.1 当前实现覆盖，未强行合入过时改动。
 
 不要把 fork 或 PR 换算成“社区采用”。它们只用于决定下一步：优先帮助真实贡献者完成合入，并继续测试在线 Demo 到 GitHub 的转化。
