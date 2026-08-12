@@ -173,6 +173,9 @@ Copy `.env.example` to `.env` only when overriding defaults.
 | Ollama | `DOCURULE_AI_PROVIDER=ollama` | Private local text/vision extraction |
 | OpenAI-compatible | `DOCURULE_AI_PROVIDER=openai-compatible` | vLLM, LiteLLM, OpenAI-style endpoints |
 
+For Docker-to-Ollama connectivity issues, see the
+[Ollama troubleshooting guide](docs/ollama-troubleshooting.md).
+
 ```env
 DOCURULE_AI_PROVIDER=openai-compatible
 DOCURULE_AI_BASE_URL=https://your-endpoint.example/v1
