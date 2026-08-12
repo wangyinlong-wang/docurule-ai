@@ -63,6 +63,8 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
   http://localhost:8080/api/v1/recipes/run
 ```
 
+上面的命令只运行公开的三单匹配样例。对于 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)，请把 recipe 和所有 `files` 路径替换为你创建的 `demo/expense-receipt/` 清单；只运行样例命令不能证明你的贡献有效。
+
 安全边界是明确的：规则不能执行 Python、Shell、模板或网络请求，只能使用允许的文档齐全、跨文档相等和数值大小比较。当前上传 recipe 支持文件名与清单完全一致的 UTF-8 TXT、Markdown 和 CSV。完整格式见[规则编写指南](docs/recipes.md)。
 
 ### 五分钟贡献一个 Recipe
@@ -76,7 +78,7 @@ cp -R demo/three-way-match demo/my-recipe
 1. 所有输入只使用合成或彻底匿名化内容。
 2. 修改 recipe 的 id/title，并按需重命名文件；`rules.yml` 的 `documents` 清单必须与文件名完全一致，规则只使用[规则指南](docs/recipes.md)列出的 schema v1 算子。
 3. 补齐 `README.md` 和 `expected-result.json`，写清预期通过/失败的校验，以及一个复核者可以重现的字段修正。
-4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证，再提交一个范围明确的 PR，附上命令和结果。
+4. 在页面点击「Run rules.yml」或运行上面的 API 命令验证你自己的 recipe，并把公开样例路径替换为清单中声明的全部文件，再提交一个范围明确的 PR，附上命令和结果。
 
 第一次只想改文档，可以先阅读 [CSV 导出契约](docs/csv-export.md)，再查看当前的 [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) 列表或 [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions)。当前可参考的 Recipe 入口是 [Issue #20：合成费用报销 fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)，开工前请先确认是否已有认领。Docker 到 Ollama 的排障任务已有贡献者负责，请不要重复开工；不确定字段或规则怎么选时，先开 Issue 再写代码。不要上传真实发票、病历、身份信息或其他机密资料。
 

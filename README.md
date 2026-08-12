@@ -112,6 +112,8 @@ curl -F 'recipe=@demo/three-way-match/rules.yml' \
   http://localhost:8080/api/v1/recipes/run
 ```
 
+That command runs only the public three-way-match sample. For [Issue #20](https://github.com/wangyinlong-wang/docurule-ai/issues/20), replace the recipe and `files` paths with the exact `demo/expense-receipt/` manifest you create; running the sample alone does not validate your contribution.
+
 The v1 runtime is intentionally constrained: recipes cannot execute Python, shell commands, templates, or network calls. It supports required document kinds, normalized equality across documents, and numeric `less_than_or_equal` expressions (including multiplication). Uploaded recipe packets currently accept UTF-8 TXT, Markdown, and CSV files whose names exactly match the manifest. See the [recipe authoring guide](docs/recipes.md).
 
 ### 🧩 Contribute a recipe in five minutes
@@ -125,7 +127,7 @@ cp -R demo/three-way-match demo/my-recipe
 1. Keep every input synthetic or fully anonymized.
 2. Update the recipe id/title and rename files as needed; `rules.yml` must match its `documents` manifest exactly. Use only the schema-v1 operators documented in [the recipe guide](docs/recipes.md).
 3. Add or update `README.md` and `expected-result.json`, including the expected pass/fail checks and a correction a reviewer can reproduce.
-4. Run the recipe locally through **Run rules.yml** or the API command above, then open a focused pull request with the command and result.
+4. Run your own recipe locally through **Run rules.yml** or the API command above, replacing the public sample paths with every file declared by your recipe, then open a focused pull request with the command and result.
 
 For a first documentation-only contribution, start with the [CSV export contract](docs/csv-export.md), then check the available [good first issue](https://github.com/wangyinlong-wang/docurule-ai/labels/good%20first%20issue) list or [Discussions](https://github.com/wangyinlong-wang/docurule-ai/discussions). A current recipe entry point is [Issue #20: synthetic expense-receipt fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20); check its assignment before starting. The Docker-to-Ollama issue is already assigned, so please do not duplicate that work; if you are unsure which fields or rule belong in a packet, open an issue before writing code. Do not upload real invoices, medical records, identities, or other confidential documents.
 
