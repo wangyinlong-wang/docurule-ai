@@ -37,7 +37,7 @@
 
 - X：当前 Chrome 会话显示登录入口，尚无已核验的公开帖；不要把草稿或失败提交写成已发布。
 - GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.2>（已核验公开、非 draft、非 prerelease）
-- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0/v0.5.1/v0.5.2 更新
+- GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0/v0.5.1/v0.5.2 更新及 CSV 契约 follow-up
 - 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
 - Issues [#3 上传类型校验](https://github.com/wangyinlong-wang/docurule-ai/issues/3)、[#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4)、[#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5) 与 [#19 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19) 已关闭；#19 的 `docs/csv-export.md` 提供 11 列契约、合成示例和 curl/Python 消费者。当前公开列表有 2 个可认领的 good-first issue。
 - 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。该 PR 基于旧版 `main`，与 v0.5.1 存在冲突；维护者已留下说明并关闭，功能由 v0.5.1 当前实现覆盖，未强行合入过时改动。
