@@ -1,6 +1,6 @@
 # DocuRule 发布与增长执行包
 
-> 状态：执行中。GitHub Release、GitHub Discussion 与知乎已有公开内容；当前 Chrome 会话的 X 仍停在登录页，尚未发布 X 内容；HN、Reddit、V2EX、掘金等仍不得自动发布。事实快照与平台规则复核日期：2026-08-13。
+> 状态：执行中。GitHub Release、GitHub Discussion 与知乎已有公开内容；知乎文章已于 2026-08-13 更新到 v0.5.3；当前 Chrome 会话的 X 仍停在登录页，尚未发布 X 内容；HN、Reddit、V2EX、掘金等仍不得自动发布。事实快照与平台规则复核日期：2026-08-13。
 >
 > 本文只是一套发布前工作稿。平台规则会变化；每次发帖前必须重新打开对应规则页。Hacker News 与 r/LocalLLaMA 对 AI 生成文案有明确限制，因此相关草稿只能帮助作者梳理事实，不能原样复制发布。
 
@@ -15,7 +15,7 @@
 - README 当前动态 GIF 为 `docs/assets/docurule-recipe-demo.gif`，502,499 bytes（约 491 KB）、14.7 秒；`docs/assets/docurule-demo.gif` 是 v0.2 的 16.0 秒旧版演示。医疗理赔 Demo 作为第二场景保留。
 - 无需安装的浏览器演示已公开：<https://wangyinlong-wang.github.io/docurule-ai/>。它只使用合成数据，在浏览器标签页内运行，不上传文件、不连接后端且刷新即清空。
 - 首发只承诺可验证的功能，不承诺 Star 数、准确率、节省时间或生产可用性。
-- 已公开一篇知乎文章及其项目更新；GitHub Discussion #18 已作为 Show and tell 入口。X 当前仍需作者在登录后亲自确认账号状态再发布；尚未发布 HN、Reddit、V2EX、掘金或 LinkedIn 内容。未发布平台的草稿仍须作者按平台规则复核。
+- 已公开一篇知乎文章并于 2026-08-13 更新到 v0.5.3；GitHub Discussion #18 已作为 Show and tell 入口。X 当前仍需作者在登录后亲自确认账号状态再发布；尚未发布 HN、Reddit、V2EX、掘金或 LinkedIn 内容。未发布平台的草稿仍须作者按平台规则复核。
 
 ### 0.2 发布前必须逐项确认
 
@@ -38,7 +38,7 @@
 - X：当前 Chrome 会话显示登录入口，尚无已核验的公开帖；不要把草稿或失败提交写成已发布。
 - GitHub Release：<https://github.com/wangyinlong-wang/docurule-ai/releases/tag/v0.5.3>（已核验公开、非 draft、非 prerelease）
 - GitHub Discussion：<https://github.com/wangyinlong-wang/docurule-ai/discussions/18>，已追加 v0.5.0/v0.5.1/v0.5.2 更新及 CSV 契约 follow-up；v0.5.3 以 Release 为主
-- 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，正文含 v0.4 CSV 导出与在线演示链接
+- 知乎长文：<https://zhuanlan.zhihu.com/p/2071029793122939690>，2026-08-13 已更新正文，含 v0.5.3、model compatibility report、Issue #20、外部 PR #21、Release 与在线演示链接
 - Issues [#3 上传类型校验](https://github.com/wangyinlong-wang/docurule-ai/issues/3)、[#4 CSV 导出](https://github.com/wangyinlong-wang/docurule-ai/issues/4)、[#5 空字段提示](https://github.com/wangyinlong-wang/docurule-ai/issues/5)、[#9 模型兼容性报告](https://github.com/wangyinlong-wang/docurule-ai/issues/9) 与 [#19 CSV 导出契约](https://github.com/wangyinlong-wang/docurule-ai/issues/19) 已关闭；#19 的 `docs/csv-export.md` 提供 11 列契约，#9 的 `model-compatibility.md` 提供合成实测报告。当前有 1 个未认领的 good-first issue：[#20 合成费用报销 recipe fixture](https://github.com/wangyinlong-wang/docurule-ai/issues/20)；贡献者仍应先查看标签列表或 Discussions。
 - 外部用户 Sanchar127 已完成并合入 [#21 Ollama troubleshooting guide](https://github.com/wangyinlong-wang/docurule-ai/pull/21)，对应 [#8 Docker→Ollama 排障](https://github.com/wangyinlong-wang/docurule-ai/issues/8) 的文档主体已落地；后续维护会继续检查主机防火墙与 Docker 网段边界。另有 [model compatibility report](model-compatibility.md) 记录本机 `gemma4:latest` 的有限范围 PARTIAL 结果，不能写成准确率或生产基准。
 - 已出现首个外部 fork 与首位贡献者 PR（[#6](https://github.com/wangyinlong-wang/docurule-ai/pull/6)）。该 PR 基于旧版 `main`，与 v0.5.1 存在冲突；维护者已留下说明并关闭，功能由 v0.5.1 当前实现覆盖，未强行合入过时改动。
@@ -626,7 +626,7 @@ README 自身可以保留自然的 Star 请求；社区正文以试跑和反馈�
 | LinkedIn |  |  | EN | screenshot / GIF |  |  |  |  |  | planned |
 | r/selfhosted Megathread |  |  | self-hosted | screenshot |  |  |  |  |  | gated |
 | 掘金 |  |  | 技术长文 | screenshots |  |  |  |  |  | planned |
-| 知乎 |  |  | 技术文章 | screenshots |  |  |  |  |  | planned |
+| 知乎 | <https://zhuanlan.zhihu.com/p/2071029793122939690> | 2026-08-13 | v0.5.3 更新 | text |  |  |  |  |  | published |
 | r/LocalLLaMA |  |  | Ollama | screenshot |  |  |  |  |  | optional/gated |
 
 ### 11.3 每日漏斗
